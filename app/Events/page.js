@@ -65,6 +65,9 @@ export default function page() {
         <div className="bg-[#fff000] w-full py-16 mt-20">
           <div>
             <h1 className="text-5xl font-semibold text-center">Upcoming and on-demand industry events</h1>
+            <div>
+                
+            </div>
           </div>
         </div>
 

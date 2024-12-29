@@ -7,17 +7,17 @@ const teamMembers = [
   {
     name: "Muhammad Shawaiz",
     role: "CEO",
-    image: "/eventlogo.jpg",
+    image: "/Images/ProfilePic.jpg",
   },
   {
     name: "Zain Imran",
     role: "CTO",
-    image: "/eventlogo.jpg",
+    image: "/Images/ProfilePic.jpg",
   },
   {
     name: "Hamza Ali Minhas",
     role: "Designer",
-    image: "/eventlogo.jpg",
+    image: "/Images/ProfilePic.jpg",
   },
 ];
 
@@ -52,26 +52,26 @@ export default function Page() {
   return (
     <div className="mt-16">
       <div>
-        <Navbar/>
+        <Navbar />
       </div>
-      <div className="min-h-screen bg-yellow-400 p-6">
+      <div className="min-h-screen bg-[#fff000] p-6">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold ">Meet Our Team</h1>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="flex flex-col lg:flex-row justify-center gap-6 mx-auto">
           {teamMembers.map((member, index) => (
             <div
               key={index}
-              className="bg-yellow-400 rounded-lg shadow-xl p-6 flex flex-col items-center"
+              className="bg-[#fff000] rounded-lg shadow-xl p-12 px-16 flex flex-col items-center"
             >
               <Image
                 src={member.image}
                 alt={member.name}
-                width={150}
-                height={150}
-                className="rounded-full mb-4"
+                width={200}
+                height={200}
+                className="w-full md:w-[40%] lg:w-[60%] rounded-xl mb-4"
               />
-              <h2 className="text-xl font-semibold">{member.name}</h2>
+              <h2 className="text-md md:text-xl font-semibold">{member.name}</h2>
               <p className="text-sm">{member.role}</p>
             </div>
           ))}
@@ -79,7 +79,7 @@ export default function Page() {
 
         {/* Our Mission & Vision */}
         <section className="text-center mt-16">
-          <h2 className="text-3xl font-semibold  mb-6">Our Mission & Vision</h2>
+          <h2 className="text-3xl font-bold  mb-6">Our Mission & Vision</h2>
           <p className="text-lg  max-w-3xl mx-auto">
             Our mission is to deliver exceptional event experiences that leave
             lasting impressions. We believe in creating personalized solutions
@@ -91,7 +91,7 @@ export default function Page() {
         <div className="text-center mt-8">
           <button
             type="submit"
-            className="bg-black text-white font-medium py-3 px-6 rounded-full hover:bg-yellow-600 transition"
+            className="bg-black text-white font-medium py-3 px-6 rounded-xl hover:scale-95"
           >
             <Link href={"./Partner"}>Become a Partner</Link>
           </button>
@@ -100,11 +100,11 @@ export default function Page() {
 
       {/* Testimonials */}
       <section className="bg-gray-100 py-16">
-        <h2 className="text-3xl font-semibold text-center  mb-10">
+        <h2 className="text-3xl font-bold text-center mb-10">
           What Our Clients Say
         </h2>
-        <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="bg-white p-6 px-10 rounded-lg shadow-lg">
             <p className="text-lg text-gray-700 mb-4">
               "EventPro managed our annual conference flawlessly. From the
               initial planning to the final execution, they were exceptional.
@@ -113,7 +113,7 @@ export default function Page() {
             <p className="font-semibold text-gray-800">Sarah Smith</p>
             <p className="text-gray-600">Marketing Director, TechCorp</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="bg-white p-6 px-10 rounded-lg shadow-lg">
             <p className="text-lg text-gray-700 mb-4">
               "Our wedding day was made perfect by EventPro. The attention to
               detail and personal touch made all the difference. We couldn’t
@@ -128,8 +128,8 @@ export default function Page() {
       </section>
 
       {/* Call to Action */}
-      <section className="bg-yellow-400  py-16">
-        <h2 className="text-3xl font-semibold text-center mb-6">
+      <section className="bg-[#fff000] py-16">
+        <h2 className="text-3xl font-bold text-center mb-6">
           Ready to Make Your Event Unforgettable?
         </h2>
         <p className="text-lg text-center mb-8">
@@ -139,7 +139,7 @@ export default function Page() {
         <div className="text-center">
           <button
             type="submit"
-            className="bg-black text-white font-medium py-3 px-6 rounded-full hover:bg-yellow-600 transition"
+            className="bg-black text-white font-medium py-3 px-6 rounded-xl hover:scale-95"
           >
             <Link href="/Contact">Get In Touch</Link>
           </button>
@@ -151,15 +151,15 @@ export default function Page() {
         <h2 className="text-4xl font-bold text-center mb-10 ">Our Values</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl mx-auto">
           {values.map((value, index) => (
-            <div key={index} className="flex items-start space-x-4 shadow-2xl ">
+            <div key={index} className="flex items-center space-x-4 shadow-2xl rounded-xl px-5 py-5">
               <Image
                 src={value.icon}
                 alt={value.title}
-                width={50}
-                height={50}
+                width={60}
+                height={60}
               />
               <div>
-                <h3 className="text-xl font-bold ">{value.title}</h3>
+                <h3 className="text-xl font-bold">{value.title}</h3>
                 <p className="text-gray-700">{value.description}</p>
               </div>
             </div>
@@ -167,8 +167,8 @@ export default function Page() {
         </div>
       </div>
       {/* FAQ Section */}
-      <section className="bg-yellow-400 py-16">
-        <h2 className="text-3xl font-semibold text-center mb-6 ">
+      <section className="bg-[#fff000] py-16 px-5">
+        <h2 className="text-3xl font-bold text-center mb-6">
           Frequently Asked Questions
         </h2>
         <div className="max-w-3xl mx-auto space-y-6">
@@ -202,8 +202,8 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <div>
-        <Footer/>
+      <div className="w-full flex justify-center py-10 px-1 md:py-12 md:px-10">
+        <Footer />
       </div>
     </div>
   );

@@ -165,7 +165,7 @@ export default function Dashboard() {
             <CardMedia
               component="img"
               height="194"
-              image="EventImage.jpeg"
+              image="/Images/EventImage.jpeg"
               alt="Event Image"
               className='h-[250px]'
             />
@@ -249,7 +249,7 @@ export default function Dashboard() {
             <CardMedia
               component="img"
               height="194"
-              image="EventImage.jpeg"
+              image="/Images/EventImage.jpeg"
               alt="Event Image"
               className='h-[250px]'
             />
@@ -333,7 +333,7 @@ export default function Dashboard() {
             <CardMedia
               component="img"
               height="194"
-              image="EventImage.jpeg"
+              image="/Images/EventImage.jpeg"
               alt="Event Image"
               className='h-[250px]'
             />
@@ -417,7 +417,7 @@ export default function Dashboard() {
             <CardMedia
               component="img"
               height="194"
-              image="EventImage.jpeg"
+              image="/Images/EventImage.jpeg"
               alt="Event Image"
               className='h-[250px]'
             />
@@ -501,7 +501,7 @@ export default function Dashboard() {
             <CardMedia
               component="img"
               height="194"
-              image="EventImage.jpeg"
+              image="/Images/EventImage.jpeg"
               alt="Event Image"
               className='h-[250px]'
             />
@@ -585,7 +585,7 @@ export default function Dashboard() {
             <CardMedia
               component="img"
               height="194"
-              image="EventImage.jpeg"
+              image="/Images/EventImage.jpeg"
               alt="Event Image"
               className='h-[250px]'
             />

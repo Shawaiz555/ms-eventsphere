@@ -1,5 +1,4 @@
 "use client";
-import { ClassNames } from "@emotion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -38,10 +37,10 @@ export default function Page() {
 
   return (
     <div className="mt-10">
-        <div>
-            <Navbar/>
-        </div>
-      <div className=" px-6 py-16 bg-white">
+      <div>
+        <Navbar />
+      </div>
+      {/* <div className=" px-6 py-16 bg-white">
         <h6 className="text-sm text-gray-500 mb-2">Partner program</h6>
         <h1 className="text-5xl font-bold leading-tight">Become a</h1>
         <h1 className="text-5xl font-bold leading-tight">partner</h1>
@@ -57,9 +56,9 @@ export default function Page() {
         >
           Become a Partner
         </button>
-      </div>
+      </div> */}
       {/* why join */}
-      <div className=" bg-blue-50 ">
+      <div className=" bg-[#fff000] px-6 py-20">
         <h2 className="text-4xl font-bold text-center mb-10">
           Why join the Bizzabo partner program?
         </h2>
@@ -67,7 +66,7 @@ export default function Page() {
           {benefits.map((benefit) => (
             <div
               key={benefit.id}
-              className="bg-yellow-400 rounded-lg shadow-lg p-8 text-center"
+              className="rounded-lg shadow-xl p-8 py-16 text-center"
             >
               <div className="text-4xl mb-4">{benefit.icon}</div>
               <h3 className="text-2xl font-semibold mb-4">{benefit.title}</h3>
@@ -77,11 +76,11 @@ export default function Page() {
         </div>
       </div>
       {/* ecosystem */}
-      <div className="p-8">
+      <div className="py-10 px-12">
         <h1 className="text-3xl md:text-4xl font-semibold text-center mb-8">
           Our partner program ecosystem
         </h1>
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Card 1 */}
           <div className="bg-gray-100 rounded-lg shadow-2xl p-6">
             <div className="flex items-center mb-4">
@@ -161,13 +160,13 @@ export default function Page() {
       {/* form */}
       <div
         ref={formRef}
-        className="min-h-screen flex items-center justify-center bg-yellow-400 p-6"
+        className="min-h-screen flex items-center justify-center bg-[#fff000] p-6"
       >
         <div className="w-full max-w-3xl bg-transparent">
-          <h1 className="text-center text-3xl font-semibold text-black mb-8">
-            Join our growing partner <br /> community now
+          <h1 className="text-center text-3xl font-bold text-black mb-8">
+            Join Our Growing Partner Community
           </h1>
-          <form className="space-y-6">
+          <form className="space-y-6 bg-white rounded-xl px-10 py-10">
             <div className="grid md:grid-cols-2 gap-6">
               {/* First Name */}
               <div>
@@ -177,7 +176,7 @@ export default function Page() {
                 <input
                   type="text"
                   placeholder="First name..."
-                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 />
               </div>
@@ -189,7 +188,7 @@ export default function Page() {
                 <input
                   type="text"
                   placeholder="Last Name..."
-                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 />
               </div>
@@ -201,7 +200,7 @@ export default function Page() {
                 <input
                   type="email"
                   placeholder="Work email..."
-                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 />
               </div>
@@ -213,7 +212,7 @@ export default function Page() {
                 <input
                   type="tel"
                   placeholder="Phone..."
-                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 />
               </div>
@@ -225,7 +224,7 @@ export default function Page() {
                 <input
                   type="text"
                   placeholder="Job Title"
-                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 />
               </div>
@@ -235,7 +234,7 @@ export default function Page() {
                   Type of Partnership*
                 </label>
                 <select
-                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 >
                   <option>Type of Partnership</option>
@@ -275,7 +274,7 @@ export default function Page() {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-black text-white font-medium py-3 px-6 rounded-full hover:bg-yellow-600 transition"
+                className="bg-black text-white font-medium py-3 px-7 rounded-xl hover:scale-95"
               >
                 Become a Partner
               </button>
@@ -284,8 +283,8 @@ export default function Page() {
         </div>
       </div>
       <div>
-            <Footer/>
-        </div>
+        <Footer />
+      </div>
     </div>
   );
 }

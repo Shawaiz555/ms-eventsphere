@@ -6,7 +6,7 @@ export default function Footer() {
     return (
         <div className="w-full bg-gray-50 py-10 px-10 rounded-xl md:w-full grid justify-center grid-cols-1 gap-10 lg:gap-0 lg:grid-cols-3">
             <div>
-                <h1 className="text-center text-xl md:text-3xl font-semibold tracking-wide">Social Links</h1>
+                <h1 className="text-center text-xl md:text-2xl font-bold tracking-wide">Social Links</h1>
                 <div className='flex justify-center gap-2 mt-10'>
                     <Link href="https://facebook.com">
                         <div>
@@ -66,18 +66,18 @@ export default function Footer() {
 
             </div>
             <div>
-                <h1 className="text-center text-xl md:text-3xl font-semibold tracking-wide">Page links</h1>
+                <h1 className="text-center text-xl md:text-2xl font-bold tracking-wide">Page links</h1>
                 <div className='flex justify-center mt-8'>
                     <ul>
-                        <li className='py-1 text-lg tracking-wide hover:scale-95'><Link href="/">Home</Link></li>
-                        <li className='py-1 text-lg tracking-wide hover:scale-95'><Link href="/About">About</Link></li>
-                        <li className='py-1 text-lg tracking-wide hover:scale-95'><Link href="/Events">Events</Link></li>
-                        <li className='py-1 text-lg tracking-wide hover:scale-95'><Link href="/Contact">Contact</Link></li>
+                        <li className='py-1 text-lg hover:scale-95'><Link href="/">Home</Link></li>
+                        <li className='py-1 text-lg hover:scale-95'><Link href="/About">About</Link></li>
+                        <li className='py-1 text-lg hover:scale-95'><Link href="/Events">Events</Link></li>
+                        <li className='py-1 text-lg hover:scale-95'><Link href="/Contact">Contact</Link></li>
                     </ul>
                 </div>
             </div>
             <div>
-                <h1 className="text-center text-xl md:text-3xl font-semibold tracking-wide">News Letter</h1>
+                <h1 className="text-center text-xl md:text-2xl font-bold tracking-wide">News Letter</h1>
                 <div className='mt-10'>
                     <input type="text" placeholder='Enter the Email...' className='w-full text-black border-[1px] border-gray-300 rounded-lg px-3 py-2' />
                     <div className='flex justify-end'>

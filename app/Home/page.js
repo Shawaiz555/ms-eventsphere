@@ -22,7 +22,7 @@ export default function page() {
                 <div className="w-full flex justify-center pb-10">
                     <div className="w-full lg:w-[55%] flex flex-col sm:flex-row sm:justify-center gap-3 px-7">
                         <input type="text" placeholder="Enter Your Email..." className="w-full sm:w-[70%] rounded-xl px-5 py-3" required />
-                        <button className="w-[45%] sm:w-[30%] md:w-[20%] bg-black text-sm sm:text-sm text-white tracking-wide font-semibold px-7 py-4 sm:py-1 rounded-2xl hover:scale-95">Send Email</button>
+                        <button className="w-[45%] sm:w-[30%] md:w-[20%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-5 py-4 sm:py-1 rounded-2xl hover:scale-95">Get Demo</button>
                     </div>
                 </div>
                 <div>

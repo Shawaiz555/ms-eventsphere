@@ -81,7 +81,7 @@ export default function Footer() {
                 <div className='mt-10'>
                     <input type="text" placeholder='Enter the Email...' className='w-full text-black border-[1px] border-gray-300 rounded-lg px-3 py-2' />
                     <div className='flex justify-end'>
-                        <button className='bg-black text-white px-7 py-2 tracking-wide font-semibold rounded-xl mt-4 hover:scale-95'>Send Email</button>
+                        <button className='bg-black text-white px-7 py-3 tracking-wide font-semibold rounded-xl mt-4 hover:scale-95'>Get Demo</button>
                     </div>
 
                 </div>

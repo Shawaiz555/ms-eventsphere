@@ -4,7 +4,7 @@ import { Facebook, Instagram, Twitter } from '@mui/icons-material';
 
 export default function Footer() {
     return (
-        <div className="w-full bg-gray-50 py-10 px-10 rounded-xl md:w-full grid justify-center grid-cols-1 gap-10 lg:gap-0 lg:grid-cols-3">
+        <div className="w-full py-3 px-10 rounded-xl md:w-full grid justify-center grid-cols-1 gap-10 lg:gap-0 lg:grid-cols-3">
             <div>
                 <h1 className="text-center text-xl md:text-2xl font-bold tracking-wide">Social Links</h1>
                 <div className='flex justify-center gap-2 mt-10'>

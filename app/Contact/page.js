@@ -21,7 +21,7 @@ export default function page() {
 
         <div className="w-full flex gap-5 flex-col lg:flex-row justify-around px-5">
           {/* Contact Info */}
-          <section className="w-full lg:w-[50%] mt-16 lg:mt-28 text-center">
+          <section className="w-full lg:w-[55%] mt-16 lg:mt-28 text-center">
             <h2 className="text-3xl lg:text-4xl font-bold text-black mb-6">
               Contact Information
             </h2>
@@ -44,7 +44,7 @@ export default function page() {
           </section>
 
           {/* Contact Form */}
-          <div className="w-full lg:w-[50%] mx-auto bg-white rounded-2xl shadow-lg py-12 px-10">
+          <div className="w-full lg:w-[45%] mx-auto bg-white rounded-2xl shadow-lg py-12 px-10">
             <h2 className="text-2xl font-bold text-black mb-6">Get In Touch</h2>
             <form>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

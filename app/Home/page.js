@@ -10,11 +10,11 @@ export default function page() {
                 <div>
                     <Navbar />
                 </div>
-                <div className="flex justify-center py-14">
+                <div className="flex justify-center py-20">
                     <div className="mt-10">
                         <p className="text-md sm:text-xl lg:text-xl text-center font-light tracking-wide">The MS-EventSphere Experience OS: One platform for all of your B2B events</p>
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-center mt-3">Unlimited events for</h1>
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-center mt-3">limitless event professionals</h1>
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif md:tracking-wider text-center mt-3">Unlimited events for</h1>
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif md:tracking-wider text-center mt-3">limitless event professionals</h1>
                         <p className="text-md sm:text-xl lg:text-xl text-center mt-4 font-light tracking-wide">Raise the bar with software that is easy to</p>
                         <p className="text-md sm:text-xl lg:text-xl text-center mt-1 font-light tracking-wide">customize and built to boost event ROI year-round.</p>
                     </div>
@@ -26,7 +26,7 @@ export default function page() {
                     </div>
                 </div>
                 <div>
-                    <h1 className="text-center text-3xl sm:text-3xl font-bold mb-10">Sponsores:</h1>
+                    <h1 className="text-center text-3xl sm:text-4xl font-semibold mb-10">Sponsores:</h1>
                 </div>
                 <div className="w-full flex justify-center pb-10">
                     <div className="w-[90%] sm:w-[90%] lg:w-[60%] bg-gray-100 rounded-lg">
@@ -87,7 +87,7 @@ export default function page() {
 
                 <div className="flex justify-center mt-5">
                     <div className="w-full md:w-[70%] lg:w-[60%] px-10 md:px-2">
-                        <h1 className="text-xl sm:text-2xl md:text-3xl text-black font-serif">MS-EventSphere has everything we need all in one platform. We needed a partner to help us scale and grow as a company, and MS-EventSphere checks those boxes.</h1>
+                        <h1 className="text-xl sm:text-2xl md:text-3xl text-black">MS-EventSphere has everything we need all in one platform. We needed a partner to help us scale and grow as a company, and MS-EventSphere checks those boxes.</h1>
                     </div>
                 </div>
 

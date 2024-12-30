@@ -16,7 +16,7 @@ const userSchema = new Schema(
       type: String,
       min: 5,
       max: 10,
-      required: true,
+      required: [true, "Password is required"],
     },
   },
   {

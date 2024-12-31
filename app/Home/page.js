@@ -1,15 +1,10 @@
 "use client";
-import Footer from "@/app/Reuseable Components/Footer";
-import Navbar from "@/app/Reuseable Components/Navbar";
 import Image from "next/image";
 
 export default function page() {
     return (
         <div>
-            <div className="bg-[#fff000]">
-                <div>
-                    <Navbar />
-                </div>
+            <div className="bg-[#fff000]">                
                 <div className="flex justify-center py-20">
                     <div className="mt-10">
                         <p className="text-md sm:text-xl lg:text-xl text-center font-light tracking-wide">The MS-EventSphere Experience OS: One platform for all of your B2B events</p>
@@ -148,31 +143,8 @@ export default function page() {
                                 <p className="text-sm md:text-md text-gray-600">Top 25% Fastest-growing Private Companies, 2022</p>
                             </div>
                         </div>
-
-                        {/* <div className="flex justify-center md:items-center gap-4 shadow-2xl py-7 px-5 md:py-6 md:px-6 rounded-xl">
-                            <div className="flex">
-                                <Image src="/Images/TopEventImg3.png" width={50} height={50} alt="Manager Image" className="w-[100px] h-[90px] sm:w-[110px] sm:h-[110px] md:w-[110px] md:h-[130px]"></Image>
-                            </div>
-                            <div>
-                                <h1 className="text-lg lg:text-xl font-semibold tracking-wide">G2 Category Leader</h1>
-                                <p className="text-sm md:text-md text-gray-600">Event Management Platforms, Event Registration & Ticketing, and Webinars.</p>
-                            </div>
-                        </div>
-                        <div className="flex justify-center md:items-center gap-4 shadow-2xl py-7 px-5 md:py-6 md:px-6 rounded-xl">
-                            <div className="flex">
-                                <Image src="/Images/TopEventImg4.png" width={50} height={50} alt="Manager Image" className="w-[100px] h-[90px] sm:w-[110px] sm:h-[110px] md:w-[110px] md:h-[130px]"></Image>
-                            </div>
-                            <div>
-                                <h1 className="text-lg lg:text-xl font-semibold tracking-wide">3X Winner Best Onsite Badging and Check-in Solution</h1>
-                                <p className="text-sm md:text-md text-gray-600">Event Technology Awards</p>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
-            </div>
-
-            <div className="w-full flex justify-center py-10 px-1 md:py-12 md:px-10">
-                <Footer />
             </div>
 
         </div>

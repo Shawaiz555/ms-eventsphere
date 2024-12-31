@@ -37,26 +37,6 @@ export default function Page() {
 
   return (
     <div className="mt-10">
-      <div>
-        <Navbar />
-      </div>
-      {/* <div className=" px-6 py-16 bg-white">
-        <h6 className="text-sm text-gray-500 mb-2">Partner program</h6>
-        <h1 className="text-5xl font-bold leading-tight">Become a</h1>
-        <h1 className="text-5xl font-bold leading-tight">partner</h1>
-        <p className="mt-6 text-lg">
-          At Bizzabo, we believe {"we’re"} better together. That’s why we’re
-          committed to building and enabling a partner program that helps
-          clients create impactful and rewarding experiences, while transforming
-          events into their business growth engine.
-        </p>
-        <button
-          className="mt-6 px-6 py-3 text-lg  bg-yellow-500 rounded-lg hover:bg-black hover:text-yellow-500"
-          onClick={scrollToForm}
-        >
-          Become a Partner
-        </button>
-      </div> */}
       {/* why join */}
       <div className=" bg-[#fff000] px-6 py-20">
         <h2 className="text-4xl font-bold text-center mb-10">
@@ -281,9 +261,6 @@ export default function Page() {
             </div>
           </form>
         </div>
-      </div>
-      <div>
-        <Footer />
       </div>
     </div>
   );

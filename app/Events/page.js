@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import Footer from "@/app/Reuseable Components/Footer";
-import Navbar from "@/app/Reuseable Components/Navbar";
 import Image from "next/image";
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -53,10 +51,6 @@ export default function page() {
   return (
     <div>
       <div>
-        <div>
-          <Navbar />
-        </div>
-
         <div className="mt-10 py-20 bg-[#fff000]">
           <h1 className="text-center text-4xl md:text-5xl font-semibold">Attend a MS-EventSphere event</h1>
           <div className="w-full flex justify-center my-5">
@@ -606,10 +600,6 @@ export default function page() {
 
             </div>
           </div>
-        </div>
-
-        <div className="w-full flex justify-center py-10 px-1 md:py-12 md:px-10">
-          <Footer />
         </div>
 
       </div>

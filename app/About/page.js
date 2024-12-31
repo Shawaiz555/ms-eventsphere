@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Footer from "@/app/Reuseable Components/Footer";
-import Navbar from "@/app/Reuseable Components/Navbar";
 
 const teamMembers = [
   {
@@ -51,9 +49,6 @@ const values = [
 export default function Page() {
   return (
     <div className="mt-16">
-      <div>
-        <Navbar />
-      </div>
       <div className="min-h-screen bg-[#fff000] p-6">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold ">Meet Our Team</h1>
@@ -202,9 +197,6 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <div className="w-full flex justify-center py-10 px-1 md:py-12 md:px-10">
-        <Footer />
-      </div>
     </div>
   );
 }

@@ -1,15 +1,9 @@
-
-import Footer from "@/app/Reuseable Components/Footer";
-import Navbar from "@/app/Reuseable Components/Navbar";
+"use client";
 
 export default function page() {
   return (
     <div >
       <div className="min-h-screen bg-[#fff000] mt-16 px-6 py-7">
-        <div>
-          <Navbar />
-        </div>
-
         {/* Header Section */}
         <div className="text-center my-10">
           <h1 className="text-4xl font-bold text-black">Contact Us</h1>
@@ -84,9 +78,6 @@ export default function page() {
             </form>
           </div>
         </div>
-      </div>
-      <div className="w-full flex justify-center py-10 px-1 md:py-12 md:px-10">
-        <Footer />
       </div>
     </div>
   );

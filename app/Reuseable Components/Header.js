@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Header({ toggleSidebar }) {
   return (
-    <div className="w-full flex flex-col lg:flex-row px-5 border-[1px] border-gray-200 py-2 rounded-md bg-white">
+    <div className="w-full flex flex-col lg:flex-row px-5 border-[1px] border-yellow-300 py-2 bg-[#fff000]">
       <div className="w-full lg:w-[50%] flex items-center">
         {/* Toggle Button for Small and Medium Devices */}
         <button
@@ -18,7 +18,7 @@ export default function Header({ toggleSidebar }) {
           type="text"
           placeholder="Search..."
           name="search"
-          className="w-full lg:w-[75%] mt-1 text-black border-[1px] border-gray-400 px-5 py-2 rounded-md"
+          className="w-full lg:w-[75%] mt-1 text-black border-[1px] border-yellow-300 px-5 py-2 rounded-md"
         />
       </div>
       <div className="w-full lg:w-[50%] flex gap-3 justify-center lg:justify-end">

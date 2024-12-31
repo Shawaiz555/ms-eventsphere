@@ -147,7 +147,7 @@ export default function Dashboard() {
         </div>
         <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 px-14 my-10">
           <div className="w-full flex justify-center">
-          <Card sx={{ maxWidth: '100%' }} className='rounded-xl bg-gray-100'>
+          <Card sx={{ maxWidth: '100%' }} className='rounded-xl shadow-2xl bg-white'>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} className="bg-black" aria-label="recipe">
@@ -231,7 +231,7 @@ export default function Dashboard() {
           </div>
           
           <div className="w-full flex justify-center">
-          <Card sx={{ maxWidth: '100%' }} className='rounded-xl bg-gray-100'>
+          <Card sx={{ maxWidth: '100%' }} className='rounded-xl shadow-2xl bg-white'>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} className="bg-black" aria-label="recipe">
@@ -315,7 +315,7 @@ export default function Dashboard() {
           </div>
 
           <div className="w-full flex justify-center">
-          <Card sx={{ maxWidth: '100%' }} className='rounded-xl bg-gray-100'>
+          <Card sx={{ maxWidth: '100%' }} className='rounded-xl shadow-2xl bg-white'>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} className="bg-black" aria-label="recipe">
@@ -399,7 +399,7 @@ export default function Dashboard() {
           </div>
 
           <div className="w-full flex justify-center">
-          <Card sx={{ maxWidth: '100%' }} className='rounded-xl bg-gray-100'>
+          <Card sx={{ maxWidth: '100%' }} className='rounded-xl shadow-2xl bg-white'>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} className="bg-black" aria-label="recipe">
@@ -483,7 +483,7 @@ export default function Dashboard() {
           </div>
           
           <div className="w-full flex justify-center">
-          <Card sx={{ maxWidth: '100%' }} className='rounded-xl bg-gray-100'>
+          <Card sx={{ maxWidth: '100%' }} className='rounded-xl shadow-2xl bg-white'>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} className="bg-black" aria-label="recipe">
@@ -567,7 +567,7 @@ export default function Dashboard() {
           </div>
 
           <div className="w-full flex justify-center">
-          <Card sx={{ maxWidth: '100%' }} className='rounded-xl bg-gray-100'>
+          <Card sx={{ maxWidth: '100%' }} className='rounded-xl shadow-2xl bg-white'>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} className="bg-black" aria-label="recipe">

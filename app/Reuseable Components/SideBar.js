@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function SideBar({ closeSidebar }) {
     return (
-        <div className="w-full h-full border-yellow-300">
+        <div className="w-full h-full border-gray-200">
             <div className="flex gap-2 justify-center items-center mt-5">
                 <Image
                     src="/ProjectLogo.png"
@@ -21,7 +21,7 @@ export default function SideBar({ closeSidebar }) {
             <div className="mt-7">
                 <ul>
                     <h1 className="mb-3 text-lg font-serif text-center tracking-wider">Dashboard</h1>
-                    <div className="border-b-[1px] border-t-[1px] border-yellow-300">
+                    <div className="border-b-[1px] border-t-[1px] border-gray-200">
                         <li
                             className="text-center text-sm lg:text-md tracking-widest py-3"
                             onClick={closeSidebar} // Close sidebar when clicking

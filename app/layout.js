@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
         {/* <div>
           <Navbar />
         </div> */}
-        <div className="w-full h-full flex overflow-hidden">
+        <div className="w-full h-auto flex overflow-hidden">
         {/* Sidebar */}
         <div
             className={`fixed w-[70%] sm:w-[50%] bg-gray-50 z-20 transform ${isSidebarVisible ? "translate-x-0" : "-translate-x-full" }

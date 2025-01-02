@@ -38,6 +38,20 @@ export default function SideBar({ closeSidebar }) {
                 </ul>
             </div>
 
+            <div className="mt-3">
+                <ul>
+                    {/* <h1 className="mb-3 text-lg font-serif text-center tracking-wider">Events</h1> */}
+                    <div className="border-b-[1px] border-gray-200">
+                        <li
+                            className="text-center text-sm lg:text-md tracking-widest py-3"
+                            onClick={closeSidebar} // Close sidebar when clicking
+                        >
+                            <Link href="/CreateEventForm">Create Event</Link>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+
         </div>
     );
 }

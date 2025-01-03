@@ -17,6 +17,7 @@ export default function page() {
     Duration: "",
     NumOfPerson: "",
     Location: "",
+    Description: "",
   });
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
@@ -37,7 +38,19 @@ export default function page() {
     e.preventDefault();
 
     if (emailError === "Email is valid") {
-      // console.log("Email is valid you can proceed");
+      if(event.Name && event.Email && event.EventTitle && event.Time && event.Date && event.Duration && event.NumOfPerson && event.Location && event.Description) 
+      {
+          alert("Event created Successfylly!!!...");
+          setEvent({Name: "",
+            EventTitle: "",
+            Email: "",
+            Date: "",
+            Time: "",
+            Duration: "",
+            NumOfPerson: "",
+            Location: "",
+            Description: ""});
+      }
     }
   };
 
@@ -116,9 +129,9 @@ export default function page() {
               <h1 className="mb-3 ml-1 font-semibold">Time:</h1>
               <TextField
                 id="outlined-basic"
-                label="Time"
                 className='w-full'
                 variant="outlined"
+                type="time"
                 value={event.Time}
                 onChange={(e) =>
                   setEvent({ ...event, Time: e.target.value })
@@ -130,9 +143,9 @@ export default function page() {
               <h1 className="mb-3 ml-1 font-semibold">Duration:</h1>
               <TextField
                 id="outlined-basic"
+                label="2:00pm to 4:00pm (Format)"
                 className='w-full'
                 variant="outlined"
-                type="time"
                 value={event.Duration}
                 onChange={(e) =>
                   setEvent({ ...event, Duration: e.target.value })
@@ -172,11 +185,17 @@ export default function page() {
             </div>
 
           </div>
+          <div className="w-full">
+            <h1 className="mb-3 ml-1 font-semibold">Event Description</h1>
+            <textarea rows="6" cols="80" placeholder="Description" className="border border-black px-4 py-2 ml-1" onChange={(e) =>
+              setEvent({ ...event, Description: e.target.value })
+            } required></textarea>
+          </div>
           <div className="flex justify-end mt-5">
             <Button
               type="submit"
               variant="outlined"
-              className="py-2 border-black text-white bg-black tracking-wider hover:scale-95"
+              className="py-2 border-black text-white bg-black tracking-wider rounded-xl hover:scale-95"
             >
               Create Event
             </Button>

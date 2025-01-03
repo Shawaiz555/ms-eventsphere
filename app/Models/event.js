@@ -1,6 +1,6 @@
 import mongoose, { Schema} from "mongoose";
 
-const userSchema = new Schema(
+const eventSchema = new Schema(
   {
     name: String,
     email: {
@@ -12,17 +12,18 @@ const userSchema = new Schema(
         "Email is invalid",
       ],
     },
-    password: {
-      type: String,
-      min: 5,
-      max: 10,
-      required: [true, "Password is required"],
-    },
+    eventTitle: String,
+    eventDate: Date,
+    eventTime: String,
+    eventLocation: String,
+    eventDuration: String,
+    noOfPerson: Number,
+    eventDescription: String,
   },
   {
     timestamps: true,
   }
 );
 
-const User = mongoose.models?.User || mongoose.model("User", userSchema);
-export default User;
+const Event = mongoose.models?.Event || mongoose.model("events", eventSchema);
+export default Event;

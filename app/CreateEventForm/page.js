@@ -187,7 +187,7 @@ export default function page() {
           </div>
           <div className="w-full">
             <h1 className="mb-3 ml-1 font-semibold">Event Description</h1>
-            <textarea rows="6" cols="80" placeholder="Description" className="border border-black px-4 py-2 ml-1" onChange={(e) =>
+            <textarea rows="6" placeholder="Description" className="w-full border border-gray-300 px-4 py-2 ml-1" onChange={(e) =>
               setEvent({ ...event, Description: e.target.value })
             } required></textarea>
           </div>

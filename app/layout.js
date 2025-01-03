@@ -34,23 +34,28 @@ export default function RootLayout({ children }) {
         {/* <div>
           <Navbar />
         </div> */}
-        <div className="w-full h-auto flex overflow-hidden">
+        <div className="w-full flex overflow-hidden">
         {/* Sidebar */}
-        <div
-            className={`fixed w-[70%] sm:w-[50%] bg-gray-50 z-20 transform ${isSidebarVisible ? "translate-x-0" : "-translate-x-full" }
-              } transition-transform lg:static lg:translate-x-0 lg:w-[16%]`}
-          >
-            <SideBar closeSidebar={closeSidebar} />
-          </div>
+        <div className="w-full flex overflow-hidden min-h-screen">
+  {/* Sidebar */}
+  <div
+    className={`fixed w-[70%] sm:w-[50%] bg-gray-50 z-20 transform ${
+      isSidebarVisible ? "translate-x-0" : "-translate-x-full"
+    } transition-transform lg:static lg:translate-x-0 lg:w-[16%] h-full`}
+  >
+    <SideBar closeSidebar={closeSidebar} />
+  </div>
 
-        {/* Main Content */}
-        <div
-            className={`flex-1 w-full ${isSidebarVisible ? "overflow-hidden" : ""
-              } lg:w-[84%]`}
-          >
-            <Header toggleSidebar={toggleSidebar} />
-            <main className="h-full bg-white">{children}</main>
-          </div>
+  {/* Main Content */}
+  <div
+    className={`flex-1 w-full ${
+      isSidebarVisible ? "overflow-hidden" : ""
+    } lg:w-[84%] h-full`}
+  >
+    <Header toggleSidebar={toggleSidebar} />
+    <main className="h-full bg-white">{children}</main>
+  </div>
+</div>
 
         {/* Overlay for small devices when sidebar is open */}
         {isSidebarVisible && (

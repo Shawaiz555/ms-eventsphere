@@ -45,7 +45,7 @@ export default function page() {
     <div>
       <div className="w-full flex justify-center mb-10 mt-10">
         <form
-          className="w-[90%] lg:w-[55%] px-5 lg:px-6 flex flex-col mt-5 shadow-xl rounded-2xl py-14"
+          className="w-[90%] lg:w-[60%] px-5 lg:px-8 flex flex-col mt-5 shadow-xl rounded-2xl py-14"
           onSubmit={handleSubmit}
         >
           <label className="text-2xl lg:text-4xl font-semibold font-serif text-center tracking-wide my-5">
@@ -141,10 +141,10 @@ export default function page() {
               />
             </div>
             <div>
-              <h1 className="mb-3 ml-1 font-semibold">Number Of Persons:</h1>
+              <h1 className="mb-3 ml-1 font-semibold">Number of Person:</h1>
               <TextField
                 id="outlined-basic"
-                label="Num Of Persons"
+                label="Num Of Person"
                 className='w-full'
                 variant="outlined"
                 type="number"

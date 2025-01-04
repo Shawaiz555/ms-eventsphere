@@ -46,7 +46,7 @@ export default function SideBar({ closeSidebar }) {
                             className="text-center text-sm lg:text-md tracking-wider py-3"
                             onClick={closeSidebar} // Close sidebar when clicking
                         >
-                            <Link href="/CreateEventForm">Create Event</Link>
+                            <Link href="/EventForm">Event Form</Link>
                         </li>
                     </div>
                 </ul>

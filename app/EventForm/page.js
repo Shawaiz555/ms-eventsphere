@@ -1,9 +1,5 @@
 "use client";
 import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 
@@ -56,12 +52,15 @@ export default function page() {
 
   return (
     <div>
+      <div className="py-6">
+         <h1 className="text-center text-3xl md:text-5xl font-serif">Create An Event Of your Choice</h1>
+      </div>
       <div className="w-full flex justify-center mb-10 mt-10">
         <form
           className="w-[90%] lg:w-[60%] px-5 lg:px-8 flex flex-col mt-5 shadow-xl rounded-2xl py-14"
           onSubmit={handleSubmit}
         >
-          <label className="text-2xl lg:text-4xl font-semibold font-serif text-center tracking-wide my-5">
+          <label className="text-2xl lg:text-4xl  font-serif text-center tracking-wide my-5">
             Event Form
           </label>
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 my-10">

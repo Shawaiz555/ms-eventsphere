@@ -2,6 +2,7 @@
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
+import ImageUpload from "../Reuseable Components/ImageUpload";
 
 export default function page() {
   const [event, setEvent] = useState({
@@ -34,18 +35,19 @@ export default function page() {
     e.preventDefault();
 
     if (emailError === "Email is valid") {
-      if(event.Name && event.Email && event.EventTitle && event.Time && event.Date && event.Duration && event.NumOfPerson && event.Location && event.Description) 
-      {
-          alert("Event created Successfylly!!!...");
-          setEvent({Name: "",
-            EventTitle: "",
-            Email: "",
-            Date: "",
-            Time: "",
-            Duration: "",
-            NumOfPerson: "",
-            Location: "",
-            Description: ""});
+      if (event.Name && event.Email && event.EventTitle && event.Time && event.Date && event.Duration && event.NumOfPerson && event.Location && event.Description) {
+        alert("Event created Successfylly!!!...");
+        setEvent({
+          Name: "",
+          EventTitle: "",
+          Email: "",
+          Date: "",
+          Time: "",
+          Duration: "",
+          NumOfPerson: "",
+          Location: "",
+          Description: ""
+        });
       }
     }
   };
@@ -53,7 +55,7 @@ export default function page() {
   return (
     <div>
       <div className="py-6">
-         <h1 className="text-center text-3xl md:text-5xl font-serif">Create An Event Of your Choice</h1>
+        <h1 className="text-center text-3xl md:text-4xl font-serif">Create An Event Of your Choice</h1>
       </div>
       <div className="w-full flex justify-center mb-10 mt-10">
         <form
@@ -181,6 +183,13 @@ export default function page() {
                 }
                 required
               />
+            </div>
+
+            <div>
+              <div className="p-1">
+                <h1 className="text-lg font-semibold mb-4">Upload Event Image</h1>
+                <ImageUpload/>
+              </div>
             </div>
 
           </div>

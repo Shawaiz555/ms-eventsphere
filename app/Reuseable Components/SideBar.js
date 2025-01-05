@@ -12,7 +12,7 @@ export default function SideBar({ closeSidebar }) {
                     height={30}
                     alt="FC Logo"
                     className="w-[65px] h-[55px] lg:w-[75px] lg:h-[70px] rounded-[100%]"
-        />
+                />
                 {/* <div className="bg-black px-5 py-5 rounded-[100%]">
                     <h1 className="text-xl text-white font-bold font-serif tracking-widest">MS</h1>
                 </div> */}
@@ -41,7 +41,7 @@ export default function SideBar({ closeSidebar }) {
             <div className="mt-7">
                 <ul>
                     <h1 className="mb-3 text-lg font-serif text-center tracking-wide">Event Info</h1>
-                    <div className="border-t-[1px] border-gray-200">
+                    <div className="border-t-[1px] border-b-[1px] border-gray-200">
                         <li
                             className="text-center text-sm lg:text-md tracking-wider py-3"
                             onClick={closeSidebar} // Close sidebar when clicking
@@ -49,7 +49,28 @@ export default function SideBar({ closeSidebar }) {
                             <Link href="/EventForm">Event Form</Link>
                         </li>
                     </div>
+
                 </ul>
+            </div>
+
+            <div className="mt-7">
+                <h1 className="mb-3 text-lg font-serif text-center tracking-wide">Accounts</h1>
+                <div className="border-t-[1px] border-gray-200">
+                    <li
+                        className="text-center text-sm lg:text-md tracking-wider py-3"
+                        onClick={closeSidebar} // Close sidebar when clicking
+                    >
+                        <Link href="/SignUp">Sign Up</Link>
+                    </li>
+                </div>
+                <div className="border-t-[1px] border-gray-200">
+                    <li
+                        className="text-center text-sm lg:text-md tracking-wider py-3"
+                        onClick={closeSidebar} // Close sidebar when clicking
+                    >
+                        <Link href="/Login">Login</Link>
+                    </li>
+                </div>
             </div>
 
         </div>

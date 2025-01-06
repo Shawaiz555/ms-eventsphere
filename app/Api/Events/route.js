@@ -1,9 +1,9 @@
 "use server";
-
 import { NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/MongoConfig";
 import { ObjectId } from "mongodb";
 import Event from "@/app/Models/event";
+
 export async function GET(req) {
      // Code to get all the Events data
      const { searchParams } = new URL(req.url);

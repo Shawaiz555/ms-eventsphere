@@ -3,132 +3,123 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/MongoConfig";
 import { ObjectId } from "mongodb";
 import Event from "@/app/Models/event";
+import upload from "@/app/Middleware/multer";
 
 export async function GET(req) {
-     // Code to get all the Events data
-     const { searchParams } = new URL(req.url);
-     const id = searchParams.get("id")
-     await connectDB()
-     let collection = []
-     if (!id) {
-          collection = await Event.find({})
-     } else {
-          collection = await Event.find({ _id: new ObjectId(id) })
-
-     }
-     return NextResponse.json({ data: collection });
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id");
+  await connectDB();
+  let collection = [];
+  if (!id) {
+    collection = await Event.find({});
+  } else {
+    collection = await Event.find({ _id: new ObjectId(id) });
+  }
+  return NextResponse.json({ data: collection });
 }
 
 export async function POST(req) {
-     // Code to create or save the Events data
-     const data = await req.json();
-     await connectDB()
-     const resp = await Event.insertMany(data)
-     return NextResponse.json({ message: "Event created", data: resp });
+  await connectDB();
+
+  const form = new Promise((resolve, reject) => {
+    upload.single("image")(req, {}, (err) => {
+      if (err) return reject(err);
+      resolve(req);
+    });
+  });
+
+  try {
+    const requestWithFile = await form;
+    const { name, email, eventTitle, eventDate, eventTime, eventLocation, eventDuration, noOfPerson, eventDescription } =
+      requestWithFile.body;
+
+    const newEvent = new Event({
+      name,
+      email,
+      eventTitle,
+      eventDate,
+      eventTime,
+      eventLocation,
+      eventDuration,
+      noOfPerson,
+      eventDescription,
+    });
+
+    if (requestWithFile.file) {
+      newEvent.image = {
+        data: requestWithFile.file.buffer,
+        contentType: requestWithFile.file.mimetype,
+      };
+    }
+
+    const savedEvent = await newEvent.save();
+    return NextResponse.json({ message: "Event created", data: savedEvent });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: "Error creating event", error });
+  }
 }
 
 export async function PUT(req) {
-     // Code to update specific Event's data
-     const { searchParams } = new URL(req.url);
-     const id = searchParams.get("id");
-     if (!id) {
-          return NextResponse.json({ message: "id is required", status: 400 });
-     }
-     else {
-          await connectDB()
-          const data = await req.json()
-          const resp = await Event.findOneAndUpdate({ "_id": new ObjectId(id) }, { $set: data })
-          return NextResponse.json({ message: `Event with ${id} is Updated successfully`, data: resp });
-     }
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id");
+  if (!id) {
+    return NextResponse.json({ message: "id is required", status: 400 });
+  }
 
+  await connectDB();
+
+  const form = new Promise((resolve, reject) => {
+    upload.single("image")(req, {}, (err) => {
+      if (err) return reject(err);
+      resolve(req);
+    });
+  });
+
+  try {
+    const requestWithFile = await form;
+    const updatedData = JSON.parse(requestWithFile.body);
+
+    if (requestWithFile.file) {
+      updatedData.image = {
+        data: requestWithFile.file.buffer,
+        contentType: requestWithFile.file.mimetype,
+      };
+    }
+
+    const updatedEvent = await Event.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: updatedData },
+      { new: true }
+    );
+
+    return NextResponse.json({
+      message: `Event with ${id} is updated successfully`,
+      data: updatedEvent,
+    });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: "Error updating event", error });
+  }
 }
 
 export async function DELETE(req) {
-     // Code to delete specific Event's data
-     const { searchParams } = new URL(req.url);
-     const id = searchParams.get("id");
-     if (!id) {
-          return NextResponse.json({ message: "id is required", status: 400 });
-     }
-     else {
-          await connectDB()
-          const resp = await Event.findOneAndDelete({ " _id": new ObjectId(id) })
-          return NextResponse.json({ message: `Event with ${id} is deleted successfully`, data: resp });
-     }
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id");
+  if (!id) {
+    return NextResponse.json({ message: "id is required", status: 400 });
+  }
 
+  await connectDB();
+
+  try {
+    const deletedEvent = await Event.findOneAndDelete({ _id: new ObjectId(id) });
+    return NextResponse.json({
+      message: `Event with ${id} is deleted successfully`,
+      data: deletedEvent,
+    });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: "Error deleting event", error });
+  }
 }
-
-
-// "use server";
-
-// import { NextResponse } from "next/server";
-// import { connectDB } from "@/app/lib/MongoConfig";
-// import { ObjectId } from "mongodb";
-// import User from "@/app/Models/user";
-// export async function GET(req) {
-//      // Code to get all the users data
-//      const { searchParams } = new URL(req.url);
-//      const id = searchParams.get("id")
-//      await connectDB()
-//      let collection = []
-//      if (!id) {
-//           collection = await User.find({})
-//      } else {
-//           collection = await User.find({ _id: new ObjectId(id) })
-
-//      }
-//      return NextResponse.json({ data: collection });
-// }
-
-// export async function POST(req) {
-//      // Code to create or save the users data
-//      const data = await req.json();
-//      await connectDB()
-//      const userFound = await User.findOne({ email: data['email'] });
-//      if (userFound) {
-//           return NextResponse.json({
-//                error: 'Email already exists!'
-//           })
-//      }
-//      const hashedPassword = await bcrypt.hash(data['password'], 10);
-//      const user = new User({
-//           name: data['name'],
-//           email: data['email'],
-//           password: hashedPassword,
-//      });
-//      const resp = await User.insertMany(data)
-//      return NextResponse.json({ message: "User created", data: resp });
-// }
-
-// export async function PUT(req) {
-//      // Code to update specific user's data
-//      const { searchParams } = new URL(req.url);
-//      const id = searchParams.get("id");
-//      if (!id) {
-//           return NextResponse.json({ message: "id is required", status: 400 });
-//      }
-//      else {
-
-//           await connectDB()
-//           const data = await req.json()
-//           const resp = await User.findOneAndUpdate({ "_id": new ObjectId(id) }, { $set: data })
-//           return NextResponse.json({ message: `User with ${id} is Updated`, data: resp });
-//      }
-
-// }
-
-// export async function DELETE(req) {
-//      // Code to delete specific user's data
-//      const { searchParams } = new URL(req.url);
-//      const id = searchParams.get("id");
-//      console.log(id)
-//      if (!id) {
-//           return NextResponse.json({ message: "id is required", status: 400 });
-//      }
-//      else {
-//           await connectDB()
-//           const resp = await User.findOneAndDelete({ " _id": new ObjectId(id) })
-//           return NextResponse.json({ message: `User with is deleted successfully`, data: resp });
-//      }
-
-// }

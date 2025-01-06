@@ -1,4 +1,5 @@
-import mongoose, { Schema} from "mongoose";
+// Models/event.js
+import mongoose, { Schema } from "mongoose";
 
 const eventSchema = new Schema(
   {
@@ -19,6 +20,10 @@ const eventSchema = new Schema(
     eventDuration: String,
     noOfPerson: Number,
     eventDescription: String,
+    image: {
+      data: Buffer,
+      contentType: String,
+    },
   },
   {
     timestamps: true,

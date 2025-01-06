@@ -12,7 +12,7 @@ export const connectDB = async () => {
   } 
   catch (error)
   {
-    console.error(error);
+    console.log(error);
     return Promise.reject(error);
   }
 };

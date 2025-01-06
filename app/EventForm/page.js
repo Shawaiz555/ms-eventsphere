@@ -1,10 +1,11 @@
+// page.js
 "use client";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import ImageUpload from "../Reuseable Components/ImageUpload";
 
-export default function page() {
+export default function Page() {
   const [event, setEvent] = useState({
     Name: "",
     EventTitle: "",
@@ -16,6 +17,7 @@ export default function page() {
     Location: "",
     Description: "",
   });
+  const [imageFile, setImageFile] = useState(null);
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
 
@@ -31,23 +33,68 @@ export default function page() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleImageUpload = (file) => {
+    setImageFile(file);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (emailError === "Email is valid") {
-      if (event.Name && event.Email && event.EventTitle && event.Time && event.Date && event.Duration && event.NumOfPerson && event.Location && event.Description) {
-        alert("Event created Successfylly!!!...");
-        setEvent({
-          Name: "",
-          EventTitle: "",
-          Email: "",
-          Date: "",
-          Time: "",
-          Duration: "",
-          NumOfPerson: "",
-          Location: "",
-          Description: ""
-        });
+      if (
+        event.Name &&
+        event.Email &&
+        event.EventTitle &&
+        event.Time &&
+        event.Date &&
+        event.Duration &&
+        event.NumOfPerson &&
+        event.Location &&
+        event.Description
+      ) {
+        try {
+          const formData = new FormData();
+          formData.append("name", event.Name);
+          formData.append("email", event.Email);
+          formData.append("eventTitle", event.EventTitle);
+          formData.append("eventDate", event.Date);
+          formData.append("eventTime", event.Time);
+          formData.append("eventDuration", event.Duration);
+          formData.append("noOfPerson", event.NumOfPerson);
+          formData.append("eventLocation", event.Location);
+          formData.append("eventDescription", event.Description);
+          if (imageFile) {
+            formData.append("image", imageFile);
+          }
+
+          const response = await fetch("/Api/Events", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            alert("Event created successfully!");
+            setEvent({
+              Name: "",
+              EventTitle: "",
+              Email: "",
+              Date: "",
+              Time: "",
+              Duration: "",
+              NumOfPerson: "",
+              Location: "",
+              Description: "",
+            });
+            setImageFile(null); // Reset image file after submission
+          } else {
+            console.error(result);
+            alert("Failed to create event");
+          }
+        } catch (error) {
+          console.error("Error submitting event:", error);
+          alert("An error occurred while creating the event");
+        }
       }
     }
   };
@@ -62,7 +109,7 @@ export default function page() {
           className="w-[90%] lg:w-[60%] px-5 lg:px-8 flex flex-col mt-5 shadow-xl rounded-2xl py-14"
           onSubmit={handleSubmit}
         >
-          <label className="text-2xl lg:text-4xl  font-serif text-center tracking-wide my-5">
+          <label className="text-2xl lg:text-4xl font-serif text-center tracking-wide my-5">
             Event Form
           </label>
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 my-10">
@@ -99,6 +146,7 @@ export default function page() {
               </p>
             </div>
             <div>
+              
               <h1 className="mb-3 ml-1 font-semibold">Event Title:</h1>
               <TextField
                 id="outlined-basic"
@@ -176,7 +224,6 @@ export default function page() {
                 label="Location"
                 className='w-full'
                 variant="outlined"
-
                 value={event.Location}
                 onChange={(e) =>
                   setEvent({ ...event, Location: e.target.value })
@@ -188,7 +235,7 @@ export default function page() {
             <div>
               <div className="p-1">
                 <h1 className="text-lg font-semibold mb-4">Upload Event Image</h1>
-                <ImageUpload/>
+                <ImageUpload onUpload={handleImageUpload} />
               </div>
             </div>
 

@@ -47,7 +47,7 @@ export default function page() {
     <div>
       <div className="w-full flex justify-center mb-10 mt-10">
         <form
-          className="w-[90%] lg:w-[40%] px-5 lg:px-8 bg-[#fff000] flex flex-col mt-5 shadow-xl rounded-2xl py-14"
+          className="w-[90%] md:w-[60%] lg:w-[40%] px-5 lg:px-8 bg-[#fff000] flex flex-col mt-5 shadow-xl rounded-2xl py-14"
           onSubmit={handleSubmit}
         >
           <label className="text-2xl lg:text-4xl  font-serif text-center tracking-wide my-5">

@@ -33,9 +33,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* <div>
+        <div>
           <Navbar />
-        </div> */}
+        </div>
         <div className="w-full flex overflow-hidden">
           {/* <div className="w-full flex overflow-hidden min-h-screen"> */}
             {/* Sidebar */}
@@ -67,9 +67,9 @@ export default function RootLayout({ children }) {
         <div>
           {children}
         </div>
-        {/* <div className="w-full flex justify-center py-10 px-1 md:py-12 md:px-10">
+        <div className="w-full flex justify-center py-10 px-1 md:py-12 md:px-10">
           <Footer />
-        </div> */}
+        </div>
       </body>
     </html>
   );

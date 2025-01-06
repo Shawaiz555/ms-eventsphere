@@ -69,10 +69,11 @@ export default function Footer() {
                 <h1 className="text-center text-xl md:text-2xl font-bold tracking-wide">Page links</h1>
                 <div className='flex justify-center mt-8'>
                     <ul>
-                        <li className='py-1 text-lg hover:scale-95'><Link href="/">Home</Link></li>
-                        <li className='py-1 text-lg hover:scale-95'><Link href="/About">About</Link></li>
-                        <li className='py-1 text-lg hover:scale-95'><Link href="/Events">Events</Link></li>
-                        <li className='py-1 text-lg hover:scale-95'><Link href="/Contact">Contact</Link></li>
+                        <li className='py-1 text-lg hover:scale-95 text-center'><Link href="/">Home</Link></li>
+                        <li className='py-1 text-lg hover:scale-95 text-center'><Link href="/About">About</Link></li>
+                        <li className='py-1 text-lg hover:scale-95 text-center'><Link href="/Events">Events</Link></li>
+                        <li className='py-1 text-lg hover:scale-95 text-center'><Link href="/Contact">Contact</Link></li>
+                        <li className='py-1 text-lg hover:scale-95 text-center'><Link href="/Admin_Login">Admin_Login</Link></li>
                     </ul>
                 </div>
             </div>

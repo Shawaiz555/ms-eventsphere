@@ -1,21 +1,21 @@
 "use client";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import Link from "next/link";
+// import Link from "next/link";
+import { useRouter } from 'next/navigation'
 
 export default function page() {
-  const [signUpUser, setSignUpUser] = useState({
-        Name: "",
-        Email: "",
-        Password:"",
-        ConfirmPassword:"",
-    
+  const [loginUser, setLoginUser] = useState({
+    Name: "",
+    Email: "",
+    Password: "",
   });
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
+  const router = useRouter()
 
   const emailValidation = (em) => {
-    setSignUpUser({ ...signUpUser, Email: em });
+    setLoginUser({ ...loginUser, Email: em });
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailPattern.test(em)) {
       setEmailError("Email is valid");
@@ -26,31 +26,31 @@ export default function page() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleAdmin = (e) => {
     e.preventDefault();
 
-    if (emailError === "Email is valid" && signUpUser.Password == signUpUser.ConfirmPassword) {
-      if (signUpUser.Name && signUpUser.Email && signUpUser.Password && signUpUser.ConfirmPassword) {
-        alert("Signed Up Successfylly!!!...");
-        setSignUpUser({
+    if (emailError === "Email is valid") {
+      if (loginUser.Name && loginUser.Email && loginUser.Password) {
+        alert("Loged In Successfylly!!!...");
+        router.push('/Dashboard');
+        setLoginUser({
           Name: "",
           Email: "",
-          Password:"",
-          ConfirmPassword:"",
+          Password: "",
         });
+        
       }
     }
   };
 
   return (
     <div>
-      <div className="w-full flex justify-center mb-10 mt-10">
+      <div className="w-full flex justify-center mb-16 mt-16">
         <form
           className="w-[90%] md:w-[60%] lg:w-[40%] px-5 lg:px-8 bg-[#fff000] flex flex-col mt-5 shadow-xl rounded-2xl py-14"
-          onSubmit={handleSubmit}
         >
           <label className="text-2xl lg:text-4xl  font-serif text-center tracking-wide my-5">
-            Sign Up Form
+            Login Form
           </label>
           <div className="w-full grid grid-cols-1 gap-8 my-10">
             <div>
@@ -60,9 +60,9 @@ export default function page() {
                 label="Name"
                 className='w-full bg-white'
                 variant="outlined"
-                value={signUpUser.Name}
+                value={loginUser.Name}
                 onChange={(e) =>
-                  setSignUpUser({ ...signUpUser, Name: e.target.value })
+                  setLoginUser({ ...loginUser, Name: e.target.value })
                 }
                 required
               />
@@ -76,7 +76,7 @@ export default function page() {
                 label="Email"
                 className='w-full bg-white'
                 variant="outlined"
-                value={signUpUser.Email}
+                value={loginUser.Email}
                 onChange={(e) => emailValidation(e.target.value)}
                 required
               />
@@ -92,40 +92,24 @@ export default function page() {
                 label="Password"
                 className='w-full bg-white'
                 variant="outlined"
-                value={signUpUser.Password}
+                value={loginUser.Password}
                 onChange={(e) =>
-                  setSignUpUser({ ...signUpUser, Password: e.target.value })
+                  setLoginUser({ ...loginUser, Password: e.target.value })
                 }
                 required
               />
             </div>
-            <div>
-              <h1 className="mb-3 ml-1 font-semibold">Confirm Password:</h1>
-              <TextField
-                id="outlined-basic"
-                label='ConfirmPassword'
-                className='w-full bg-white'
-                variant="outlined"
-                value={signUpUser.ConfirmPassword}
-                onChange={(e) =>
-                  setSignUpUser({ ...signUpUser, ConfirmPassword: e.target.value })
-                }
-                required
-              />
-            </div>
-            
+
           </div>
           <div className="flex justify-center mt-5">
             <button
               type="submit"
               variant="outlined"
               className="py-2 px-8 border-black text-white bg-black tracking-wider rounded-xl hover:scale-95"
+              onClick={handleAdmin}
             >
-              Sign Up
+              Login as Admin
             </button>
-          </div>
-          <div className="mt-6">
-            <p className="text-md tracking-wide lg:text-lg">If you have already signed up before Login from here <Link href="/Login" className="text-white ml-2 font-serif hover:underline">Login</Link></p>
           </div>
         </form>
       </div>

@@ -2,12 +2,13 @@
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
+import Link from "next/link";
 
 export default function page() {
   const [login, setLogin] = useState({
-        Name: "",
-        Email: "",
-        Password:"",
+    Name: "",
+    Email: "",
+    Password: "",
   });
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
@@ -33,7 +34,7 @@ export default function page() {
         setLogin({
           Name: "",
           Email: "",
-          Password:"",
+          Password: "",
         });
       }
     }
@@ -43,7 +44,7 @@ export default function page() {
     <div>
       <div className="w-full flex justify-center mb-10 mt-10">
         <form
-          className="w-[90%] lg:w-[50%] px-5 lg:px-8 flex flex-col mt-5 shadow-xl rounded-2xl py-14"
+          className="w-[90%] lg:w-[40%] px-5 lg:px-8 bg-[#fff000] flex flex-col mt-5 shadow-xl rounded-2xl py-14"
           onSubmit={handleSubmit}
         >
           <label className="text-2xl lg:text-4xl  font-serif text-center tracking-wide my-5">
@@ -55,11 +56,11 @@ export default function page() {
               <TextField
                 id="outlined-basic"
                 label="Name"
-                className='w-full'
+                className='w-full bg-white'
                 variant="outlined"
                 value={login.Name}
                 onChange={(e) =>
-                    setLogin({ ...login, Name: e.target.value })
+                  setLogin({ ...login, Name: e.target.value })
                 }
                 required
               />
@@ -71,7 +72,7 @@ export default function page() {
                 id="outlined-basic"
                 type="email"
                 label="Email"
-                className='w-full'
+                className='w-full bg-white'
                 variant="outlined"
                 value={login.Email}
                 onChange={(e) => emailValidation(e.target.value)}
@@ -87,17 +88,17 @@ export default function page() {
               <TextField
                 id="outlined-basic"
                 label="Password"
-                className='w-full'
+                className='w-full bg-white'
                 variant="outlined"
                 value={login.Password}
                 onChange={(e) =>
-                    setLogin({ ...login, Password: e.target.value })
+                  setLogin({ ...login, Password: e.target.value })
                 }
                 required
               />
             </div>
-            
-            
+
+
           </div>
           <div className="flex justify-end mt-5">
             <Button
@@ -107,6 +108,9 @@ export default function page() {
             >
               Login
             </Button>
+          </div>
+          <div className="mt-5">
+            <p className="text-md tracking-wide lg:text-lg">If you have not signed up before Sign up from here <Link href="/SignUp" className="text-white ml-2 font-serif hover:underline">SignUp</Link></p>
           </div>
         </form>
       </div>

@@ -26,7 +26,7 @@ export default function SideBar({ closeSidebar }) {
                             className="text-center text-sm lg:text-md tracking-wider py-3"
                             onClick={closeSidebar} // Close sidebar when clicking
                         >
-                            <Link href="/">Home</Link>
+                            <Link href="/Home">Home</Link>
                         </li>
                         <li
                             className="text-center text-sm lg:text-md tracking-wider py-3"
@@ -68,7 +68,7 @@ export default function SideBar({ closeSidebar }) {
                         className="text-center text-sm lg:text-md tracking-wider py-3"
                         onClick={closeSidebar} // Close sidebar when clicking
                     >
-                        <Link href="/Login">Login</Link>
+                        <Link href="/">Login</Link>
                     </li>
                 </div>
             </div>

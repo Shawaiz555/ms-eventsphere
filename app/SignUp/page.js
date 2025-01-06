@@ -1,7 +1,6 @@
 "use client";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import Button from "@mui/material/Button";
 import Link from "next/link";
 
 export default function page() {
@@ -115,18 +114,17 @@ export default function page() {
               />
             </div>
             
-            
           </div>
-          <div className="flex justify-end mt-5">
-            <Button
+          <div className="flex justify-center mt-5">
+            <button
               type="submit"
               variant="outlined"
               className="py-2 px-8 border-black text-white bg-black tracking-wider rounded-xl hover:scale-95"
             >
               Sign Up
-            </Button>
+            </button>
           </div>
-          <div className="mt-5">
+          <div className="mt-6">
             <p className="text-md tracking-wide lg:text-lg">If you have already signed up before Login from here <Link href="/Login" className="text-white ml-2 font-serif hover:underline">Login</Link></p>
           </div>
         </form>

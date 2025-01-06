@@ -53,7 +53,7 @@ export default function SideBar({ closeSidebar }) {
                 </ul>
             </div>
 
-            <div className="mt-7">
+            {/* <div className="mt-7">
                 <h1 className="mb-3 text-lg font-serif text-center tracking-wide">Accounts</h1>
                 <div className="border-t-[1px] border-gray-200">
                     <li
@@ -71,7 +71,7 @@ export default function SideBar({ closeSidebar }) {
                         <Link href="/">Login</Link>
                     </li>
                 </div>
-            </div>
+            </div> */}
 
         </div>
     );

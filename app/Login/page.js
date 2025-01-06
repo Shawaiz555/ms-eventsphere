@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Link from "next/link";
 
 export default function page() {
-  const [login, setLogin] = useState({
+  const [loginUser, setLoginUser] = useState({
     Name: "",
     Email: "",
     Password: "",
@@ -14,7 +14,7 @@ export default function page() {
   const [isEmailValid, setIsEmailValid] = useState(null);
 
   const emailValidation = (em) => {
-    setLogin({ ...login, Email: em });
+    setLoginUser({ ...loginUser, Email: em });
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailPattern.test(em)) {
       setEmailError("Email is valid");
@@ -29,9 +29,9 @@ export default function page() {
     e.preventDefault();
 
     if (emailError === "Email is valid") {
-      if (login.Name && login.Email && login.Password) {
+      if (loginUser.Name && loginUser.Email && loginUser.Password) {
         alert("Loged In Successfylly!!!...");
-        setLogin({
+        setLoginUser({
           Name: "",
           Email: "",
           Password: "",
@@ -58,9 +58,9 @@ export default function page() {
                 label="Name"
                 className='w-full bg-white'
                 variant="outlined"
-                value={login.Name}
+                value={loginUser.Name}
                 onChange={(e) =>
-                  setLogin({ ...login, Name: e.target.value })
+                  setLoginUser({ ...loginUser, Name: e.target.value })
                 }
                 required
               />
@@ -74,7 +74,7 @@ export default function page() {
                 label="Email"
                 className='w-full bg-white'
                 variant="outlined"
-                value={login.Email}
+                value={loginUser.Email}
                 onChange={(e) => emailValidation(e.target.value)}
                 required
               />
@@ -90,9 +90,9 @@ export default function page() {
                 label="Password"
                 className='w-full bg-white'
                 variant="outlined"
-                value={login.Password}
+                value={loginUser.Password}
                 onChange={(e) =>
-                  setLogin({ ...login, Password: e.target.value })
+                  setLoginUser({ ...loginUser, Password: e.target.value })
                 }
                 required
               />

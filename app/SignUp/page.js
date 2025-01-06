@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Link from "next/link";
 
 export default function page() {
-  const [signUp, setSignUp] = useState({
+  const [signUpUser, setSignUpUser] = useState({
         Name: "",
         Email: "",
         Password:"",
@@ -16,7 +16,7 @@ export default function page() {
   const [isEmailValid, setIsEmailValid] = useState(null);
 
   const emailValidation = (em) => {
-    setSignUp({ ...signUp, Email: em });
+    setSignUpUser({ ...signUpUser, Email: em });
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailPattern.test(em)) {
       setEmailError("Email is valid");
@@ -30,10 +30,10 @@ export default function page() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (emailError === "Email is valid" && signUp.Password == signUp.ConfirmPassword) {
-      if (signUp.Name && signUp.Email && signUp.Password && signUp.ConfirmPassword) {
+    if (emailError === "Email is valid" && signUpUser.Password == signUpUser.ConfirmPassword) {
+      if (signUpUser.Name && signUpUser.Email && signUpUser.Password && signUpUser.ConfirmPassword) {
         alert("Signed Up Successfylly!!!...");
-        setSignUp({
+        setSignUpUser({
           Name: "",
           Email: "",
           Password:"",
@@ -61,9 +61,9 @@ export default function page() {
                 label="Name"
                 className='w-full bg-white'
                 variant="outlined"
-                value={signUp.Name}
+                value={signUpUser.Name}
                 onChange={(e) =>
-                   setSignUp({ ...signUp, Name: e.target.value })
+                  setSignUpUser({ ...signUpUser, Name: e.target.value })
                 }
                 required
               />
@@ -77,7 +77,7 @@ export default function page() {
                 label="Email"
                 className='w-full bg-white'
                 variant="outlined"
-                value={signUp.Email}
+                value={signUpUser.Email}
                 onChange={(e) => emailValidation(e.target.value)}
                 required
               />
@@ -93,9 +93,9 @@ export default function page() {
                 label="Password"
                 className='w-full bg-white'
                 variant="outlined"
-                value={signUp.Password}
+                value={signUpUser.Password}
                 onChange={(e) =>
-                    setSignUp({ ...signUp, Password: e.target.value })
+                  setSignUpUser({ ...signUpUser, Password: e.target.value })
                 }
                 required
               />
@@ -107,9 +107,9 @@ export default function page() {
                 label='ConfirmPassword'
                 className='w-full bg-white'
                 variant="outlined"
-                value={signUp.ConfirmPassword}
+                value={signUpUser.ConfirmPassword}
                 onChange={(e) =>
-                    setSignUp({ ...signUp, ConfirmPassword: e.target.value })
+                  setSignUpUser({ ...signUpUser, ConfirmPassword: e.target.value })
                 }
                 required
               />

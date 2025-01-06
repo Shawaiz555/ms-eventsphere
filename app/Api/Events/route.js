@@ -1,11 +1,11 @@
 "use server";
 
 import { NextResponse } from "next/server";
-import { connectDB } from "@/app/Models/user";
+import { connectDB } from "@/app/lib/MongoConfig";
 import { ObjectId } from "mongodb";
-import Event from "@/app/Models/Event";
+import Event from "@/app/Models/event";
 export async function GET(req) {
-     // Code to get all the users data
+     // Code to get all the Events data
      const { searchParams } = new URL(req.url);
      const id = searchParams.get("id")
      await connectDB()
@@ -20,15 +20,15 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-     // Code to create or save the users data
+     // Code to create or save the Events data
      const data = await req.json();
      await connectDB()
      const resp = await Event.insertMany(data)
-     return NextResponse.json({ message: "User created", data: resp });
+     return NextResponse.json({ message: "Event created", data: resp });
 }
 
 export async function PUT(req) {
-     // Code to update specific user's data
+     // Code to update specific Event's data
      const { searchParams } = new URL(req.url);
      const id = searchParams.get("id");
      if (!id) {
@@ -38,13 +38,13 @@ export async function PUT(req) {
           await connectDB()
           const data = await req.json()
           const resp = await Event.findOneAndUpdate({ "_id": new ObjectId(id) }, { $set: data })
-          return NextResponse.json({ message: `User with ${id} is Updated successfully`, data: resp });
+          return NextResponse.json({ message: `Event with ${id} is Updated successfully`, data: resp });
      }
 
 }
 
 export async function DELETE(req) {
-     // Code to delete specific user's data
+     // Code to delete specific Event's data
      const { searchParams } = new URL(req.url);
      const id = searchParams.get("id");
      if (!id) {
@@ -53,7 +53,7 @@ export async function DELETE(req) {
      else {
           await connectDB()
           const resp = await Event.findOneAndDelete({ " _id": new ObjectId(id) })
-          return NextResponse.json({ message: `User with ${id} is deleted successfully`, data: resp });
+          return NextResponse.json({ message: `Event with ${id} is deleted successfully`, data: resp });
      }
 
 }

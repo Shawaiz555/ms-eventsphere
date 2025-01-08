@@ -11,8 +11,8 @@ export default function Page() {
     EventTitle: "",
     Email: "",
     Date: "",
-    Time: "",
-    Duration: "",
+    StartingTime: "",
+    EndingTime: "",
     NumOfPerson: "",
     Location: "",
     Description: "",
@@ -45,9 +45,9 @@ export default function Page() {
         event.Name &&
         event.Email &&
         event.EventTitle &&
-        event.Time &&
+        event.StartingTime &&
         event.Date &&
-        event.Duration &&
+        event.EndingTime &&
         event.NumOfPerson &&
         event.Location &&
         event.Description
@@ -58,8 +58,8 @@ export default function Page() {
           formData.append("email", event.Email);
           formData.append("eventTitle", event.EventTitle);
           formData.append("eventDate", event.Date);
-          formData.append("eventTime", event.Time);
-          formData.append("eventDuration", event.Duration);
+          formData.append("eventTime", event.StartingTime);
+          formData.append("eventDuration", event.EndingTime);
           formData.append("noOfPerson", event.NumOfPerson);
           formData.append("eventLocation", event.Location);
           formData.append("eventDescription", event.Description);
@@ -80,8 +80,8 @@ export default function Page() {
               EventTitle: "",
               Email: "",
               Date: "",
-              Time: "",
-              Duration: "",
+              StartingTime: "",
+              EndingTime: "",
               NumOfPerson: "",
               Location: "",
               Description: "",
@@ -175,29 +175,29 @@ export default function Page() {
               />
             </div>
             <div>
-              <h1 className="mb-3 ml-1 font-semibold">Time:</h1>
+              <h1 className="mb-3 ml-1 font-semibold">Starting Time:</h1>
               <TextField
                 id="outlined-basic"
                 className='w-full'
                 variant="outlined"
                 type="time"
-                value={event.Time}
+                value={event.StartingTime}
                 onChange={(e) =>
-                  setEvent({ ...event, Time: e.target.value })
+                  setEvent({ ...event, StartingTime: e.target.value })
                 }
                 required
               />
             </div>
             <div>
-              <h1 className="mb-3 ml-1 font-semibold">Duration:</h1>
+              <h1 className="mb-3 ml-1 font-semibold">Ending Time:</h1>
               <TextField
                 id="outlined-basic"
-                label="2:00pm to 4:00pm (Format)"
                 className='w-full'
                 variant="outlined"
-                value={event.Duration}
+                type="time"
+                value={event.EndingTime}
                 onChange={(e) =>
-                  setEvent({ ...event, Duration: e.target.value })
+                  setEvent({ ...event, EndingTime: e.target.value })
                 }
                 required
               />
@@ -242,7 +242,7 @@ export default function Page() {
           </div>
           <div className="w-full">
             <h1 className="mb-3 ml-1 font-semibold">Event Description</h1>
-            <textarea rows="6" placeholder="Description" className="w-full border border-gray-300 px-4 py-2 ml-1" onChange={(e) =>
+            <textarea rows="6" placeholder="Description" value={event.Description} className="w-full border border-gray-300 px-4 py-2 ml-1" onChange={(e) =>
               setEvent({ ...event, Description: e.target.value })
             } required></textarea>
           </div>

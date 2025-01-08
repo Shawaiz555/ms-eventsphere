@@ -38,9 +38,9 @@ export async function POST(req) {
       email,
       eventTitle,
       eventDate,
-      eventTime,
+      eventStartingTime,
       eventLocation,
-      eventDuration,
+      eventEndingTime,
       noOfPerson,
       eventDescription,
     });

@@ -17,7 +17,7 @@ export default function Page() {
     Location: "",
     Description: "",
   });
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState([]);
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
 
@@ -39,7 +39,7 @@ export default function Page() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (emailError === "Email is valid") {
       if (
         event.Name &&
@@ -54,24 +54,25 @@ export default function Page() {
       ) {
         try {
           const formData = new FormData();
-          formData.append("name", event.Name);
+          formData.append("name", event.Name);  // Correct field names
           formData.append("email", event.Email);
           formData.append("eventTitle", event.EventTitle);
           formData.append("eventDate", event.Date);
-          formData.append("eventTime", event.StartingTime);
-          formData.append("eventDuration", event.EndingTime);
+          formData.append("eventStartingTime", event.StartingTime); // Update the name to match the backend
+          formData.append("eventEndingTime", event.EndingTime); // Update the name to match the backend
           formData.append("noOfPerson", event.NumOfPerson);
           formData.append("eventLocation", event.Location);
           formData.append("eventDescription", event.Description);
+  
           if (imageFile) {
-            formData.append("image", imageFile);
+            formData.append("image", imageFile);  // Make sure the image file is appended
           }
-
+  
           const response = await fetch("/Api/Events", {
             method: "POST",
             body: formData,
           });
-
+  
           const result = await response.json();
           if (response.ok) {
             alert("Event created successfully!");
@@ -86,7 +87,7 @@ export default function Page() {
               Location: "",
               Description: "",
             });
-            setImageFile(null); // Reset image file after submission
+            setImageFile(null);  // Reset image file after submission
             setEmailError("");
           } else {
             console.error(result);
@@ -99,6 +100,7 @@ export default function Page() {
       }
     }
   };
+  
 
   return (
     <div>

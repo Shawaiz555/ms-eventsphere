@@ -6,6 +6,8 @@ import Event from "@/app/Models/event";
 import upload from "@/app/Middleware/multer";
 import formidable from 'formidable';
 
+import fs from 'fs';
+import path from 'path';
 
 // Disable Next.js built-in body parser
 export const config = {
@@ -49,9 +51,9 @@ export async function POST(req) {
   try {
     // Connect to the database
     await connectDB();
-
-    // Parse the incoming request with formidable
-    const { fields, files } = await parseForm(req);
+    const formData = await req.formData();
+    const file = formData.get('image');
+    console.log("form data", formData, file);
 
     // Validate required fields
     const requiredFields = [
@@ -66,33 +68,39 @@ export async function POST(req) {
       "eventDescription",
     ];
 
+    // Ensure all fields are provided
     for (const field of requiredFields) {
-      if (!fields[field]) {
+      if (!formData.get(field)) {
         return NextResponse.json({ error: `${field} is required` }, { status: 400 });
       }
     }
 
     // Save file information
     let image = null;
-    if (files.image) {
-      image = {
-        data: fs.readFileSync(files.image.filepath),
-        contentType: files.image.mimetype,
-      };
+    if (file) {
+      // Save the file path to the server directory
+      const filename = `${Date.now()}-${file.name}`;
+      const filepath = path.join(process.cwd(), 'public', 'uploads', filename); // Store the file in the 'uploads' directory
+
+      // Save the file to the server
+      await fs.promises.writeFile(filepath, file.stream());
+
+      // Store the file path in the database
+      image = `/uploads/${filename}`; // Save the path in the database, not the file object
     }
 
     // Create a new event
     const event = new Event({
-      name: fields.name,
-      email: fields.email,
-      eventTitle: fields.eventTitle,
-      eventDate: new Date(fields.eventDate),
-      eventStartingTime: fields.eventStartingTime,
-      eventEndingTime: fields.eventEndingTime,
-      eventLocation: fields.eventLocation,
-      noOfPerson: parseInt(fields.noOfPerson),
-      eventDescription: fields.eventDescription,
-      image,
+      name: formData.get('name'),
+      email: formData.get('email'),
+      eventTitle: formData.get('eventTitle'),
+      eventDate: new Date(formData.get('eventDate')),
+      eventStartingTime: formData.get('eventStartingTime'),
+      eventEndingTime: formData.get('eventEndingTime'),
+      eventLocation: formData.get('eventLocation'),
+      noOfPerson: parseInt(formData.get('noOfPerson')),
+      eventDescription: formData.get('eventDescription'),
+      image, // Store the image path here
     });
 
     await event.save();

@@ -6,28 +6,53 @@ const eventSchema = new Schema(
     name: {
       type: String,
       required: true,
+    },
+    email: {
+      type: String,
+      required: true,
       match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Email is invalid",
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        "Email is invalid",  // Proper email validation regex here
       ],
     },
-    email: { type: String, required: true },
-    eventTitle: { type: String, required: true },
-    eventDate: { type: Date, required: true },
-    eventStartingTime: { type: String, required: true },
-    eventEndingTime: { type: String, required: true },
-    eventLocation: { type: String, required: true },
-    noOfPerson: { type: Number, required: true },
-    eventDescription: { type: String, required: true },
-    image: {
-      data: Buffer,
-      contentType: String,
+    eventTitle: { 
+      type: String, 
+      required: true 
+    },
+    eventDate: { 
+      type: Date, 
+      required: true 
+    },
+    eventStartingTime: { 
+      type: String, 
+      required: true 
+    },
+    eventEndingTime: { 
+      type: String, 
+      required: true 
+    },
+    eventLocation: { 
+      type: String, 
+      required: true 
+    },
+    noOfPerson: { 
+      type: Number, 
+      required: true 
+    },
+    eventDescription: { 
+      type: String, 
+      required: true 
+    },
+    image: { 
+      type: String,  // Store the image path or URL here
+      default: null 
     },
   },
   {
-    timestamps: true,
+    timestamps: true,  // Automatically adds createdAt and updatedAt fields
   }
 );
 
+// Ensure the Event model is created or retrieved correctly.
 const Event = mongoose.models?.event || mongoose.model("event", eventSchema);
 export default Event;

@@ -87,6 +87,7 @@ export default function Page() {
               Description: "",
             });
             setImageFile(null); // Reset image file after submission
+            setEmailError("");
           } else {
             console.error(result);
             alert("Failed to create event");
@@ -117,7 +118,6 @@ export default function Page() {
               <h1 className="mb-3 ml-1 font-semibold">Name:</h1>
               <TextField
                 id="outlined-basic"
-                label="Name"
                 className='w-full'
                 variant="outlined"
                 value={event.Name}
@@ -133,7 +133,6 @@ export default function Page() {
               <TextField
                 id="outlined-basic"
                 type="email"
-                label="Email"
                 className='w-full'
                 variant="outlined"
                 value={event.Email}
@@ -146,11 +145,10 @@ export default function Page() {
               </p>
             </div>
             <div>
-              
+
               <h1 className="mb-3 ml-1 font-semibold">Event Title:</h1>
               <TextField
                 id="outlined-basic"
-                label="EventTitle"
                 className='w-full'
                 variant="outlined"
                 value={event.EventTitle}
@@ -206,7 +204,6 @@ export default function Page() {
               <h1 className="mb-3 ml-1 font-semibold">Number of Person:</h1>
               <TextField
                 id="outlined-basic"
-                label="Num Of Person"
                 className='w-full'
                 variant="outlined"
                 type="number"
@@ -221,7 +218,6 @@ export default function Page() {
               <h1 className="mb-3 ml-1 font-semibold">Location</h1>
               <TextField
                 id="outlined-basic"
-                label="Location"
                 className='w-full'
                 variant="outlined"
                 value={event.Location}

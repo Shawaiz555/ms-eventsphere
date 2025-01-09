@@ -6,6 +6,10 @@ export default function ImageUpload({ onUpload }) {
     if (file) {
       onUpload(file); // Pass the file back to the parent component
     }
+    else
+    {
+      alert("No file Selected!!!");
+    }
   };
 
   return (

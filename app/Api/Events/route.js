@@ -1,9 +1,36 @@
-"use server";
+// "use server";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/MongoConfig";
 import { ObjectId } from "mongodb";
 import Event from "@/app/Models/event";
 import upload from "@/app/Middleware/multer";
+import formidable from 'formidable';
+
+
+// Disable Next.js built-in body parser
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+// Parse the request using formidable
+async function parseForm(req) {
+  const form = formidable({
+    uploadDir: './uploads', // Directory for uploaded files
+    keepExtensions: true,  // Preserve file extensions
+    multiples: false,      // Allow single file uploads
+  });
+
+  return new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve({ fields, files });
+    });
+  });
+}
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -19,44 +46,61 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  await connectDB();
-
-  const form = new Promise((resolve, reject) => {
-    upload.single("image")(req, {}, (err) => {
-      if (err) return reject(err);
-      resolve(req);
-    });
-  });
-
   try {
-    const requestWithFile = await form;
-    const { name, email, eventTitle, eventDate, eventTime, eventLocation, eventDuration, noOfPerson, eventDescription } =
-      requestWithFile.body;
+    // Connect to the database
+    await connectDB();
 
-    const newEvent = new Event({
-      name,
-      email,
-      eventTitle,
-      eventDate,
-      eventStartingTime,
-      eventLocation,
-      eventEndingTime,
-      noOfPerson,
-      eventDescription,
-    });
+    // Parse the incoming request with formidable
+    const { fields, files } = await parseForm(req);
 
-    if (requestWithFile.file) {
-      newEvent.image = {
-        data: requestWithFile.file.buffer,
-        contentType: requestWithFile.file.mimetype,
+    // Validate required fields
+    const requiredFields = [
+      "name",
+      "email",
+      "eventTitle",
+      "eventDate",
+      "eventStartingTime",
+      "eventEndingTime",
+      "eventLocation",
+      "noOfPerson",
+      "eventDescription",
+    ];
+
+    for (const field of requiredFields) {
+      if (!fields[field]) {
+        return NextResponse.json({ error: `${field} is required` }, { status: 400 });
+      }
+    }
+
+    // Save file information
+    let image = null;
+    if (files.image) {
+      image = {
+        data: fs.readFileSync(files.image.filepath),
+        contentType: files.image.mimetype,
       };
     }
 
-    const savedEvent = await newEvent.save();
-    return NextResponse.json({ message: "Event created", data: savedEvent });
+    // Create a new event
+    const event = new Event({
+      name: fields.name,
+      email: fields.email,
+      eventTitle: fields.eventTitle,
+      eventDate: new Date(fields.eventDate),
+      eventStartingTime: fields.eventStartingTime,
+      eventEndingTime: fields.eventEndingTime,
+      eventLocation: fields.eventLocation,
+      noOfPerson: parseInt(fields.noOfPerson),
+      eventDescription: fields.eventDescription,
+      image,
+    });
+
+    await event.save();
+
+    return NextResponse.json({ message: "Event created successfully!" }, { status: 201 });
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: "Error creating event", error });
+    console.error("Error creating event:", error);
+    return NextResponse.json({ error: "Failed to create event" }, { status: 500 });
   }
 }
 

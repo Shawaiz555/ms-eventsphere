@@ -1,5 +1,6 @@
 "use client";
 import TextField from "@mui/material/TextField";
+import { useRouter } from "next/navigation"; 
 import { useState } from "react";
 
 export default function Page() {
@@ -10,6 +11,7 @@ export default function Page() {
     });
     const [emailError, setEmailError] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(null);
+    const router = useRouter(); 
 
     const emailValidation = (em) => {
         setLoginUser({ ...loginUser, Email: em });
@@ -24,42 +26,47 @@ export default function Page() {
     };
 
     const handleAdmin = async (e) => {
-      e.preventDefault();
-  
-      if (emailError === "Email is valid") {
-          if (loginUser.Name && loginUser.Email && loginUser.Password) {
-              try {
-                  const response = await fetch("/Api/AdminLogin", {
-                      method: "POST",
-                      headers: {
-                          "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                          name: loginUser.Name,
-                          email: loginUser.Email,
-                          password: loginUser.Password,
-                      }),
-                  });
-  
-                  const result = await response.json();
-                  if (response.ok) {
-                      alert("Logged In Successfully!!!...");
-                      setLoginUser({ Name: "", Email: "", Password: "" });
-                      setEmailError("");
-                  } 
-                  else {
-                      console.error(result);
-                      alert("Failed to Login!!!");
-                  }
-              } 
-              catch (error) {
-                  console.error("Error submitting Login Form:", error);
-                  alert("An error occurred while Logging into the system");
-              }
-          }
-      }
-  };
-  
+        e.preventDefault();
+
+        if (emailError === "Email is valid") {
+            if (loginUser.Name && loginUser.Email && loginUser.Password) {
+                try {
+                    const response = await fetch("/Api/AdminLogin", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            name: loginUser.Name,
+                            email: loginUser.Email,
+                            password: loginUser.Password,
+                        }),
+                    });
+
+                    const result = await response.json();
+                    if (
+                        response.ok &&
+                        loginUser.Name === "Shawaiz" &&
+                        loginUser.Email === "Shawaiz@gmail.com" &&
+                        loginUser.Password === "shawaiz"
+                    ) {
+                        alert("Logged In Successfully!!!...");
+                        setLoginUser({ Name: "", Email: "", Password: "" });
+                        setEmailError("");
+                        router.push("/Dashboard"); // Updated navigation
+                    } else {
+                        console.error(result);
+                        alert("Failed to Login!!!");
+                        setLoginUser({ Name: "", Email: "", Password: "" });
+                        setEmailError("");
+                    }
+                } catch (error) {
+                    console.error("Error submitting Login Form:", error);
+                    alert("An error occurred while Logging into the system");
+                }
+            }
+        }
+    };
 
     return (
         <div className="w-full flex justify-center mb-16 mt-16">
@@ -110,7 +117,9 @@ export default function Page() {
                             className="w-full bg-white"
                             variant="outlined"
                             value={loginUser.Password}
-                            onChange={(e) => setLoginUser({ ...loginUser, Password: e.target.value })}
+                            onChange={(e) =>
+                                setLoginUser({ ...loginUser, Password: e.target.value })
+                            }
                             required
                         />
                     </div>

@@ -1,5 +1,6 @@
 "use client";
 import TextField from "@mui/material/TextField";
+import Image from "next/image";
 import { useRouter } from "next/navigation"; 
 import { useState } from "react";
 
@@ -69,10 +70,15 @@ export default function Page() {
     };
 
     return (
-        <div className="w-full flex justify-center mb-16 mt-16">
+        <div className="w-full flex justify-center">
+            <div className="w-[80%] flex flex-col lg:flex-row mb-20 mt-28 bg-yellow-300 rounded-2xl shadow-xl">
+            <div className="w-full lg:w-1/2 hidden lg:block">
+                <Image src="/Images/loginSideImg.jpg" width={300} height={300} alt="Login Side Image" className="w-full h-full lg:h-[680px] rounded-l-2xl"></Image>
+            </div>
+            <div className="w-full lg:w-1/2">
             <form
                 onSubmit={handleAdmin}
-                className="w-[90%] md:w-[60%] lg:w-[40%] px-5 lg:px-8 bg-[#fff000] flex flex-col mt-5 shadow-xl rounded-2xl py-14"
+                className="w-full px-5 lg:px-8 flex flex-col py-14"
             >
                 <label className="text-2xl lg:text-4xl font-serif text-center tracking-wide my-5">
                     Login Form
@@ -133,6 +139,8 @@ export default function Page() {
                     </button>
                 </div>
             </form>
+            </div>
+            </div>
         </div>
     );
 }

@@ -4,7 +4,6 @@ import { connectDB } from "@/app/lib/MongoConfig";
 import { ObjectId } from "mongodb";
 import Event from "@/app/Models/event";
 import upload from "@/app/Middleware/multer";
-import formidable from 'formidable';
 
 import fs from 'fs';
 import path from 'path';
@@ -15,24 +14,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-// Parse the request using formidable
-async function parseForm(req) {
-  const form = formidable({
-    uploadDir: './uploads', // Directory for uploaded files
-    keepExtensions: true,  // Preserve file extensions
-    multiples: false,      // Allow single file uploads
-  });
-
-  return new Promise((resolve, reject) => {
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve({ fields, files });
-    });
-  });
-}
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);

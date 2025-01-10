@@ -58,8 +58,8 @@ export default function Page() {
           formData.append("email", event.Email);
           formData.append("eventTitle", event.EventTitle);
           formData.append("eventDate", event.Date);
-          formData.append("eventStartingTime", event.StartingTime); // Update the name to match the backend
-          formData.append("eventEndingTime", event.EndingTime); // Update the name to match the backend
+          formData.append("eventStartingTime", event.StartingTime);
+          formData.append("eventEndingTime", event.EndingTime);
           formData.append("noOfPerson", event.NumOfPerson);
           formData.append("eventLocation", event.Location);
           formData.append("eventDescription", event.Description);

@@ -70,8 +70,8 @@ export default function Page() {
     };
 
     return (
-        <div className="w-full flex justify-center">
-            <div className="w-[80%] flex flex-col lg:flex-row mb-20 mt-28 bg-yellow-300 rounded-2xl shadow-xl">
+        <div className="w-full flex justify-center bg-[#fff000]">
+            <div className="w-[80%] flex flex-col lg:flex-row mb-20 mt-28 bg-white rounded-2xl shadow-xl">
             <div className="w-full lg:w-1/2 hidden lg:block">
                 <Image src="/Images/loginSideImg.jpg" width={300} height={300} alt="Login Side Image" className="w-full h-full lg:h-[680px] rounded-l-2xl"></Image>
             </div>

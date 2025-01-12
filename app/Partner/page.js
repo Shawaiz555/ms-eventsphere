@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import Footer from "@/app/Reuseable Components/Footer";
-import Navbar from "@/app/Reuseable Components/Navbar";
+import { useRef, useState } from "react";
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 const benefits = [
   {
     id: 1,
@@ -30,11 +31,76 @@ const benefits = [
 
 export default function Page() {
   const formRef = useRef(null);
-
   const scrollToForm = () => {
     formRef.current.scrollIntoView({ behavior: "smooth" });
+  }; const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [partnershipType, setPartnershipType] = useState("");
+  const [detail, setDetail] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("success");
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const partnerData = {
+      firstName,
+      lastName,
+      email,
+      phoneNo,
+      jobTitle,
+      partnershipType,
+      detail,
+    };
+
+    try {
+      const response = await fetch("/Api/Partners", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(partnerData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setAlertMessage("Form submitted successfully!");
+        setAlertSeverity("success");
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPhoneNo("");
+        setJobTitle("");
+        setPartnershipType("");
+        setDetail("");
+        setIsChecked(false);
+        setOpen(true);
+      } else {
+        setAlertMessage("Submission failed. Please try again.");
+        setAlertSeverity("warning");
+        setOpen(true);
+      }
+    } catch (error) {
+      setAlertMessage("An error occurred. Please check your network.");
+      setAlertSeverity("error");
+      setOpen(true);
+    } 
+  };
+
+ 
   return (
     <div className="mt-10">
       {/* why join */}
@@ -42,11 +108,11 @@ export default function Page() {
         <h2 className="text-4xl font-bold text-center mb-10">
           Why join the Bizzabo partner program?
         </h2>
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3  gap-8 max-w-6xl mx-auto">
           {benefits.map((benefit) => (
             <div
               key={benefit.id}
-              className="rounded-lg shadow-xl p-8 py-16 text-center"
+              className="rounded-lg shadow-xl bg-[#fffc4b9a] p-8 py-16 text-center"
             >
               <div className="text-4xl mb-4">{benefit.icon}</div>
               <h3 className="text-2xl font-semibold mb-4">{benefit.title}</h3>
@@ -146,7 +212,10 @@ export default function Page() {
           <h1 className="text-center text-3xl font-bold text-black mb-8">
             Join Our Growing Partner Community
           </h1>
-          <form className="space-y-6 bg-white rounded-xl px-10 py-10">
+          <form
+            className="space-y-6 bg-white rounded-xl px-10 py-10"
+            onSubmit={handleSubmit}
+          >
             <div className="grid md:grid-cols-2 gap-6">
               {/* First Name */}
               <div>
@@ -155,6 +224,11 @@ export default function Page() {
                 </label>
                 <input
                   type="text"
+                  value={firstName}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                    //console.log(e.target.value);
+                  }}
                   placeholder="First name..."
                   className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
@@ -167,6 +241,11 @@ export default function Page() {
                 </label>
                 <input
                   type="text"
+                  value={lastName}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                    //console.log(e.target.value);
+                  }}
                   placeholder="Last Name..."
                   className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
@@ -179,6 +258,8 @@ export default function Page() {
                 </label>
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Work email..."
                   className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
@@ -191,6 +272,8 @@ export default function Page() {
                 </label>
                 <input
                   type="tel"
+                  value={phoneNo}
+                  onChange={(e) => setPhoneNo(e.target.value)}
                   placeholder="Phone..."
                   className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
@@ -203,6 +286,8 @@ export default function Page() {
                 </label>
                 <input
                   type="text"
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
                   placeholder="Job Title"
                   className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
@@ -214,10 +299,12 @@ export default function Page() {
                   Type of Partnership*
                 </label>
                 <select
-                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  value={partnershipType}
+                  onChange={(e) => setPartnershipType(e.target.value)}
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black selected"
                   required
                 >
-                  <option>Type of Partnership</option>
+                  <option disabled value="">Type of Partnership</option>
                   <option>App Market Partners</option>
                   <option>Agency Partners</option>
                 </select>
@@ -230,6 +317,8 @@ export default function Page() {
               </label>
               <textarea
                 rows="3"
+                value={detail}
+                onChange={(e) => setDetail(e.target.value)}
                 placeholder="Please share details on your desired partnership"
                 className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                 required
@@ -239,7 +328,9 @@ export default function Page() {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-black border-gray-300 rounded focus:ring-black"
+                className="w-4 h-4 text-black border-gray-300 rounded focus:ring-black "
+                checked={isChecked}
+                onChange={(e) => setIsChecked(e.target.checked)}
                 required
               />
               <label className="ml-2 text-black text-sm">
@@ -260,6 +351,16 @@ export default function Page() {
               </button>
             </div>
           </form>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={alertSeverity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
         </div>
       </div>
     </div>

@@ -20,6 +20,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material/Button';
+import DashboardLayout from "./layout";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -651,9 +652,11 @@ export default function Dashboard() {
           </div>
 
         </div>
-
-
       </div>
     </div>
   );
 }
+
+Dashboard.getLayout = function getLayout(page) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

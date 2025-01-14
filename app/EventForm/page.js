@@ -103,13 +103,13 @@ export default function Page() {
   
 
   return (
-    <div>
+    <div className="bg-[#fff000]">
       <div className="py-6">
         <h1 className="text-center text-3xl md:text-4xl font-serif">Create An Event Of your Choice</h1>
       </div>
       <div className="w-full flex justify-center mb-10 mt-10">
         <form
-          className="w-[90%] lg:w-[60%] px-5 lg:px-8 flex flex-col mt-5 shadow-xl rounded-2xl py-14"
+          className="w-[90%] lg:w-[60%] px-5 lg:px-8 flex flex-col mt-5 mb-10 shadow-xl rounded-2xl py-14 bg-white"
           onSubmit={handleSubmit}
         >
           <label className="text-2xl lg:text-4xl font-serif text-center tracking-wide my-5">

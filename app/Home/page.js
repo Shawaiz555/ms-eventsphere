@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
+import HomeLayout from "./layout";
 
-export default function page() {
+export default function Home() {
     return (
         <div>
             <div className="bg-[#fff000]">                
@@ -150,3 +151,7 @@ export default function page() {
         </div>
     )
 }
+
+Home.getLayout = function getLayout(page) {
+    return <HomeLayout>{page}</HomeLayout>;
+  };

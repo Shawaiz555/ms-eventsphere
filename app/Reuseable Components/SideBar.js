@@ -38,41 +38,6 @@ export default function SideBar({ closeSidebar }) {
                 </ul>
             </div>
 
-            <div className="mt-7">
-                <ul>
-                    <h1 className="mb-3 text-lg font-serif text-center tracking-wide">Event Info</h1>
-                    <div className="border-t-[1px] border-b-[1px] border-gray-200">
-                        <li
-                            className="text-center text-sm lg:text-md tracking-wider py-3"
-                            onClick={closeSidebar} // Close sidebar when clicking
-                        >
-                            <Link href="/EventForm">Event Form</Link>
-                        </li>
-                    </div>
-
-                </ul>
-            </div>
-
-            {/* <div className="mt-7">
-                <h1 className="mb-3 text-lg font-serif text-center tracking-wide">Accounts</h1>
-                <div className="border-t-[1px] border-gray-200">
-                    <li
-                        className="text-center text-sm lg:text-md tracking-wider py-3"
-                        onClick={closeSidebar} // Close sidebar when clicking
-                    >
-                        <Link href="/SignUp">Sign Up</Link>
-                    </li>
-                </div>
-                <div className="border-t-[1px] border-gray-200">
-                    <li
-                        className="text-center text-sm lg:text-md tracking-wider py-3"
-                        onClick={closeSidebar} // Close sidebar when clicking
-                    >
-                        <Link href="/">Login</Link>
-                    </li>
-                </div>
-            </div> */}
-
         </div>
     );
 }

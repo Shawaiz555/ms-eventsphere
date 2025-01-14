@@ -4,7 +4,7 @@ import Image from "next/image";
 // import { useRouter } from "next/navigation"; 
 import { useState } from "react";
 import { toast } from "react-toastify";
-import bcrypt from 'bcryptjs';
+import { signIn } from "next-auth/react"; // To use NextAuth signIn method 
 
 export default function Page() {
     const [loginUser, setLoginUser] = useState({
@@ -32,54 +32,37 @@ export default function Page() {
         e.preventDefault();
 
         if (emailError === "Email is valid") {
-            if (loginUser .Name && loginUser .Email && loginUser .Password) {
-                try {
-                    const response = await fetch("/Api/AdminLogin?id=6786a283a8badf1f13607625", {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
+            if (loginUser.Name && loginUser.Email && loginUser.Password) {
+                try 
+                {
+                    // Use NextAuth's signIn method to log the user in
+                    const response = await signIn("credentials", {
+                        redirect: false, // Don't automatically redirect after login
+                        email: loginUser.Email,
+                        password: loginUser.Password,
                     });
-
-                    if (!response.ok) {
-                        toast.error("Failed to fetch data from the server");
-                        return;
+    
+                    if (response?.error) 
+                    {
+                        toast.error("Invalid credentials. Please try again.");
+                    } 
+                    else
+                    {
+                        // Display success message only if login is successful
+                        toast.success("Logged In Successfully!!!...");
+                        setLoginUser({ Name: "", Email: "", Password: "" });
+                        setEmailError("");
+                        // router.push("/Dashboard");
                     }
-
-                    const result = await response.json();
-                    console.log(result); // Log the entire response for debugging
-
-                    if (result.data && result.data.length > 0) {
-                        const admin = result.data[0];
-                        console.log("Admin from DB:", admin);
-                        console.log("Input Name:", loginUser .Name);
-                        console.log("Input Email:", loginUser .Email);
-                        console.log("Input Password:", loginUser .Password);
-                        console.log("DB Password:", admin.password);
-
-                        if (admin?.name === loginUser.Name &&
-                            admin?.email === loginUser.Email) {
-                            const isPasswordValid = await bcrypt.compare(loginUser.Password, admin.password);
-                            if (isPasswordValid) {
-                                toast.success("Logged In Successfully!!!...");
-                                setLoginUser ({ Name: "", Email: "", Password: "" });
-                                setEmailError("");
-                                // router.push("/Dashboard"); // Updated navigation
-                            } else {
-                                toast.error("Invalid credentials. Please try again.");
-                            }
-                        } else {
-                            toast.error("Invalid credentials. Please try again.");
-                        }
-                    } else {
-                        toast.error("No admin found with the provided credentials.");
-                    }
-
-                } catch (error) {
-                    console.error("Error submitting Login Form:", error);
-                    toast.error("An error occurred while Logging into the system");
+                } 
+                catch (error)
+                {
+                    console.error("Error during login:", error);
+                    toast.error("An error occurred while logging into the system.");
                 }
-            } else {
+            } 
+            else 
+            {
                 toast.error("Please fill in all fields.");
             }
         }

@@ -16,10 +16,12 @@ export default function Page() {
     NumOfPerson: "",
     Location: "",
     Description: "",
+    
   });
   const [imageFile, setImageFile] = useState([]);
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
+
 
   const emailValidation = (em) => {
     setEvent({ ...event, Email: em });
@@ -88,6 +90,7 @@ export default function Page() {
               Description: "",
             });
             setImageFile(null);  // Reset image file after submission
+            document.querySelector('input[type="file"]').value = null; // Clear the input field
             setEmailError("");
           } else {
             console.error(result);

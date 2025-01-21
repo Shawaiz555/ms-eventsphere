@@ -26,7 +26,7 @@ export default function SideBar({ closeSidebar }) {
                             className="text-center text-sm lg:text-md tracking-wider py-3"
                             onClick={closeSidebar} // Close sidebar when clicking
                         >
-                            <Link href="/Home">Home</Link>
+                            <Link href="/Dashboard">Dashboard</Link>
                         </li>
                         <li
                             className="text-center text-sm lg:text-md tracking-wider py-3"

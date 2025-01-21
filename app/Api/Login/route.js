@@ -32,7 +32,7 @@ export async function POST(req) {
 
         await connectDB();
         // Validate required fields
-        if (!data.name || !data.email || !data.password) {
+        if (!data.email || !data.password) {
             return NextResponse.json({ message: "Invalid Data", error: "Missing required fields" }, { status: 500 });
         }
 

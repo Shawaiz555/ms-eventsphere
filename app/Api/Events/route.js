@@ -87,7 +87,8 @@ export async function POST(req) {
     await event.save();
 
     return NextResponse.json({ message: "Event created successfully!" }, { status: 201 });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Error creating event:", error);
     return NextResponse.json({ error: "Failed to create event" }, { status: 500 });
   }

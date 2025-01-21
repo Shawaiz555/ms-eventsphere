@@ -6,7 +6,7 @@ export const connectDB = async () => {
     const { connection } = await mongoose.connect(MONGO_DB_URL);
     if (connection.readyState === 1)
     {
-      console.log("Connected to MongoDB");
+      console.log("Connected established with MongoDB...");
       return Promise.resolve(true);
     }
   } 

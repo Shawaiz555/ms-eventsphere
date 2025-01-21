@@ -92,11 +92,13 @@ export default function Page() {
             setImageFile(null);  // Reset image file after submission
             document.querySelector('input[type="file"]').value = null; // Clear the input field
             setEmailError("");
-          } else {
+          } 
+          else {
             console.error(result);
             alert("Failed to create event");
           }
-        } catch (error) {
+        } 
+        catch (error) {
           console.error("Error submitting event:", error);
           alert("An error occurred while creating the event");
         }

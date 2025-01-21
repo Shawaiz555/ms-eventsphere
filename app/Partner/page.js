@@ -2,9 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { Mail } from "../lib/send-mail";
+
 const benefits = [
   {
     id: 1,
@@ -33,7 +35,8 @@ export default function Page() {
   const formRef = useRef(null);
   const scrollToForm = () => {
     formRef.current.scrollIntoView({ behavior: "smooth" });
-  }; const [firstName, setFirstName] = useState("");
+  };
+  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
@@ -66,7 +69,7 @@ export default function Page() {
     };
 
     try {
-      const response = await fetch("/Api/Partners", {
+      const response = await fetch("/API/Partners", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,6 +91,11 @@ export default function Page() {
         setDetail("");
         setIsChecked(false);
         setOpen(true);
+        const resp = await Mail({
+          to: email,
+          subject: `Thank You for Your Interest in Partnering with Us, ${firstName}!`,
+          message: `Hello ${firstName},\n\nThank you for expressing your interest in partnering with us. We have received your request, and our team will review the details shortly. We will get back to you with the next steps or any additional information we might need.\n\nIf you have any immediate questions or further details to share, please feel free to reply to this email.\n\nBest regards,\nEventSpher Team`,
+        });
       } else {
         setAlertMessage("Submission failed. Please try again.");
         setAlertSeverity("warning");
@@ -97,10 +105,9 @@ export default function Page() {
       setAlertMessage("An error occurred. Please check your network.");
       setAlertSeverity("error");
       setOpen(true);
-    } 
+    }
   };
 
- 
   return (
     <div className="mt-10">
       {/* why join */}
@@ -304,7 +311,9 @@ export default function Page() {
                   className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black selected"
                   required
                 >
-                  <option disabled value="">Type of Partnership</option>
+                  <option disabled value="">
+                    Type of Partnership
+                  </option>
                   <option>App Market Partners</option>
                   <option>Agency Partners</option>
                 </select>
@@ -352,15 +361,15 @@ export default function Page() {
             </div>
           </form>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity={alertSeverity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {alertMessage}
-        </Alert>
-      </Snackbar>
+            <Alert
+              onClose={handleClose}
+              severity={alertSeverity}
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              {alertMessage}
+            </Alert>
+          </Snackbar>
         </div>
       </div>
     </div>

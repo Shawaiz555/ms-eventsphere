@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import ImageUpload from "../Reuseable Components/ImageUpload";
+import { Mail } from "../lib/send-mail";
 
 export default function Page() {
   const [event, setEvent] = useState({
@@ -16,12 +17,10 @@ export default function Page() {
     NumOfPerson: "",
     Location: "",
     Description: "",
-    
   });
   const [imageFile, setImageFile] = useState([]);
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
-
 
   const emailValidation = (em) => {
     setEvent({ ...event, Email: em });
@@ -41,7 +40,7 @@ export default function Page() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (emailError === "Email is valid") {
       if (
         event.Name &&
@@ -56,7 +55,7 @@ export default function Page() {
       ) {
         try {
           const formData = new FormData();
-          formData.append("name", event.Name);  // Correct field names
+          formData.append("name", event.Name); // Correct field names
           formData.append("email", event.Email);
           formData.append("eventTitle", event.EventTitle);
           formData.append("eventDate", event.Date);
@@ -65,16 +64,16 @@ export default function Page() {
           formData.append("noOfPerson", event.NumOfPerson);
           formData.append("eventLocation", event.Location);
           formData.append("eventDescription", event.Description);
-  
+
           if (imageFile) {
-            formData.append("image", imageFile);  // Make sure the image file is appended
+            formData.append("image", imageFile); // Make sure the image file is appended
           }
-  
-          const response = await fetch("/Api/Events", {
+
+          const response = await fetch("/API/Events", {
             method: "POST",
             body: formData,
           });
-  
+
           const result = await response.json();
           if (response.ok) {
             alert("Event created successfully!");
@@ -89,28 +88,32 @@ export default function Page() {
               Location: "",
               Description: "",
             });
-            setImageFile(null);  // Reset image file after submission
+            setImageFile(null); // Reset image file after submission
             document.querySelector('input[type="file"]').value = null; // Clear the input field
             setEmailError("");
-          } 
-          else {
+            const resp = await Mail({
+              to: event.Email,
+              subject: `Thank You for Submitting Your Event, ${event.Name}!`,
+              message: `Hello ${event.Name},\n\nThank you for submitting your event to us. We have received your event details, and our team will review them shortly. Once approved, your event will be listed on our platform.\n\nIf you have any additional details to share or urgent concerns, feel free to reply to this email.\n\nBest regards,\nEventSpher Team`,
+            });
+          } else {
             console.error(result);
             alert("Failed to create event");
           }
-        } 
-        catch (error) {
+        } catch (error) {
           console.error("Error submitting event:", error);
           alert("An error occurred while creating the event");
         }
       }
     }
   };
-  
 
   return (
     <div className="bg-[#fff000]">
       <div className="py-6">
-        <h1 className="text-center text-3xl md:text-4xl font-serif">Create An Event Of your Choice</h1>
+        <h1 className="text-center text-3xl md:text-4xl font-serif">
+          Create An Event Of your Choice
+        </h1>
       </div>
       <div className="w-full flex justify-center mb-10 mt-10">
         <form
@@ -125,12 +128,10 @@ export default function Page() {
               <h1 className="mb-3 ml-1 font-semibold">Name:</h1>
               <TextField
                 id="outlined-basic"
-                className='w-full'
+                className="w-full"
                 variant="outlined"
                 value={event.Name}
-                onChange={(e) =>
-                  setEvent({ ...event, Name: e.target.value })
-                }
+                onChange={(e) => setEvent({ ...event, Name: e.target.value })}
                 required
               />
             </div>
@@ -140,23 +141,23 @@ export default function Page() {
               <TextField
                 id="outlined-basic"
                 type="email"
-                className='w-full'
+                className="w-full"
                 variant="outlined"
                 value={event.Email}
                 onChange={(e) => emailValidation(e.target.value)}
                 required
               />
               <p
-                className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}>
+                className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
+              >
                 {emailError}
               </p>
             </div>
             <div>
-
               <h1 className="mb-3 ml-1 font-semibold">Event Title:</h1>
               <TextField
                 id="outlined-basic"
-                className='w-full'
+                className="w-full"
                 variant="outlined"
                 value={event.EventTitle}
                 onChange={(e) =>
@@ -170,12 +171,10 @@ export default function Page() {
               <TextField
                 id="outlined-basic"
                 type="date"
-                className='w-full'
+                className="w-full"
                 variant="outlined"
                 value={event.Date}
-                onChange={(e) =>
-                  setEvent({ ...event, Date: e.target.value })
-                }
+                onChange={(e) => setEvent({ ...event, Date: e.target.value })}
                 required
               />
             </div>
@@ -183,7 +182,7 @@ export default function Page() {
               <h1 className="mb-3 ml-1 font-semibold">Starting Time:</h1>
               <TextField
                 id="outlined-basic"
-                className='w-full'
+                className="w-full"
                 variant="outlined"
                 type="time"
                 value={event.StartingTime}
@@ -197,7 +196,7 @@ export default function Page() {
               <h1 className="mb-3 ml-1 font-semibold">Ending Time:</h1>
               <TextField
                 id="outlined-basic"
-                className='w-full'
+                className="w-full"
                 variant="outlined"
                 type="time"
                 value={event.EndingTime}
@@ -211,7 +210,7 @@ export default function Page() {
               <h1 className="mb-3 ml-1 font-semibold">Number of Person:</h1>
               <TextField
                 id="outlined-basic"
-                className='w-full'
+                className="w-full"
                 variant="outlined"
                 type="number"
                 value={event.NumOfPerson}
@@ -225,7 +224,7 @@ export default function Page() {
               <h1 className="mb-3 ml-1 font-semibold">Location</h1>
               <TextField
                 id="outlined-basic"
-                className='w-full'
+                className="w-full"
                 variant="outlined"
                 value={event.Location}
                 onChange={(e) =>
@@ -237,17 +236,25 @@ export default function Page() {
 
             <div>
               <div className="p-1">
-                <h1 className="text-lg font-semibold mb-4">Upload Event Image</h1>
+                <h1 className="text-lg font-semibold mb-4">
+                  Upload Event Image
+                </h1>
                 <ImageUpload onUpload={handleImageUpload} />
               </div>
             </div>
-
           </div>
           <div className="w-full">
             <h1 className="mb-3 ml-1 font-semibold">Event Description</h1>
-            <textarea rows="6" placeholder="Description" value={event.Description} className="w-full border border-gray-300 px-4 py-2 ml-1" onChange={(e) =>
-              setEvent({ ...event, Description: e.target.value })
-            } required></textarea>
+            <textarea
+              rows="6"
+              placeholder="Description"
+              value={event.Description}
+              className="w-full border border-gray-300 px-4 py-2 ml-1"
+              onChange={(e) =>
+                setEvent({ ...event, Description: e.target.value })
+              }
+              required
+            ></textarea>
           </div>
           <div className="flex justify-end mt-5">
             <Button

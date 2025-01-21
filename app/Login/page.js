@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [loginUser, setLoginUser] = useState({
@@ -13,6 +14,8 @@ export default function Page() {
   const [role, setRole] = useState("user"); // Track the selected role
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
+
+  const route = useRouter();
 
   const emailValidation = (em) => {
     setLoginUser({ ...loginUser, Email: em });
@@ -47,6 +50,7 @@ export default function Page() {
       }
       toast.success("Logged In Successfully as Admin!");
       resetForm();
+      route.push("/Dashboard");
     } catch (error) {
       console.error("Error during Admin login:", error);
       toast.error("An error occurred during Admin login");
@@ -74,6 +78,7 @@ export default function Page() {
       }
       toast.success("Logged In Successfully as User!");
       resetForm();
+      route.push("/Home");
     } catch (error) {
       console.error("Error during User login:", error);
       toast.error("An error occurred during User login");
@@ -88,6 +93,7 @@ export default function Page() {
           await adminLogin();
         } else if (role === "user") {
           await userLogin();
+
         }
       } else {
         toast.error("Please fill in all fields.");

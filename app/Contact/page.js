@@ -28,7 +28,7 @@ export default function Page() {
       message,
     };
 
-    const response = await fetch("/API/Contact", {
+    const response = await fetch("/Api/Contact", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function Page() {
       setAlertSeverity("warning");
       setOpen(true);
     }
-    // console.log(resp);
+    console.log(resp);
   };
   return (
     <div>
@@ -95,7 +95,7 @@ export default function Page() {
           </section>
 
           {/* Contact Form */}
-          <div className="w-full lg:w-[45%] mx-auto bg-white rounded-2xl shadow-lg py-12 px-10">
+          <div className="w-full lg:w-[45%] mx-auto bg-white rounded-2xl shadow-lg py-16 px-10">
             <h2 className="text-2xl font-bold text-black mb-6">Get In Touch</h2>
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

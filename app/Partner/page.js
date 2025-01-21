@@ -69,7 +69,7 @@ export default function Page() {
     };
 
     try {
-      const response = await fetch("/API/Partners", {
+      const response = await fetch("/Api/Partners", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -220,7 +220,7 @@ export default function Page() {
             Join Our Growing Partner Community
           </h1>
           <form
-            className="space-y-6 bg-white rounded-xl px-10 py-10"
+            className="space-y-6 bg-white rounded-xl px-10 py-20"
             onSubmit={handleSubmit}
           >
             <div className="grid md:grid-cols-2 gap-6">

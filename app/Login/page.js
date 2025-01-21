@@ -28,7 +28,7 @@ export default function Page() {
 
   const adminLogin = async () => {
     try {
-      const response = await fetch("/API/AdminLogin", {
+      const response = await fetch("/Api/AdminLogin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export default function Page() {
 
   const userLogin = async () => {
     try {
-      const response = await fetch("/API/UserLogin", {
+      const response = await fetch("/Api/UserLogin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export default function Page() {
             width={300}
             height={300}
             alt="Login Side Image"
-            className="w-full h-full lg:h-[680px] rounded-l-2xl"
+            className="w-full h-full rounded-l-2xl"
           ></Image>
         </div>
         <div className="w-full lg:w-1/2">
@@ -174,7 +174,7 @@ export default function Page() {
               <div>
                 <h1 className="mb-3 ml-1 font-semibold">Role:</h1>
                 <select
-                  className="w-full bg-white border border-gray-300 rounded-md p-2"
+                  className="w-full bg-white border border-gray-300 rounded-md text-md tracking-wide font-semibold p-2 py-5"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                 >

@@ -31,7 +31,7 @@ export default function EventCards() {
 
     return (
         <div>
-            <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:px-14 my-10">
+            <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:px-10 my-10">
                 {events.map((event, index) => (
                     <div className="w-full flex justify-center rounded-2xl" key={index}>
                         <Card sx={{ maxWidth: '100%' }} className="bg-transparent shadow-2xl">
@@ -57,8 +57,20 @@ export default function EventCards() {
                                 className="h-[350px]"
                             />
                             <CardContent>
+                                <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                                    <b>Description:</b> {event.eventDescription}
+                                </Typography><br />
                                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    {event.eventDescription}
+                                    <b>Starting Time:</b> {event.eventStartingTime}
+                                </Typography><br />
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                <b>Ending Time:</b> {event.eventEndingTime}
+                                </Typography><br />
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                <b>Location:</b> {event.eventLocation}
+                                </Typography><br />
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                <b>Number Of Persons:</b> {event.noOfPerson}
                                 </Typography>
                             </CardContent>
                             <CardActions className="flex gap-3">
@@ -68,9 +80,6 @@ export default function EventCards() {
                                 <IconButton aria-label="share" className="text-black">
                                     <ShareIcon />
                                 </IconButton>
-                                <Button className="bg-black text-white text-sm px-10 py-2 hover:scale-95">
-                                    View
-                                </Button>
                             </CardActions>
                         </Card>
                     </div>

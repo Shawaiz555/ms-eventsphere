@@ -5,6 +5,9 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, select: true },
   role: { type: String, required: true, select: true },
+},
+{
+  timestamps: true,
 });
 
 // Explicitly set the collection name

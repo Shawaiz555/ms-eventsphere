@@ -2,79 +2,7 @@
 import { ScatterChart } from '@mui/x-charts/ScatterChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import Cards from "@/app/Reuseable Components/Cards";
-
-const dataset = [
-    {
-        version: 'data-0',
-        a1: 329.39,
-        a2: 391.29,
-        b1: 443.28,
-        b2: 153.9,
-    },
-    {
-        version: 'data-1',
-        a1: 96.94,
-        a2: 139.6,
-        b1: 110.5,
-        b2: 217.8,
-    },
-    {
-        version: 'data-2',
-        a1: 336.35,
-        a2: 282.34,
-        b1: 175.23,
-        b2: 286.32,
-    },
-    {
-        version: 'data-3',
-        a1: 159.44,
-        a2: 384.85,
-        b1: 195.97,
-        b2: 325.12,
-    },
-    {
-        version: 'data-4',
-        a1: 188.86,
-        a2: 182.27,
-        b1: 351.77,
-        b2: 144.58,
-    },
-    {
-        version: 'data-5',
-        a1: 143.86,
-        a2: 360.22,
-        b1: 43.253,
-        b2: 146.51,
-    },
-    {
-        version: 'data-6',
-        a1: 202.02,
-        a2: 209.5,
-        b1: 376.34,
-        b2: 309.69,
-    },
-    {
-        version: 'data-7',
-        a1: 384.41,
-        a2: 258.93,
-        b1: 31.514,
-        b2: 236.38,
-    },
-    {
-        version: 'data-8',
-        a1: 256.76,
-        a2: 70.571,
-        b1: 231.31,
-        b2: 440.72,
-    },
-    {
-        version: 'data-9',
-        a1: 143.79,
-        a2: 419.02,
-        b1: 108.04,
-        b2: 20.29,
-    },
-];
+import { useEffect, useState } from 'react';
 
 const chartSetting = {
     yAxis: [
@@ -82,16 +10,96 @@ const chartSetting = {
             label: 'Events Evaluation',
         },
     ],
+    xAxis: [
+        {
+            label: 'Days',
+        },
+    ],
     sx: {
         [`.${axisClasses.left} .${axisClasses.label}`]: {
             transform: 'translate(-20px, 0)',
         },
     },
-    width: 600,
-    height: 400,
+    width: 700,
+    height: 500,
 };
 
 export default function page() {
+    const [analyticsData, setAnalyticsData] = useState(null);
+
+    // Function to fetch events data
+    const getAllEvents = async () => {
+        const resp = await fetch("/Api/Events", { method: "GET" });
+        const eventsData = await resp.json();
+        const allEvents = eventsData["data"];
+        generateAnalytics(allEvents);
+    };
+
+    // Generate chart data based on events
+    const generateAnalytics = (allEvents) => {
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+    
+        const eventsThisMonth = allEvents.filter((event) => {
+            const eventDate = new Date(event.createdAt);
+            return (
+                eventDate.getMonth() === currentMonth &&
+                eventDate.getFullYear() === currentYear
+            );
+        });
+    
+        const dailyCounts = Array(31).fill(0);
+        eventsThisMonth.forEach((event) => {
+            const eventDate = new Date(event.createdAt);
+            const day = eventDate.getDate();
+            dailyCounts[day - 1] += 1;
+        });
+    
+        const cumulativeEvents = dailyCounts.reduce((acc, count, index) => {
+            const total = (acc[index - 1] || 0) + count;
+            return [...acc, total];
+        }, []);
+    
+        const days = Array.from({ length: currentDate.getDate() }, (_, i) => i + 1);
+    
+        const chartData = {
+            xAxis: days, // Days of the month
+            series: [
+                {
+                    datasetKeys: { id: 'dailyCounts', x: 'day', y: 'dailyCounts' },
+                    label: 'Daily Events',
+                    data: days.map((day, index) => ({
+                        id: `daily-${index}`, // Unique key
+                        day: day,
+                        dailyCounts: dailyCounts[day - 1] || 0,
+                    })),
+                },
+                {
+                    datasetKeys: { id: 'cumulativeEvents', x: 'day', y: 'cumulativeEvents' },
+                    label: 'Cumulative Events',
+                    data: days.map((day, index) => ({
+                        id: `cumulative-${index}`, // Unique key
+                        day: day,
+                        cumulativeEvents: cumulativeEvents[index] || 0,
+                    })),
+                },
+            ],
+        };
+    
+        setAnalyticsData(chartData);
+    };
+
+    // Set up polling for new data every 30 seconds
+    useEffect(() => {
+        getAllEvents(); // Initial data fetch
+
+        const intervalId = setInterval(() => {
+            getAllEvents(); // Fetch new data periodically
+        }, 30000); // Adjust polling interval as needed (30 seconds in this case)
+
+        return () => clearInterval(intervalId); // Clean up polling on component unmount
+    }, []);
 
     return (
         <div>
@@ -104,20 +112,18 @@ export default function page() {
                 </div>
 
                 <div className='w-full lg:w-[100%] flex justify-center mt-10'>
-                    <div className='w-full lg:w-[80%] border-[1px] border-gray-300 rounded-xl'>
-                    <ScatterChart
-                        dataset={dataset}
-                        series={[
-                            { datasetKeys: { id: 'version', x: 'a1', y: 'a2' }, label: 'Series A' },
-                            { datasetKeys: { id: 'version', x: 'b1', y: 'b2' }, label: 'Series B' },
-                        ]}
-                        {...chartSetting}
-                        className="w-full lg:h-[600px]"
-                    />
+                    <div className='w-full lg:w-[80%] flex justify-center border-[1px] border-gray-300 rounded-xl'>
+                        {analyticsData && (
+                            <ScatterChart
+                                dataset={analyticsData.series[0].data} // Default dataset
+                                series={analyticsData.series} // Include both daily and cumulative events
+                                {...chartSetting}
+                                className="w-full"
+                            />
+                        )}
                     </div>
-                    
                 </div>
             </div>
         </div>
-    )
+    );
 }

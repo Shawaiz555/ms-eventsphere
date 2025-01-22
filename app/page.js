@@ -1,10 +1,10 @@
-import Home from "./Home/page";
+import Login from "./Login/page";
 
 export default function index()
 {
     return(
          <div>
-             <Home/>
+             <Login/>
          </div>
     )
 }

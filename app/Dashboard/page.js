@@ -140,7 +140,7 @@ export default function Dashboard() {
           </h1>
         </div>
         <div>
-          <EventCards />
+          <EventCards dashboard={true}/>
         </div>
       </div>
     </div>

@@ -17,6 +17,7 @@ export default function Page() {
     NumOfPerson: "",
     Location: "",
     Description: "",
+    Status: "Pending",
   });
   const [imageFile, setImageFile] = useState([]);
   const [emailError, setEmailError] = useState("");
@@ -40,7 +41,7 @@ export default function Page() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (emailError === "Email is valid") {
       if (
         event.Name &&
@@ -55,7 +56,7 @@ export default function Page() {
       ) {
         try {
           const formData = new FormData();
-          formData.append("name", event.Name); // Correct field names
+          formData.append("name", event.Name);
           formData.append("email", event.Email);
           formData.append("eventTitle", event.EventTitle);
           formData.append("eventDate", event.Date);
@@ -64,19 +65,20 @@ export default function Page() {
           formData.append("noOfPerson", event.NumOfPerson);
           formData.append("eventLocation", event.Location);
           formData.append("eventDescription", event.Description);
-
+          formData.append("status", event.Status); // Append status here
+  
           if (imageFile) {
-            formData.append("image", imageFile); // Make sure the image file is appended
+            formData.append("image", imageFile);
           }
-
+  
           const response = await fetch("/Api/Events", {
             method: "POST",
             body: formData,
           });
-
+  
           const result = await response.json();
           if (response.ok) {
-            alert("Event created successfully!");
+            alert("Event Submitted successfully!");
             setEvent({
               Name: "",
               EventTitle: "",
@@ -88,8 +90,8 @@ export default function Page() {
               Location: "",
               Description: "",
             });
-            setImageFile(null); // Reset image file after submission
-            document.querySelector('input[type="file"]').value = null; // Clear the input field
+            setImageFile(null); 
+            document.querySelector('input[type="file"]').value = null;
             setEmailError("");
             const resp = await Mail({
               to: event.Email,
@@ -262,7 +264,7 @@ export default function Page() {
               variant="outlined"
               className="py-2 border-black text-white bg-black tracking-wider rounded-xl hover:scale-95"
             >
-              Create Event
+              Submit Event
             </Button>
           </div>
         </form>

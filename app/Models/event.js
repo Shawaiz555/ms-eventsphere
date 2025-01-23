@@ -12,7 +12,7 @@ const eventSchema = new Schema(
       required: true,
       match: [
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        "Email is invalid",  // Proper email validation regex here
+        "Email is invalid", // Proper email validation regex here
       ],
     },
     eventTitle: { 
@@ -44,12 +44,17 @@ const eventSchema = new Schema(
       required: true 
     },
     image: { 
-      type: String,  // Store the image path or URL here
+      type: String, // Store the image path or URL here
       default: null 
+    },
+    status: {
+      type: String,
+      enum: ["Pending", "Published"], // Limit the status to these two values
+      default: "Pending",
     },
   },
   {
-    timestamps: true,  // Automatically adds createdAt and updatedAt fields
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
   }
 );
 

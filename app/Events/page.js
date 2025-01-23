@@ -61,7 +61,7 @@ export default function page() {
         <div className="bg-[#fff000] w-full py-12 mt-20 px-5 md:px-12">
           <div>
             <h1 className="text-4xl font-semibold text-center">Upcoming and On-demand Industry Events</h1>
-             <EventCards/>
+             <EventCards dashboard={false}/>
           </div>
         </div>
 

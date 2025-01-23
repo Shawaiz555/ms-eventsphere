@@ -47,6 +47,7 @@ export async function POST(req) {
       "eventLocation",
       "noOfPerson",
       "eventDescription",
+      "status",
     ];
 
     // Ensure all fields are provided
@@ -82,6 +83,7 @@ export async function POST(req) {
       noOfPerson: parseInt(formData.get('noOfPerson')),
       eventDescription: formData.get('eventDescription'),
       image, // Store the image path here
+      status: formData.get('status'),
     });
 
     await event.save();
@@ -103,35 +105,32 @@ export async function PUT(req) {
 
   await connectDB();
 
-  const form = new Promise((resolve, reject) => {
-    upload.single("image")(req, {}, (err) => {
-      if (err) return reject(err);
-      resolve(req);
-    });
-  });
-
   try {
-    const requestWithFile = await form;
-    const updatedData = JSON.parse(requestWithFile.body);
+    const jsonBody = await req.json();
 
-    if (requestWithFile.file) {
-      updatedData.image = {
-        data: requestWithFile.file.buffer,
-        contentType: requestWithFile.file.mimetype,
-      };
-    }
+    // Merge parsed body with additional fields
+    const updatedData = { ...jsonBody };
 
+    // Update the event in the database
     const updatedEvent = await Event.findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: updatedData },
-      { new: true }
+      { new: true } // Return the updated document
     );
+
+    if (!updatedEvent) {
+      return NextResponse.json({
+        message: `Event with id ${id} not found`,
+        status: 404,
+      });
+    }
 
     return NextResponse.json({
       message: `Event with ${id} is updated successfully`,
       data: updatedEvent,
     });
-  } catch (error) {
+  } 
+  catch (error) {
     console.log(error);
     return NextResponse.json({ message: "Error updating event", error });
   }

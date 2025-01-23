@@ -25,13 +25,6 @@ export default function Header({ toggleSidebar }) {
         <h1 className="flex items-center tracking-wide">
           Shawaizbutt@gmail.com
         </h1>
-        <Image
-          src="/ProfilePic.jpg"
-          width={30}
-          height={30}
-          alt="Profile image"
-          className="w-[50px] h-[50px] rounded-[100%]"
-        />
       </div>
     </div>
   );

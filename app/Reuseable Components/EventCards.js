@@ -133,8 +133,7 @@ export default function EventCards({ dashboard }) {
                                         <p className="mb-1"><b>Status:</b> {event.status || "Pending"}</p>
                                     </div>
                                 </CardContent>
-                                {dashboard && event.status === "Pending" && (
-                                    <CardActions className="flex justify-center gap-3 mb-3">
+                                <CardActions className="flex justify-center gap-3 mb-3">
                                         <Button
                                             variant="contained"
                                             className="bg-green-600 hover:scale-95"
@@ -149,6 +148,7 @@ export default function EventCards({ dashboard }) {
                                         >
                                             Delete
                                         </Button>
+                                        {dashboard && event.status === "Pending" && (
                                         <Button
                                             variant="contained"
                                             className="bg-black hover:scale-95"
@@ -157,8 +157,9 @@ export default function EventCards({ dashboard }) {
                                         >
                                             Publish
                                         </Button>
+                                        )}
                                     </CardActions>
-                                )}
+                                
                             </Card>
                         </div>
                     ))}

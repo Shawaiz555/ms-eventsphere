@@ -283,7 +283,7 @@ export default function Page() {
             </form>
           )}
           <div className="text-center mb-5">
-            <p onClick={toggleForm}>Did not have an Account? Click here to <b className="ml-1 hover:cursor-pointer">{isSignUp ? "Sign In" : "Sign Up"}</b></p>
+            {isSignUp ? <div><p onClick={toggleForm}>Have an Account? Click here to <b className="hover:cursor-pointer">Sign In</b></p></div>: <div><p onClick={toggleForm}>Did not have an Account? Click here to <b className="hover:cursor-pointer">Sign In</b></p></div>}
           </div>
         </div>
       </div>

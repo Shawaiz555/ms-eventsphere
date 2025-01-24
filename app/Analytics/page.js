@@ -70,7 +70,7 @@ export default function page() {
                     datasetKeys: { id: 'dailyCounts', x: 'day', y: 'dailyCounts' },
                     label: 'Daily Events',
                     data: days.map((day, index) => ({
-                        id: `daily-${index}`, // Unique key
+                        id: `daily-dataset-${index}`, // Add dataset context
                         day: day,
                         dailyCounts: dailyCounts[day - 1] || 0,
                     })),
@@ -79,13 +79,14 @@ export default function page() {
                     datasetKeys: { id: 'cumulativeEvents', x: 'day', y: 'cumulativeEvents' },
                     label: 'Cumulative Events',
                     data: days.map((day, index) => ({
-                        id: `cumulative-${index}`, // Unique key
+                        id: `cumulative-dataset-${index}`, // Add dataset context
                         day: day,
                         cumulativeEvents: cumulativeEvents[index] || 0,
                     })),
                 },
             ],
         };
+        
     
         setAnalyticsData(chartData);
     };

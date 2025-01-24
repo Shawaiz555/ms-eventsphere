@@ -1,16 +1,16 @@
 
 import User from "@/app/Models/userLogin";
 import Admin from "@/app/Models/adminLogin";
-import bcrypt from "bcryptjs"; // For comparing passwords
+import bcrypt from "bcryptjs";
 import { connectDB } from "@/app/lib/MongoConfig";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
     const { email, password, role } = await req.json();
-console.log(email);
-console.log(password);
-console.log(role);
+    console.log(email);
+    console.log(password);
+    console.log(role);
     if (!email || !password || !role) {
       return NextResponse.json(
         { message: "All fields are required" },
@@ -26,7 +26,7 @@ console.log(role);
     } else {
       user = await User.findOne({ email });
     }
-console.log(user);
+    console.log(user);
     if (!user) {
       return NextResponse.json(
         { message: "User/Admin not found" },

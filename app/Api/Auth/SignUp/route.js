@@ -1,5 +1,3 @@
-
-
 // app/api/auth/signup/route.js
 import User from "@/app/Models/userLogin";
 import Admin from "@/app/Models/adminLogin";

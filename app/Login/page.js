@@ -6,10 +6,11 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const [loginUser, setLoginUser] = useState({
+  const [signUpUser, setSignUpUser] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword:"",
   });
   const [signInUser, setSignInUser] = useState({
     email: "",
@@ -24,7 +25,7 @@ export default function Page() {
 
   const emailValidation = (em) => {
     if (isSignUp) {
-      setLoginUser({ ...loginUser, email: em });
+      setSignUpUser({ ...signUpUser, email: em });
     } else {
       setSignInUser({ ...signInUser, email: em });
     }
@@ -78,40 +79,43 @@ export default function Page() {
     }
   };
 
-  const handleLogin = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log(loginUser);
+    console.log(signUpUser);
     console.log(Role);
     if (emailError === "Email is valid") {
-      if (loginUser.name && loginUser.email && loginUser.password) {
-        try {
-          const payload1 = { ...loginUser, role: Role };
-          const response = await fetch("/Api/Auth/SignUp", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload1),
-          });
-
-          const data = await response.json();
-
-          if (response.ok) {
-            toast.success(
-              `${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`
-            );
-            setLoginUser({ name: "", email: "", password: "" });
-            if (data.role === "admin") {
-              route.push("/Dashboard");
+      if (signUpUser.name && signUpUser.email && signUpUser.password && signUpUser.confirmPassword) {
+        if(signUpUser.password === signUpUser.confirmPassword)
+        {
+          try {
+            const payload1 = { ...signUpUser, role: Role };
+            const response = await fetch("/Api/Auth/SignUp", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payload1),
+            });
+  
+            const data = await response.json();
+  
+            if (response.ok) {
+              toast.success(
+                `${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`
+              );
+              setSignUpUser({ name: "", email: "", password: "" });
+              if (data.role === "admin") {
+                route.push("/Dashboard");
+              } else {
+                route.push("/Home");
+              }
             } else {
-              route.push("/Home");
+              toast.error(data.message);
             }
-          } else {
-            toast.error(data.message);
+          } catch (error) {
+            console.error("Error during Sign Up:", error);
+            toast.error("An error occurred during Sign Up");
           }
-        } catch (error) {
-          console.error("Error during Sign Up:", error);
-          toast.error("An error occurred during Sign Up");
         }
       } else {
         toast.error("Please fill in all fields.");
@@ -141,7 +145,7 @@ export default function Page() {
           
           {isSignUp ? (
             <form
-              onSubmit={handleLogin}
+              onSubmit={handleSignUp}
               className="w-full px-5 lg:px-8 flex flex-col py-14"
             >
               <label className="text-2xl lg:text-4xl font-serif text-center tracking-wide my-5">
@@ -153,9 +157,9 @@ export default function Page() {
                   <TextField
                     className="w-full bg-white"
                     variant="outlined"
-                    value={loginUser.name}
+                    value={signUpUser.name}
                     onChange={(e) =>
-                      setLoginUser({ ...loginUser, name: e.target.value })
+                      setSignUpUser({ ...signUpUser, name: e.target.value })
                     }
                     required
                   />
@@ -166,7 +170,7 @@ export default function Page() {
                     type="email"
                     className="w-full bg-white"
                     variant="outlined"
-                    value={loginUser.email}
+                    value={signUpUser.email}
                     onChange={(e) => emailValidation(e.target.value)}
                     required
                   />
@@ -188,9 +192,22 @@ export default function Page() {
                     type="password"
                     className="w-full bg-white"
                     variant="outlined"
-                    value={loginUser.password}
+                    value={signUpUser.password}
                     onChange={(e) =>
-                      setLoginUser({ ...loginUser, password: e.target.value })
+                      setSignUpUser({ ...signUpUser, password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <h1 className="mb-3 ml-1 font-semibold">Confirm Password:</h1>
+                  <TextField
+                    type="password"
+                    className="w-full bg-white"
+                    variant="outlined"
+                    value={signUpUser.confirmPassword}
+                    onChange={(e) =>
+                      setSignUpUser({ ...signUpUser, confirmPassword: e.target.value })
                     }
                     required
                   />

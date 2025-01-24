@@ -45,7 +45,7 @@ export default function Page() {
       if (signInUser.email && signInUser.password) {
         try {
           const payload = { ...signInUser, role: Role };
-          const response = await fetch("/API/Auth/SignIn", {
+          const response = await fetch("/Api/Auth/SignIn", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export default function Page() {
       if (loginUser.name && loginUser.email && loginUser.password) {
         try {
           const payload1 = { ...loginUser, role: Role };
-          const response = await fetch("/API/Auth/SignUp", {
+          const response = await fetch("/Api/Auth/SignUp", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -138,14 +138,7 @@ export default function Page() {
           />
         </div>
         <div className="w-full lg:w-1/2">
-          <div className="text-center mt-5">
-            <button
-              onClick={toggleForm}
-              className="py-2 px-4 border-black bg-black text-white tracking-wider rounded-md hover:scale-95"
-            >
-              Switch to {isSignUp ? "Sign In" : "Sign Up"}
-            </button>
-          </div>
+          
           {isSignUp ? (
             <form
               onSubmit={handleLogin}
@@ -289,6 +282,9 @@ export default function Page() {
               </div>
             </form>
           )}
+          <div className="text-center mb-5">
+            <p onClick={toggleForm}>Did not have an Account? Click here to <b className="ml-1 hover:cursor-pointer">{isSignUp ? "Sign In" : "Sign Up"}</b></p>
+          </div>
         </div>
       </div>
     </div>

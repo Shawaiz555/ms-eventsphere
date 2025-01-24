@@ -7,18 +7,27 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [loginUser, setLoginUser] = useState({
-    Name: "",
-    Email: "",
-    Password: "",
+    name: "",
+    email: "",
+    password: "",
   });
-  const [role, setRole] = useState("user"); // Track the selected role
+  const [signInUser, setSignInUser] = useState({
+    email: "",
+    password: "",
+  });
+  const [Role, setRole] = useState("user");
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
+  const [isSignUp, setIsSignUp] = useState(true); // Toggle between Sign Up and Sign In forms
 
   const route = useRouter();
 
   const emailValidation = (em) => {
-    setLoginUser({ ...loginUser, Email: em });
+    if (isSignUp) {
+      setLoginUser({ ...loginUser, email: em });
+    } else {
+      setSignInUser({ ...signInUser, email: em });
+    }
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailPattern.test(em)) {
       setEmailError("Email is valid");
@@ -29,71 +38,39 @@ export default function Page() {
     }
   };
 
-  const adminLogin = async () => {
-    try {
-      const response = await fetch("/Api/AdminLogin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: loginUser.Name,
-          email: loginUser.Email,
-          password: loginUser.Password,
-          role: "admin",
-        }),
-      });
-
-      if (!response.ok) {
-        toast.error("Failed to login as Admin");
-        return;
-      }
-      toast.success("Logged In Successfully as Admin!");
-      resetForm();
-      route.push("/Dashboard");
-    } catch (error) {
-      console.error("Error during Admin login:", error);
-      toast.error("An error occurred during Admin login");
-    }
-  };
-
-  const userLogin = async () => {
-    try {
-      const response = await fetch("/Api/UserLogin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: loginUser.Name,
-          email: loginUser.Email,
-          password: loginUser.Password,
-          role: "user",
-        }),
-      });
-
-      if (!response.ok) {
-        toast.error("Failed to login as User");
-        return;
-      }
-      toast.success("Logged In Successfully as User!");
-      resetForm();
-      route.push("/Home");
-    } catch (error) {
-      console.error("Error during User login:", error);
-      toast.error("An error occurred during User login");
-    }
-  };
-
-  const handleLogin = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
+    console.log(signInUser);
     if (emailError === "Email is valid") {
-      if (loginUser.Name && loginUser.Email && loginUser.Password) {
-        if (role === "admin") {
-          await adminLogin();
-        } else if (role === "user") {
-          await userLogin();
+      if (signInUser.email && signInUser.password) {
+        try {
+          const payload = { ...signInUser, role: Role };
+          const response = await fetch("/API/Auth/SignIn", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
 
+          const data = await response.json();
+
+          if (response.ok) {
+            toast.success(
+              `${data.role === "admin" ? "Admin" : "User"} Signed In Successfully!`
+            );
+            setSignInUser({ email: "", password: "" });
+            if (data.role === "admin") {
+              route.push("/Dashboard");
+            } else {
+              route.push("/Home");
+            }
+          } else {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Error during Sign In:", error);
+          toast.error("An error occurred during Sign In");
         }
       } else {
         toast.error("Please fill in all fields.");
@@ -101,13 +78,52 @@ export default function Page() {
     }
   };
 
-  const resetForm = () => {
-    setLoginUser({ Name: "", Email: "", Password: "" });
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log(loginUser);
+    console.log(Role);
+    if (emailError === "Email is valid") {
+      if (loginUser.name && loginUser.email && loginUser.password) {
+        try {
+          const payload1 = { ...loginUser, role: Role };
+          const response = await fetch("/API/Auth/SignUp", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload1),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            toast.success(
+              `${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`
+            );
+            setLoginUser({ name: "", email: "", password: "" });
+            if (data.role === "admin") {
+              route.push("/Dashboard");
+            } else {
+              route.push("/Home");
+            }
+          } else {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Error during Sign Up:", error);
+          toast.error("An error occurred during Sign Up");
+        }
+      } else {
+        toast.error("Please fill in all fields.");
+      }
+    }
+  };
+
+  const toggleForm = () => {
+    setIsSignUp(!isSignUp);
     setEmailError("");
     setIsEmailValid(null);
   };
-
-  let roleText = role === "admin" ? "Admin" : "User";
 
   return (
     <div className="w-full flex justify-center bg-[#fff000]">
@@ -119,85 +135,160 @@ export default function Page() {
             height={300}
             alt="Login Side Image"
             className="w-full h-full rounded-l-2xl"
-          ></Image>
+          />
         </div>
         <div className="w-full lg:w-1/2">
-          <form
-            onSubmit={handleLogin}
-            className="w-full px-5 lg:px-8 flex flex-col py-14"
-          >
-            <label className="text-2xl lg:text-4xl font-serif text-center tracking-wide my-5">
-              Login Form
-            </label>
-            <div className="w-full grid grid-cols-1 gap-8 my-10">
-              <div>
-                <h1 className="mb-3 ml-1 font-semibold">Name:</h1>
-                <TextField
-                  className="w-full bg-white"
-                  variant="outlined"
-                  value={loginUser.Name}
-                  onChange={(e) =>
-                    setLoginUser({ ...loginUser, Name: e.target.value })
-                  }
-                  required
-                />
+          <div className="text-center mt-5">
+            <button
+              onClick={toggleForm}
+              className="py-2 px-4 border-black bg-black text-white tracking-wider rounded-md hover:scale-95"
+            >
+              Switch to {isSignUp ? "Sign In" : "Sign Up"}
+            </button>
+          </div>
+          {isSignUp ? (
+            <form
+              onSubmit={handleLogin}
+              className="w-full px-5 lg:px-8 flex flex-col py-14"
+            >
+              <label className="text-2xl lg:text-4xl font-serif text-center tracking-wide my-5">
+                Sign Up Form
+              </label>
+              <div className="w-full grid grid-cols-1 gap-8 my-10">
+                <div>
+                  <h1 className="mb-3 ml-1 font-semibold">Name:</h1>
+                  <TextField
+                    className="w-full bg-white"
+                    variant="outlined"
+                    value={loginUser.name}
+                    onChange={(e) =>
+                      setLoginUser({ ...loginUser, name: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <h1 className="mb-3 ml-1 font-semibold">Email:</h1>
+                  <TextField
+                    type="email"
+                    className="w-full bg-white"
+                    variant="outlined"
+                    value={loginUser.email}
+                    onChange={(e) => emailValidation(e.target.value)}
+                    required
+                  />
+                  <p
+                    className={`text-md tracking-wider font-serif ${
+                      isEmailValid === true
+                        ? "text-green-500"
+                        : isEmailValid === false
+                          ? "text-red-500"
+                          : ""
+                    }`}
+                  >
+                    {emailError}
+                  </p>
+                </div>
+                <div>
+                  <h1 className="mb-3 ml-1 font-semibold">Password:</h1>
+                  <TextField
+                    type="password"
+                    className="w-full bg-white"
+                    variant="outlined"
+                    value={loginUser.password}
+                    onChange={(e) =>
+                      setLoginUser({ ...loginUser, password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <h1 className="mb-3 ml-1 font-semibold">Role:</h1>
+                  <select
+                    value={Role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full bg-white py-3 px-2 border rounded-md"
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <h1 className="mb-3 ml-1 font-semibold">Email:</h1>
-                <TextField
-                  type="email"
-                  className="w-full bg-white"
-                  variant="outlined"
-                  value={loginUser.Email}
-                  onChange={(e) => emailValidation(e.target.value)}
-                  required
-                />
-                <p
-                  className={`text-md tracking-wider font-serif ${
-                    isEmailValid === true
-                      ? "text-green-500"
-                      : isEmailValid === false
-                        ? "text-red-500"
-                        : ""
-                  }`}
+              <div className="flex justify-center mt-5">
+                <button
+                  type="submit"
+                  className="py-3 px-8 border-black text-white bg-black tracking-wider rounded-xl hover:scale-95"
                 >
-                  {emailError}
-                </p>
+                  Sign Up
+                </button>
               </div>
-              <div>
-                <h1 className="mb-3 ml-1 font-semibold">Password:</h1>
-                <TextField
-                  type="password"
-                  className="w-full bg-white"
-                  variant="outlined"
-                  value={loginUser.Password}
-                  onChange={(e) =>
-                    setLoginUser({ ...loginUser, Password: e.target.value })
-                  }
-                  required
-                />
+            </form>
+          ) : (
+            <form
+              onSubmit={handleSignIn}
+              className="w-full px-5 lg:px-8 flex flex-col py-14"
+            >
+              <label className="text-2xl lg:text-4xl font-serif text-center tracking-wide my-5">
+                Sign In Form
+              </label>
+              <div className="w-full grid grid-cols-1 gap-8 my-10">
+                <div>
+                  <h1 className="mb-3 ml-1 font-semibold">Email:</h1>
+                  <TextField
+                    type="email"
+                    className="w-full bg-white"
+                    variant="outlined"
+                    value={signInUser.email}
+                    onChange={(e) => emailValidation(e.target.value)}
+                    required
+                  />
+                  <p
+                    className={`text-md tracking-wider font-serif ${
+                      isEmailValid === true
+                        ? "text-green-500"
+                        : isEmailValid === false
+                          ? "text-red-500"
+                          : ""
+                    }`}
+                  >
+                    {emailError}
+                  </p>
+                </div>
+                <div>
+                  <h1 className="mb-3 ml-1 font-semibold">Password:</h1>
+                  <TextField
+                    type="password"
+                    className="w-full bg-white"
+                    variant="outlined"
+                    value={signInUser.password}
+                    onChange={(e) =>
+                      setSignInUser({ ...signInUser, password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <h1 className="mb-3 ml-1 font-semibold">Role:</h1>
+                  <select
+                    value={Role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full bg-white py-3 px-2 border rounded-md"
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <h1 className="mb-3 ml-1 font-semibold">Role:</h1>
-                <select
-                  className="w-full bg-white border border-gray-300 rounded-md text-md tracking-wide font-semibold p-2 py-5"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
+              <div className="flex justify-center mt-5">
+                <button
+                  type="submit"
+                  className="py-3 px-8 border-black text-white bg-black tracking-wider rounded-xl hover:scale-95"
                 >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
+                  Sign In
+                </button>
               </div>
-            </div>
-            <div className="flex justify-center mt-5">
-              <button
-                type="submit"
-                className="py-3 px-8 border-black text-white bg-black tracking-wider rounded-xl hover:scale-95"
-              >
-                Login as {roleText}
-              </button>
-            </div>
-          </form>
+            </form>
+          )}
         </div>
       </div>
     </div>

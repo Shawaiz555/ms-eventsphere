@@ -21,10 +21,16 @@ export default function Header({ toggleSidebar }) {
           className="w-full lg:w-[75%] mt-1 text-black border-[1px] border-gray-200 px-5 py-2 rounded-md"
         />
       </div>
-      <div className="w-full lg:w-[50%] flex gap-3 justify-center lg:justify-end">
-        <h1 className="flex items-center tracking-wide">
-          Shawaizbutt@gmail.com
-        </h1>
+      <div className="w-full lg:w-[50%] flex gap-3 justify-center lg:justify-between py-1">
+        <div className="flex items-center">
+          <h1 className="tracking-wide">
+            <b>Email:</b> Shawaizbutt555@gmail.com
+          </h1>
+        </div>
+        <div>
+          <button className="bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95">Logout</button>
+        </div>
+
       </div>
     </div>
   );

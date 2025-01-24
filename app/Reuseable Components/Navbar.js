@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import CloseIcon from "@mui/icons-material/Close";
 
 // Pages and Settings
-const pages = ["Home", "About", "Events", "Contact", "EventForm" , "Login"];
+const pages = ["Home", "About", "Events", "Contact", "EventForm", "Login"];
 
 function ResponsiveAppBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -102,6 +102,9 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
+                    <div>
+                        <button className="hidden bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95">Logout</button>
+                    </div>
                 </Toolbar>
             </Container>
 

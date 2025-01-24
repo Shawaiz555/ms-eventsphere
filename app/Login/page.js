@@ -16,10 +16,9 @@ export default function Page() {
     email: "",
     password: "",
   });
-  const [Role, setRole] = useState("user");
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
-  const [isSignUp, setIsSignUp] = useState(true); // Toggle between Sign Up and Sign In forms
+  const [isSignUp, setIsSignUp] = useState(true); 
 
   const route = useRouter();
 
@@ -42,29 +41,32 @@ export default function Page() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     console.log(signInUser);
+  
+    // Check if email is valid
     if (emailError === "Email is valid") {
       if (signInUser.email && signInUser.password) {
         try {
-          const payload = { ...signInUser, role: Role };
-          const response = await fetch("/Api/Auth/SignIn", {
-            method: "POST",
+          const response = await fetch(`/Api/Auth/SignIn?email=${signInUser.email}&password=${signInUser.password}`, {
+            method: "GET", // GET request
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(payload),
           });
-
+  
           const data = await response.json();
-
+  
           if (response.ok) {
-            toast.success(
-              `${data.role === "admin" ? "Admin" : "User"} Signed In Successfully!`
-            );
+            toast.success("Signed In Successfully!");
             setSignInUser({ email: "", password: "" });
+            setEmailError("");
+  
+            
             if (data.role === "admin") {
-              route.push("/Dashboard");
-            } else {
+              route.push("/Dashboard"); 
+            } else if (data.role === "user") {
               route.push("/Home");
+            } else {
+              toast.error("User role not found.");
             }
           } else {
             toast.error(data.message);
@@ -78,23 +80,22 @@ export default function Page() {
       }
     }
   };
+  
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     console.log(signUpUser);
-    console.log(Role);
     if (emailError === "Email is valid") {
       if (signUpUser.name && signUpUser.email && signUpUser.password && signUpUser.confirmPassword) {
         if(signUpUser.password === signUpUser.confirmPassword)
         {
           try {
-            const payload1 = { ...signUpUser, role: Role };
             const response = await fetch("/Api/Auth/SignUp", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(payload1),
+              body: JSON.stringify(signUpUser),
             });
   
             const data = await response.json();
@@ -103,12 +104,8 @@ export default function Page() {
               toast.success(
                 `${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`
               );
-              setSignUpUser({ name: "", email: "", password: "" });
-              if (data.role === "admin") {
-                route.push("/Dashboard");
-              } else {
-                route.push("/Home");
-              }
+              setSignUpUser({ name: "", email: "", password: "",confirmPassword:"" });
+              setEmailError("");
             } else {
               toast.error(data.message);
             }
@@ -212,17 +209,7 @@ export default function Page() {
                     required
                   />
                 </div>
-                <div>
-                  <h1 className="mb-3 ml-1 font-semibold">Role:</h1>
-                  <select
-                    value={Role}
-                    onChange={(e) => setRole(e.target.value)}
-                    className="w-full bg-white py-3 px-2 border rounded-md"
-                  >
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
+                
               </div>
               <div className="flex justify-center mt-5">
                 <button
@@ -277,17 +264,7 @@ export default function Page() {
                     required
                   />
                 </div>
-                <div>
-                  <h1 className="mb-3 ml-1 font-semibold">Role:</h1>
-                  <select
-                    value={Role}
-                    onChange={(e) => setRole(e.target.value)}
-                    className="w-full bg-white py-3 px-2 border rounded-md"
-                  >
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
+                
               </div>
               <div className="flex justify-center mt-5">
                 <button
@@ -300,7 +277,7 @@ export default function Page() {
             </form>
           )}
           <div className="text-center mb-5">
-            {isSignUp ? <div><p onClick={toggleForm}>Have an Account? Click here to <b className="hover:cursor-pointer">Sign In</b></p></div>: <div><p onClick={toggleForm}>Did not have an Account? Click here to <b className="hover:cursor-pointer">Sign In</b></p></div>}
+            {isSignUp ? <div><p onClick={toggleForm}>Have an Account? Click here to <b className="hover:cursor-pointer">Sign In</b></p></div>: <div><p onClick={toggleForm}>Did not have an Account? Click here to <b className="hover:cursor-pointer">Sign Up</b></p></div>}
           </div>
         </div>
       </div>

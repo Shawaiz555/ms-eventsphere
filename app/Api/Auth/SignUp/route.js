@@ -1,22 +1,15 @@
-// app/api/auth/signup/route.js
+
 import User from "@/app/Models/userLogin";
-import Admin from "@/app/Models/adminLogin";
 import { connectDB } from "@/app/lib/MongoConfig";
-import bcrypt from "bcryptjs"; // For hashing passwords
+import bcrypt from "bcryptjs"; 
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const { name, email, password, role } = await req.json();
+  const { name, email, password, confirmPassword } = await req.json();
   await connectDB();
-      console.log(name);
-      console.log(email);
-      console.log(password);
-      console.log(role)
+
   try {
-    // Parse JSON data from the request body
-    
-    
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password || !confirmPassword) {
       return NextResponse.json(
         { message: "All fields are required" },
         { status: 400 }
@@ -24,28 +17,6 @@ export async function POST(req) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-
-    if (role === "admin") {
-      const existingAdmin = await Admin.findOne({ email });
-      if (existingAdmin) {
-        return NextResponse.json(
-          { message: "Admin already exists" },
-          { status: 400 }
-        );
-      }
-
-      const newAdmin = new Admin({
-        name,
-        email,
-        password: hashedPassword,
-        role,
-      });
-      await newAdmin.save();
-      return NextResponse.json(
-        { message: "Admin registered successfully!" },
-        { status: 201 }
-      );
-    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -59,11 +30,12 @@ export async function POST(req) {
       name,
       email,
       password: hashedPassword,
-      role,
+      confirmPassword,
+      role: "user",
     });
     await newUser.save();
     return NextResponse.json(
-      { message: "User registered successfully!" },
+      { message: "User registered successfully!", role: "user" },
       { status: 201 }
     );
   } catch (error) {
@@ -74,3 +46,4 @@ export async function POST(req) {
     );
   }
 }
+

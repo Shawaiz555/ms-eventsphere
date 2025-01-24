@@ -1,31 +1,4 @@
-// import { connectDB } from "@/app/lib/MongoConfig";
-// import User from "@/app/Models/userLogin";
-// import bcrypt from "bcryptjs";
-// import { NextResponse } from "next/server";
 
-// export async function POST(req) {
-//     const { name, email, password } = await req.json();
-//     await connectDB();
-//     console.log(name);
-//     console.log(email);
-//     console.log(password);
-//     if (!name || !email || !password) {
-//       return NextResponse.json(
-//         { message: "Missing required fields: name, email, or password" },
-//         { status: 400 }
-//       );
-//     }
-//     try {
-//       const hashedPassword = await bcrypt.hash(password, 10);
-//       const user = await User.create({ name, email, password: hashedPassword });
-//       return NextResponse.json({ message: "User created", user }, { status: 201 });
-//     } catch (error) {
-//       return NextResponse.json(
-//         { message: "Error creating user", error: error.message },
-//         { status: 400 }
-//       );
-//     }
-//   }
 
 // app/api/auth/signup/route.js
 import User from "@/app/Models/userLogin";

@@ -4,13 +4,13 @@ import { Mail } from "../lib/send-mail";
 import { useState } from "react";
 
 export default function Home() {
-    const [email,setEmail]=useState('');
-    const sendMail = async (e) => {
-        e.preventDefault();
-        const resp = await Mail({
-            to: email,
-            subject: `Thank You for visiting our site`,
-            message: `<p>Dear </p>
+  const [email, setEmail] = useState("");
+  const sendMail = async (e) => {
+    e.preventDefault();
+    const resp = await Mail({
+      to: email,
+      subject: `Thank You for visiting our site`,
+      message: `<p>Dear </p>
             <p>I hope you are well</p>
             <h4>Thank you </h4>
             <p>Best regards, <br>
@@ -19,8 +19,9 @@ export default function Home() {
                <strong>EventSphere</strong><br>
                <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
             </p>`,
-          });
-    }
+    });
+    setEmail("");
+  };
   return (
     <div>
       <div className="bg-[#fff000]">
@@ -56,7 +57,10 @@ export default function Home() {
               className="w-full sm:w-[60%] rounded-xl px-5 py-3"
               required
             />
-            <button onClick={sendMail} className="w-[45%] sm:w-[30%] md:w-[18%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-5 py-4 sm:py-1 rounded-2xl hover:scale-95">
+            <button
+              onClick={sendMail}
+              className="w-[45%] sm:w-[30%] md:w-[18%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-5 py-4 sm:py-1 rounded-2xl hover:scale-95"
+            >
               Get Demo
             </button>
           </div>

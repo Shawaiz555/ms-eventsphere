@@ -1,69 +1,72 @@
-import { connectDB } from "@/lib/MongoConfig";
-import credentials from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+
 import NextAuth from "next-auth";
-import { validateUser } from "@/app/lib/auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import userLogin from "@/app/Models/userLogin";
 
-export const authOptions = {
-
+const handler = NextAuth({
+    // Providers array: Defines the authentication methods (in this case, Credentials-based authentication).
     providers: [
-        credentials({
+        CredentialsProvider({
+            // Name of the authentication provider (used for display).
             name: "Credentials",
-            id: "credentials",
+            // The fields for entering credentials (email and password).
             credentials: {
-                email: { label: "Email", type: "text" },
-                password: { label: "Password", type: "password" },
+                email: { label: "Email", type: "email" },  // Email field
+                password: { label: "Password", type: "password" },  // Password field
             },
+
             async authorize(credentials) {
                 await connectDB();
-                const AdminLogin = await validateUser({ email: credentials?.email })
+                const user = await userLogin.findOne({
+                    email: credentials?.email,
+                }).select("+password");
 
-                if (AdminLogin) {
-                    const passwordMatch = await bcrypt.compare(
-                        credentials.password,
-                        AdminLogin.password
-                    )
+                if (!user) throw new Error("Wrong Email");
 
-                    if (!passwordMatch) {
-                        throw new Error("Wrong Password");
-                    }
+                const passwordMatch = await bcrypt.compare(
+                    credentials.password,
+                    user.password
+                );
+                if (!passwordMatch) throw new Error("Wrong Password");
 
-
-                    return {
-                        id: AdminLogin.id,
-                        email: AdminLogin.email,
-                    }
-
-                }
-                throw new Error("Wrong Email");
+                return user;
 
             },
-        })
+        }),
     ],
 
+    // Session management using JWT (JSON Web Token).
     session: {
-        strategy: "jwt",  // Json Web Token
-        maxTimePeriod: 30 * 24 * 60 * 60, // 30 days session lifetime  -> Format(Days * Hours * Minutes * Seconds)
+        strategy: "jwt",  // Use JWT for session management instead of a database session.
+        // Set the session maxAge (in seconds)
+        maxAge: 30 * 24 * 60 * 60, // 30 days (in seconds)
+
+        // Optionally, you can also set an expiry for refresh tokens if you're using JWT
+        updateAge: 24 * 60 * 60, // 24 hours (how often the session will be updated)
     },
+
 
     callbacks: {
+
         async jwt({ token, user }) {
+            // If a user object is returned (during login), add user information to the token.
             if (user) {
-                token.id = user.id;
-                token.email = user.email;
+                token.id = user.id;  // Add user ID to the token.
+                token.email = user.email;  // Add user email to the token.
             }
+            // Return the updated token object.
             return token;
         },
+
         async session({ session, token }) {
-            session.user = token; // Attach token data to the session
-            return session;
+            session.id = token.id;  // Pass user ID to the session.
+            session.email = token.email;  // Pass user email to the session.
+            session.token = token;  // Store the full token object in the session (optional).
+            return session;  // Return the modified session.
         },
     },
-    pages: {
-        signIn: "/Login", // Optional: custom sign-in page
-        error: "/Login", // Optional: custom error page
-    },
-    secret: process.env.NEXTAUTH_SECRET,
-};
+});
 
-export default NextAuth(authOptions);
+// Export the handler for both GET and POST requests.
+export { handler as GET, handler as POST };

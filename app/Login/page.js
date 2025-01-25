@@ -48,7 +48,7 @@ export default function Page() {
       if (signInUser.email && signInUser.password) {
         try {
           const response = await fetch(
-            `/API/Auth/SignIn?email=${signInUser.email}&password=${signInUser.password}`,
+            `/Api/Auth/SignIn?email=${signInUser.email}&password=${signInUser.password}`,
             {
               method: "GET", // GET request
               headers: {
@@ -96,7 +96,7 @@ export default function Page() {
       ) {
         if (signUpUser.password === signUpUser.confirmPassword) {
           try {
-            const response = await fetch("/API/Auth/SignUp", {
+            const response = await fetch("/Api/Auth/SignUp", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

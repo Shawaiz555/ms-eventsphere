@@ -28,7 +28,7 @@ export default function Page() {
       message,
     };
 
-    const response = await fetch("/Api/Contact", {
+    const response = await fetch("/API/Contact", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,8 +48,12 @@ export default function Page() {
       setOpen(true);
       const resp = await Mail({
         to: Email,
-        subject: `Thank You for Reaching Out, ${fullName}!`,
-        message: `Hello ${fullName},\n\nThank you for getting in touch with us. We have received your message and our team will review it shortly.\n\nIf you have any additional details to share or urgent concerns, feel free to reply to this email.\n\nBest regards,\n eventspher Team`,
+        subject: ` Thank You for Reaching Out, ${fullName}!`,
+        message: `<h1>Hello ${fullName},</h1>
+        <p>Thank you for getting in touch with us. We have received your message and our team will review it shortly. We’ll get back to you as soon as possible with a response.</p>
+        <p>If you have any additional details to share or urgent concerns, feel free to reply to this email. We're here to assist you!</p>
+        <p>Best regards,</p>
+        <p><strong>The EventSpher Team</strong></p>`,
       });
     } else {
       setAlertMessage("Submission failed. Please try again.");

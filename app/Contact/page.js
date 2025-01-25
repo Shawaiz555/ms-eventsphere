@@ -6,13 +6,25 @@ import { Mail } from "../lib/send-mail";
 export default function Page() {
   const [fullName, setFullName] = useState("");
 
-  const [Email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
 
   const [message, setMessege] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [open, setOpen] = useState(false);
-
+  const [emailError, setEmailError] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(null);
+  const emailValidation = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmail(email); // Update email state
+    if (emailPattern.test(email)) {
+      setEmailError("Email is valid");
+      setIsEmailValid(true);
+    } else {
+      setEmailError("Email is Invalid");
+      setIsEmailValid(false);
+    }
+  };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -24,43 +36,47 @@ export default function Page() {
 
     const ContactData = {
       fullName,
-      email: Email,
+      email,
       message,
     };
-
-    const response = await fetch("/API/Contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(ContactData),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      setAlertMessage("Form submitted successfully!");
-      setAlertSeverity("success");
-      setFullName("");
-      setEmail("");
-
-      setMessege("");
-      setOpen(true);
-      const resp = await Mail({
-        to: Email,
-        subject: ` Thank You for Reaching Out, ${fullName}!`,
-        message: `<h1>Hello ${fullName},</h1>
-        <p>Thank you for getting in touch with us. We have received your message and our team will review it shortly. We’ll get back to you as soon as possible with a response.</p>
-        <p>If you have any additional details to share or urgent concerns, feel free to reply to this email. We're here to assist you!</p>
-        <p>Best regards,</p>
-        <p><strong>The EventSpher Team</strong></p>`,
+    if (emailError === "Email is valid") {
+      const response = await fetch("/API/Contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(ContactData),
       });
-    } else {
-      setAlertMessage("Submission failed. Please try again.");
-      setAlertSeverity("warning");
-      setOpen(true);
+
+      const result = await response.json();
+
+      if (result.success) {
+        setAlertMessage("Form submitted successfully!");
+        setAlertSeverity("success");
+        setFullName("");
+        setEmail("");
+        setEmailError("");
+        setMessege("");
+        setOpen(true);
+        const resp = await Mail({
+          to: email,
+          subject: ` Thank You for Reaching Out, ${fullName}!`,
+          message: `<h1>Hello ${fullName},</h1>
+          <p>Thank you for getting in touch with us. We have received your message and our team will review it shortly. We’ll get back to you as soon as possible with a response.</p>
+          <p>If you have any additional details to share or urgent concerns, feel free to reply to this email. We're here to assist you!</p>
+          <p>Best regards,</p>
+          <p><strong>The EventSpher Team</strong></p>`,
+        });
+      } else {
+        setAlertMessage("Submission failed. Please try again.");
+        setAlertSeverity("warning");
+        setOpen(true);
+      }
+      console.log(resp);
     }
-    console.log(resp);
+    else{
+      alert("First enter a valid email")
+    }
   };
   return (
     <div>
@@ -121,13 +137,16 @@ export default function Page() {
                   </label>
                   <input
                     type="email"
-                    value={Email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
+                    value={email}
+                    onChange={(e) => emailValidation(e.target.value)}
                     className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
                     placeholder="Enter your email address"
                   />
+                  <p
+                  className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
+                >
+                  {emailError}
+                </p>
                 </div>
               </div>
               <div className="mt-6">

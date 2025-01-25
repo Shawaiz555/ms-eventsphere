@@ -81,7 +81,7 @@ export default function Page() {
     };
     if (emailError === "Email is valid") {
       try {
-        const response = await fetch("/API/Partners", {
+        const response = await fetch("/Api/Partners", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

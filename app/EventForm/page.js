@@ -71,7 +71,7 @@ export default function Page() {
             formData.append("image", imageFile);
           }
 
-          const response = await fetch("/API/Events", {
+          const response = await fetch("/Api/Events", {
             method: "POST",
             body: formData,
           });

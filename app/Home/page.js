@@ -33,6 +33,7 @@ export default function Home() {
                        <strong>Zain Imran</strong><br>
                        <strong>CTO</strong><br>
                        <strong>EventSphere</strong><br>
+                       <strong>We will provide a demo to you as soon as possible</strong><br>
                        <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
                     </p>`,
       });
@@ -62,7 +63,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className="w-full flex justify-center pb-10">
+        <div className="w-full flex justify-center">
           <div className="w-full lg:w-[55%] flex flex-col sm:flex-row sm:justify-center gap-3 px-7">
             <input
               type="email"
@@ -72,11 +73,7 @@ export default function Home() {
               className="w-full sm:w-[60%] rounded-xl px-5 py-3"
               required
             />
-            <p
-              className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
-            >
-              {emailError}
-            </p>
+
             <button
               onClick={sendMail}
               className="w-[45%] sm:w-[30%] md:w-[18%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-5 py-4 sm:py-1 rounded-2xl hover:scale-95"
@@ -84,7 +81,13 @@ export default function Home() {
               Get Demo
             </button>
           </div>
+
         </div>
+        <p
+          className={`text-md tracking-wider font-serif text-center pb-6 pt-2 ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
+        >
+          {emailError}
+        </p>
         <div>
           <h1 className="text-center text-3xl sm:text-4xl font-semibold mb-10">
             Sponsores:

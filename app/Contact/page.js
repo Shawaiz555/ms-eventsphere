@@ -40,7 +40,7 @@ export default function Page() {
       message,
     };
     if (emailError === "Email is valid") {
-      const response = await fetch("/API/Contact", {
+      const response = await fetch("/Api/Contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,17 +99,17 @@ export default function Page() {
             <div className="flex flex-col md:flex-row justify-center items-center gap-5">
               <div className="text-lg">
                 <p>
-                  <strong>Phone:</strong> +123 456 7890
+                  <strong>Phone:</strong> +92 343 3326500
                 </p>
                 <p>
-                  <strong>Email:</strong> info@example.com
+                  <strong>Email:</strong> Shawaizbutt555@gmail.com
                 </p>
               </div>
               <div className="text-lg">
                 <p>
                   <strong>Address:</strong>
                 </p>
-                <p>123 EventPro Street, Cityville, USA</p>
+                <p>Jalal Pur Jattan, Gujrat </p>
               </div>
             </div>
           </section>

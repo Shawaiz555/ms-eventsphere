@@ -4,24 +4,40 @@ import { Mail } from "../lib/send-mail";
 import { useState } from "react";
 
 export default function Home() {
+  const [emailError, setEmailError] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(null);
   const [email, setEmail] = useState("");
+  const emailValidation = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmail(email); // Update email state
+    if (emailPattern.test(email)) {
+      setEmailError("Email is valid");
+      setIsEmailValid(true);
+    } else {
+      setEmailError("Email is Invalid");
+      setIsEmailValid(false);
+    }
+  };
+
   const sendMail = async (e) => {
     e.preventDefault();
-    const resp = await Mail({
-      to: email,
-      subject: `Thank You for visiting our site`,
-      message: `<p>Dear </p>
-            <p>I hope you are well</p>
-            <h4>Thank you </h4>
-            <p>Best regards, <br>
-               <strong>Zain Imran</strong><br>
-               <strong>CTO</strong><br>
-               <strong>EventSphere</strong><br>
-               <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
-            </p>`,
-    });
-    setEmail("");
+    if (emailError === "Email is valid") {
+      const resp = await Mail({
+        to: email,
+        subject: `Thank You for visiting our site`,
+        message: `<p>Dear </p>
+                    <p>I hope you are well</p>
+                    <h4>Thank you </h4>
+                    <p>Best regards, <br>
+                       <strong>Zain Imran</strong><br>
+                       <strong>CTO</strong><br>
+                       <strong>EventSphere</strong><br>
+                       <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
+                    </p>`,
+      });
+    }
   };
+
   return (
     <div>
       <div className="bg-[#fff000]">
@@ -48,15 +64,18 @@ export default function Home() {
         <div className="w-full flex justify-center pb-10">
           <div className="w-full lg:w-[55%] flex flex-col sm:flex-row sm:justify-center gap-3 px-7">
             <input
-              type="text"
+              type="email"
               value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              onChange={(e) => emailValidation(e.target.value)}
               placeholder="Enter Your Email..."
               className="w-full sm:w-[60%] rounded-xl px-5 py-3"
               required
             />
+            <p
+              className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
+            >
+              {emailError}
+            </p>
             <button
               onClick={sendMail}
               className="w-[45%] sm:w-[30%] md:w-[18%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-5 py-4 sm:py-1 rounded-2xl hover:scale-95"

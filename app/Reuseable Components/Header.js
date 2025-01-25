@@ -7,17 +7,17 @@ export default function Header({ toggleSidebar }) {
 
   const route = useRouter();
 
-  const handleLogout = ()=>{
-       localStorage.removeItem('signedInUser');
-       setSignedInUser(null);
-       route.push("/");
+  const handleLogout = () => {
+    localStorage.removeItem('signedInUser');
+    setSignedInUser(null);
+    route.push("/");
   }
 
   useEffect(() => {
     // Access localStorage inside useEffect
     const user = JSON.parse(localStorage.getItem("signedInUser"));
     if (user) {
-      setSignedInUser(user.email);
+      setSignedInUser(user);
     }
   }, []);
 
@@ -40,18 +40,24 @@ export default function Header({ toggleSidebar }) {
           className="w-full lg:w-[75%] mt-1 text-black border-[1px] border-gray-200 px-5 py-2 rounded-md"
         />
       </div>
-      <div className="w-full lg:w-[50%] flex gap-3 justify-center lg:justify-between py-1">
-        <div className="flex items-center">
-          <h1 className="tracking-wide">
-            <b>Email :</b> {signedInUser || "User Not Signed In"}
-          </h1>
-        </div>
+      {signedInUser ? (
         <div>
-          <button className="bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95" onClick={handleLogout}>
-            Logout
-          </button>
+          <div className="w-full lg:w-[50%] flex gap-3 justify-center lg:justify-between py-1">
+            <div className="flex items-center">
+              <h1 className="tracking-wide">
+                <b>Email :</b> {signedInUser.email || "User Not Signed In"}
+              </h1>
+            </div>
+            <div>
+              <button className="bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (<div className="flex items-center font-semibold">
+        <p>No Admin Signed In!!!</p>
+      </div>)}
     </div>
   );
 }

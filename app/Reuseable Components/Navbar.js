@@ -126,7 +126,9 @@ function ResponsiveAppBar() {
                                 </button>
                                 </div>
                                 
-                            ) : null}
+                            ) : <div className="flex items-center text-black font-semibold">
+                                    <p>No User Signed In!!!</p>
+                                </div>}
                         </div>
 
                     </div>

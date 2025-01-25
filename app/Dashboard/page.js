@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import Cards from "@/app/Reuseable Components/Cards";
 import EventCards from "../Reuseable Components/EventCards";
+import withAuth from "../Reuseable Components/WithAuth";
 
 const columns = [
   { field: "id", headerName: "Id", width: 90 },
@@ -28,7 +29,7 @@ const columns = [
   },
 ];
 
-export default function Dashboard() {
+ function Dashboard() {
   const [users, setUsers] = useState([]);
   const [analyticsData, setAnalyticsData] = useState([]);
 
@@ -146,3 +147,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default withAuth(Dashboard);

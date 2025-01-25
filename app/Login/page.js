@@ -4,13 +4,14 @@ import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { Mail } from "../lib/send-mail";
 
 export default function Page() {
   const [signUpUser, setSignUpUser] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword:"",
+    confirmPassword: "",
   });
   const [signInUser, setSignInUser] = useState({
     email: "",
@@ -18,7 +19,7 @@ export default function Page() {
   });
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
-  const [isSignUp, setIsSignUp] = useState(true); 
+  const [isSignUp, setIsSignUp] = useState(true);
 
   const route = useRouter();
 
@@ -41,28 +42,30 @@ export default function Page() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     console.log(signInUser);
-  
+
     // Check if email is valid
     if (emailError === "Email is valid") {
       if (signInUser.email && signInUser.password) {
         try {
-          const response = await fetch(`/Api/Auth/SignIn?email=${signInUser.email}&password=${signInUser.password}`, {
-            method: "GET", // GET request
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-  
+          const response = await fetch(
+            `/API/Auth/SignIn?email=${signInUser.email}&password=${signInUser.password}`,
+            {
+              method: "GET", // GET request
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
           const data = await response.json();
-  
+
           if (response.ok) {
             toast.success("Signed In Successfully!");
             setSignInUser({ email: "", password: "" });
             setEmailError("");
-  
-            
+
             if (data.role === "admin") {
-              route.push("/Dashboard"); 
+              route.push("/Dashboard");
             } else if (data.role === "user") {
               route.push("/Home");
             } else {
@@ -80,31 +83,56 @@ export default function Page() {
       }
     }
   };
-  
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     console.log(signUpUser);
     if (emailError === "Email is valid") {
-      if (signUpUser.name && signUpUser.email && signUpUser.password && signUpUser.confirmPassword) {
-        if(signUpUser.password === signUpUser.confirmPassword)
-        {
+      if (
+        signUpUser.name &&
+        signUpUser.email &&
+        signUpUser.password &&
+        signUpUser.confirmPassword
+      ) {
+        if (signUpUser.password === signUpUser.confirmPassword) {
           try {
-            const response = await fetch("/Api/Auth/SignUp", {
+            const response = await fetch("/API/Auth/SignUp", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify(signUpUser),
             });
-  
+
             const data = await response.json();
-  
+
             if (response.ok) {
               toast.success(
                 `${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`
               );
-              setSignUpUser({ name: "", email: "", password: "",confirmPassword:"" });
+              const resp = await Mail({
+                to: signUpUser.email,
+                subject: ` Welcome to EventSphere, ${signUpUser.name}! 🚀`,
+                message: `<p>Dear ${signUpUser.name},</p>
+                <p>Thank you for joining EventSpher! We’re thrilled to have you as a part of our community.</p>
+                <p>With EventSpher, you can explore, create, and share amazing events tailored to your interests. Whether you’re here to host or attend events, we’re here to make your experience smooth and exciting.</p>
+              <p>Here’s what you can do next:</p>
+              <ul>
+             <li>Complete your profile to get personalized recommendations.</li>
+              <li>Start browsing events and discover what’s happening near you.</li>
+              <li>Create your own event and share it with the community.</li>
+              </ul>
+              <p>If you have any questions, feel free to reply to this email or visit our <a href="https://eventspher.com/support">Support Page</a>.</p>
+              <p>We’re excited to see the events you’ll create and join!</p>
+              <p>Best regards,</p>
+              <p><strong>The EventSpher Team</strong></p>`,
+              });
+              setSignUpUser({
+                name: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+              });
               setEmailError("");
             } else {
               toast.error(data.message);
@@ -139,7 +167,6 @@ export default function Page() {
           />
         </div>
         <div className="w-full lg:w-1/2">
-          
           {isSignUp ? (
             <form
               onSubmit={handleSignUp}
@@ -204,12 +231,14 @@ export default function Page() {
                     variant="outlined"
                     value={signUpUser.confirmPassword}
                     onChange={(e) =>
-                      setSignUpUser({ ...signUpUser, confirmPassword: e.target.value })
+                      setSignUpUser({
+                        ...signUpUser,
+                        confirmPassword: e.target.value,
+                      })
                     }
                     required
                   />
                 </div>
-                
               </div>
               <div className="flex justify-center mt-5">
                 <button
@@ -264,7 +293,6 @@ export default function Page() {
                     required
                   />
                 </div>
-                
               </div>
               <div className="flex justify-center mt-5">
                 <button
@@ -277,7 +305,21 @@ export default function Page() {
             </form>
           )}
           <div className="text-center mb-5">
-            {isSignUp ? <div><p onClick={toggleForm}>Have an Account? Click here to <b className="hover:cursor-pointer">Sign In</b></p></div>: <div><p onClick={toggleForm}>Did not have an Account? Click here to <b className="hover:cursor-pointer">Sign Up</b></p></div>}
+            {isSignUp ? (
+              <div>
+                <p onClick={toggleForm}>
+                  Have an Account? Click here to{" "}
+                  <b className="hover:cursor-pointer">Sign In</b>
+                </p>
+              </div>
+            ) : (
+              <div>
+                <p onClick={toggleForm}>
+                  Did not have an Account? Click here to{" "}
+                  <b className="hover:cursor-pointer">Sign Up</b>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

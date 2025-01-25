@@ -69,7 +69,7 @@ export default function Page() {
     };
 
     try {
-      const response = await fetch("/Api/Partners", {
+      const response = await fetch("/API/Partners", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,11 +91,22 @@ export default function Page() {
         setDetail("");
         setIsChecked(false);
         setOpen(true);
+        const fullName = `${firstName} ${lastName}`;
         const resp = await Mail({
           to: email,
-          subject: `Thank You for Your Interest in Partnering with Us, ${firstName}!`,
-          message: `Hello ${firstName},\n\nThank you for expressing your interest in partnering with us. We have received your request, and our team will review the details shortly. We will get back to you with the next steps or any additional information we might need.\n\nIf you have any immediate questions or further details to share, please feel free to reply to this email.\n\nBest regards,\nEventSpher Team`,
+          subject: `Thank You for Your Interest in Partnering with Us, ${fullName}!`,
+          message: `<p>Dear <strong>${fullName}</strong>,</p>
+          <p>I hope this message finds you well.</p>
+          <p>Thank you for showing interest in becoming a part of our team. We truly appreciate your enthusiasm and the time you've taken to connect with us. We are currently reviewing all applications and will be in touch with you soon regarding the next steps.</p>
+          <p>We look forward to possibly working together and will contact you shortly.</p>
+          <p>Best regards, <br>
+             <strong>Zain Imran</strong><br>
+             <strong>CTO</strong><br>
+             <strong>EventSphere</strong><br>
+             <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
+          </p>`,
         });
+        
       } else {
         setAlertMessage("Submission failed. Please try again.");
         setAlertSeverity("warning");

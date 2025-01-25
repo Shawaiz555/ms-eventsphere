@@ -41,7 +41,6 @@ export default function Page() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    console.log(signInUser);
 
     // Check if email is valid
     if (emailError === "Email is valid") {
@@ -63,6 +62,7 @@ export default function Page() {
             toast.success("Signed In Successfully!");
             setSignInUser({ email: "", password: "" });
             setEmailError("");
+            localStorage.setItem('signedInUser',JSON.stringify(signInUser));
 
             if (data.role === "admin") {
               route.push("/Dashboard");

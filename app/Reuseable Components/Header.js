@@ -1,7 +1,26 @@
 "use client";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Header({ toggleSidebar }) {
+  const [signedInUser, setSignedInUser] = useState(null);
+
+  const route = useRouter();
+
+  const handleLogout = ()=>{
+       localStorage.removeItem('signedInUser');
+       setSignedInUser(null);
+       route.push("/");
+  }
+
+  useEffect(() => {
+    // Access localStorage inside useEffect
+    const user = JSON.parse(localStorage.getItem("signedInUser"));
+    if (user) {
+      setSignedInUser(user.email);
+    }
+  }, []);
+
   return (
     <div className="w-full flex flex-col lg:flex-row px-5 border-[1px] border-gray-100 py-2 bg-gray-50">
       <div className="w-full lg:w-[50%] flex items-center">
@@ -24,13 +43,14 @@ export default function Header({ toggleSidebar }) {
       <div className="w-full lg:w-[50%] flex gap-3 justify-center lg:justify-between py-1">
         <div className="flex items-center">
           <h1 className="tracking-wide">
-            <b>Email:</b> Shawaizbutt555@gmail.com
+            <b>Email :</b> {signedInUser || "User Not Signed In"}
           </h1>
         </div>
         <div>
-          <button className="bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95">Logout</button>
+          <button className="bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
-
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -17,6 +17,7 @@ const pages = ["Home", "About", "Events", "Contact", "EventForm"];
 
 function ResponsiveAppBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [signedInUser, setSignedInUser] = useState();
     const router = useRouter();
 
     // Sidebar Handlers
@@ -28,6 +29,19 @@ function ResponsiveAppBar() {
         setIsSidebarOpen(false); // Close the sidebar after navigation
         router.push(`/${page}`);
     };
+
+    const handleLogout = ()=>{
+        localStorage.removeItem('signedInUser');
+        setSignedInUser(null);
+        router.push("/");
+   }
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('signedInUser'));
+        if (user) {
+            setSignedInUser(user);
+        }
+    })
 
     return (
         <AppBar position="fixed" className="bg-[#fff000] py-1 shadow-sm">
@@ -103,7 +117,18 @@ function ResponsiveAppBar() {
                         ))}
                     </Box>
                     <div>
-                        <button className="hidden bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95">Logout</button>
+                        <div>
+                            {signedInUser ? (
+                                <div className="flex gap-4 items-center">
+                                 <p className="text-black"><b>Email :</b> {signedInUser.email}</p>
+                                <button className="bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95" onClick={handleLogout}>
+                                    Logout
+                                </button>
+                                </div>
+                                
+                            ) : null}
+                        </div>
+
                     </div>
                 </Toolbar>
             </Container>

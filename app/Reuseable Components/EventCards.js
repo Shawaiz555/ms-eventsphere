@@ -134,32 +134,37 @@ export default function EventCards({ dashboard }) {
                                     </div>
                                 </CardContent>
                                 <CardActions className="flex justify-center gap-3 mb-3">
-                                        <Button
-                                            variant="contained"
-                                            className="bg-green-600 hover:scale-95"
-                                            onClick={() => handleEdit(event)}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            className="bg-red-600 hover:scale-95"
-                                            onClick={() => handleDelete(event._id)}
-                                        >
-                                            Delete
-                                        </Button>
-                                        {dashboard && event.status === "Pending" && (
-                                        <Button
-                                            variant="contained"
-                                            className="bg-black hover:scale-95"
-                                            disabled={event.status === "Published"}
-                                            onClick={() => handlePublish(event._id)}
-                                        >
-                                            Publish
-                                        </Button>
-                                        )}
-                                    </CardActions>
-                                
+                                    {dashboard && (
+                                        <>
+                                            <Button
+                                                variant="contained"
+                                                className="bg-green-600 hover:scale-95"
+                                                onClick={() => handleEdit(event)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                className="bg-red-600 hover:scale-95"
+                                                onClick={() => handleDelete(event._id)}
+                                            >
+                                                Delete
+                                            </Button>
+                                            {event.status === "Pending" && (
+                                                <Button
+                                                    variant="contained"
+                                                    className="bg-black hover:scale-95"
+                                                    disabled={event.status === "Published"}
+                                                    onClick={() => handlePublish(event._id)}
+                                                >
+                                                    Publish
+                                                </Button>
+                                            )}
+                                        </>
+                                    )}
+                                </CardActions>
+
+
                             </Card>
                         </div>
                     ))}

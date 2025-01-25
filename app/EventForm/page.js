@@ -1,273 +1,387 @@
-// page.js
 "use client";
-import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRef, useState } from "react";
 import Button from "@mui/material/Button";
-import ImageUpload from "../Reuseable Components/ImageUpload";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import { Mail } from "../lib/send-mail";
 
+const benefits = [
+  {
+    id: 1,
+    title: "Business growth",
+    description:
+      "Scale your services and land more business with our flexible partnership options. This is your new platform for differentiation.",
+    icon: "🌱💰",
+  },
+  {
+    id: 2,
+    title: "Going the extra mile",
+    description:
+      "When you’re a Bizzabo partner, you’re an extension of our team so take advantage of exclusive marketing, business development.",
+    icon: "📊❤️",
+  },
+  {
+    id: 3,
+    title: "Lasting relationships",
+    description:
+      "With top NPS and CSAT scores, you can count on Bizzabo for seamless integrations, plus enterprise-grade security and support.",
+    icon: "🤝💬",
+  },
+];
+
 export default function Page() {
-  const [event, setEvent] = useState({
-    Name: "",
-    EventTitle: "",
-    Email: "",
-    Date: "",
-    StartingTime: "",
-    EndingTime: "",
-    NumOfPerson: "",
-    Location: "",
-    Description: "",
-    Status: "Pending",
-  });
-  const [imageFile, setImageFile] = useState([]);
-  const [emailError, setEmailError] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(null);
-
-  const emailValidation = (em) => {
-    setEvent({ ...event, Email: em });
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailPattern.test(em)) {
-      setEmailError("Email is valid");
-      setIsEmailValid(true);
-    } else {
-      setEmailError("Email is Invalid");
-      setIsEmailValid(false);
-    }
+  const formRef = useRef(null);
+  const scrollToForm = () => {
+    formRef.current.scrollIntoView({ behavior: "smooth" });
   };
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [partnershipType, setPartnershipType] = useState("");
+  const [detail, setDetail] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("success");
 
-  const handleImageUpload = (file) => {
-    setImageFile(file);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (emailError === "Email is valid") {
-      if (
-        event.Name &&
-        event.Email &&
-        event.EventTitle &&
-        event.StartingTime &&
-        event.Date &&
-        event.EndingTime &&
-        event.NumOfPerson &&
-        event.Location &&
-        event.Description
-      ) {
-        try {
-          const formData = new FormData();
-          formData.append("name", event.Name);
-          formData.append("email", event.Email);
-          formData.append("eventTitle", event.EventTitle);
-          formData.append("eventDate", event.Date);
-          formData.append("eventStartingTime", event.StartingTime);
-          formData.append("eventEndingTime", event.EndingTime);
-          formData.append("noOfPerson", event.NumOfPerson);
-          formData.append("eventLocation", event.Location);
-          formData.append("eventDescription", event.Description);
-          formData.append("status", event.Status); // Append status here
-  
-          if (imageFile) {
-            formData.append("image", imageFile);
-          }
-  
-          const response = await fetch("/Api/Events", {
-            method: "POST",
-            body: formData,
-          });
-  
-          const result = await response.json();
-          if (response.ok) {
-            alert("Event Submitted successfully!");
-            setEvent({
-              Name: "",
-              EventTitle: "",
-              Email: "",
-              Date: "",
-              StartingTime: "",
-              EndingTime: "",
-              NumOfPerson: "",
-              Location: "",
-              Description: "",
-            });
-            setImageFile(null); 
-            document.querySelector('input[type="file"]').value = null;
-            setEmailError("");
-            const resp = await Mail({
-              to: event.Email,
-              subject: `Thank You for Submitting Your Event, ${event.Name}!`,
-              message: `Hello ${event.Name},\n\nThank you for submitting your event to us. We have received your event details, and our team will review them shortly. Once approved, your event will be listed on our platform.\n\nIf you have any additional details to share or urgent concerns, feel free to reply to this email.\n\nBest regards,\nEventSpher Team`,
-            });
-          } else {
-            console.error(result);
-            alert("Failed to create event");
-          }
-        } catch (error) {
-          console.error("Error submitting event:", error);
-          alert("An error occurred while creating the event");
-        }
+
+    const partnerData = {
+      firstName,
+      lastName,
+      email,
+      phoneNo,
+      jobTitle,
+      partnershipType,
+      detail,
+    };
+
+    try {
+      const response = await fetch("/API/Partners", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(partnerData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setAlertMessage("Form submitted successfully!");
+        setAlertSeverity("success");
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPhoneNo("");
+        setJobTitle("");
+        setPartnershipType("");
+        setDetail("");
+        setIsChecked(false);
+        setOpen(true);
+        const fullName = `${firstName} ${lastName}`;
+        const resp = await Mail({
+          to: email,
+          subject: `Thank You for Your Interest in Partnering with Us, ${fullName}!`,
+          message: `<p>Dear <strong>${fullName}</strong>,</p>
+          <p>I hope this message finds you well.</p>
+          <p>Thank you for showing interest in becoming a part of our team. We truly appreciate your enthusiasm and the time you've taken to connect with us. We are currently reviewing all applications and will be in touch with you soon regarding the next steps.</p>
+          <p>We look forward to possibly working together and will contact you shortly.</p>
+          <p>Best regards, <br>
+             <strong>Zain Imran</strong><br>
+             <strong>CTO</strong><br>
+             <strong>EventSphere</strong><br>
+             <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
+          </p>`,
+        });
+        
+      } else {
+        setAlertMessage("Submission failed. Please try again.");
+        setAlertSeverity("warning");
+        setOpen(true);
       }
+    } catch (error) {
+      setAlertMessage("An error occurred. Please check your network.");
+      setAlertSeverity("error");
+      setOpen(true);
     }
   };
 
   return (
-    <div className="bg-[#fff000]">
-      <div className="py-6">
-        <h1 className="text-center text-3xl md:text-4xl font-serif">
-          Create An Event Of your Choice
-        </h1>
+    <div className="mt-10">
+      {/* why join */}
+      <div className=" bg-[#fff000] px-6 py-20">
+        <h2 className="text-4xl font-bold text-center mb-10">
+          Why join the Bizzabo partner program?
+        </h2>
+        <div className="grid md:grid-cols-3  gap-8 max-w-6xl mx-auto">
+          {benefits.map((benefit) => (
+            <div
+              key={benefit.id}
+              className="rounded-lg shadow-xl bg-[#fffc4b9a] p-8 py-16 text-center"
+            >
+              <div className="text-4xl mb-4">{benefit.icon}</div>
+              <h3 className="text-2xl font-semibold mb-4">{benefit.title}</h3>
+              <p>{benefit.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="w-full flex justify-center mb-10 mt-10">
-        <form
-          className="w-[90%] lg:w-[60%] px-5 lg:px-8 flex flex-col mt-5 mb-10 shadow-xl rounded-2xl py-14 bg-white"
-          onSubmit={handleSubmit}
-        >
-          <label className="text-2xl lg:text-4xl font-serif text-center tracking-wide my-5">
-            Event Form
-          </label>
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 my-10">
-            <div>
-              <h1 className="mb-3 ml-1 font-semibold">Name:</h1>
-              <TextField
-                id="outlined-basic"
-                className="w-full"
-                variant="outlined"
-                value={event.Name}
-                onChange={(e) => setEvent({ ...event, Name: e.target.value })}
-                required
+      {/* ecosystem */}
+      <div className="py-10 px-12">
+        <h1 className="text-3xl md:text-4xl font-semibold text-center mb-8">
+          Our partner program ecosystem
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {/* Card 1 */}
+          <div className="bg-gray-100 rounded-lg shadow-2xl p-6">
+            <div className="flex items-center mb-4">
+              <Image
+                width={"29"}
+                height={"20"}
+                src="/Images/App market partners.png"
+                alt="App Market"
+                className="w-12 h-12 mr-4"
               />
+              <h2 className="text-xl font-semibold">App market partners</h2>
             </div>
-
-            <div className="flex flex-col">
-              <h1 className="mb-3 ml-1 font-semibold">Email:</h1>
-              <TextField
-                id="outlined-basic"
-                type="email"
-                className="w-full"
-                variant="outlined"
-                value={event.Email}
-                onChange={(e) => emailValidation(e.target.value)}
-                required
+            <p className="text-gray-600">
+              Grow your business by building apps that help Event Experience
+              Leaders deliver personalized and immersive experiences for
+              participants.
+            </p>
+          </div>
+          {/* Card 2 */}
+          <div className="bg-gray-100 rounded-lg shadow-2xl p-6">
+            <div className="flex items-center mb-4">
+              <Image
+                width={"29"}
+                height={"20"}
+                src="/Images/Agency partners.png"
+                alt="Agency Partners"
+                className="w-12 h-12 mr-4"
               />
-              <p
-                className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
-              >
-                {emailError}
-              </p>
+              <h2 className="text-xl font-semibold">Agency partners</h2>
             </div>
-            <div>
-              <h1 className="mb-3 ml-1 font-semibold">Event Title:</h1>
-              <TextField
-                id="outlined-basic"
-                className="w-full"
-                variant="outlined"
-                value={event.EventTitle}
-                onChange={(e) =>
-                  setEvent({ ...event, EventTitle: e.target.value })
-                }
-                required
+            <p className="text-gray-600">
+              Our frictionless agency user experience platform provides
+              dedicated business development and support resources, so you can
+              create engagement strategies and unforgettable customer
+              experiences.
+            </p>
+          </div>
+          <div className="bg-gray-100 rounded-lg shadow-2xl p-6">
+            <div className="flex items-center mb-4">
+              <Image
+                width={"29"}
+                height={"20"}
+                src="/Images/Go to market partners.png"
+                alt="App Market"
+                className="w-12 h-12 mr-4"
               />
+              <h2 className="text-xl font-semibold">Go-to-market partners</h2>
             </div>
-            <div>
-              <h1 className="mb-3 ml-1 font-semibold">Date:</h1>
-              <TextField
-                id="outlined-basic"
-                type="date"
-                className="w-full"
-                variant="outlined"
-                value={event.Date}
-                onChange={(e) => setEvent({ ...event, Date: e.target.value })}
-                required
+            <p className="text-gray-600">
+              Why go it alone? Expand your portfolio of product offerings to
+              include our end-to-end solution for all kinds of events – while
+              strengthening your relationships and credibility
+            </p>
+          </div>
+          <div className="bg-gray-100 rounded-lg shadow-2xl p-6">
+            <div className="flex items-center mb-4">
+              <Image
+                width={"29"}
+                height={"20"}
+                src="/Images/Solutions & integrations partners.png"
+                alt="App Market"
+                className="w-12 h-12 mr-4"
               />
+              <h2 className="text-xl font-semibold">
+                Solutions & integrations partners
+              </h2>
             </div>
-            <div>
-              <h1 className="mb-3 ml-1 font-semibold">Starting Time:</h1>
-              <TextField
-                id="outlined-basic"
-                className="w-full"
-                variant="outlined"
-                type="time"
-                value={event.StartingTime}
-                onChange={(e) =>
-                  setEvent({ ...event, StartingTime: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div>
-              <h1 className="mb-3 ml-1 font-semibold">Ending Time:</h1>
-              <TextField
-                id="outlined-basic"
-                className="w-full"
-                variant="outlined"
-                type="time"
-                value={event.EndingTime}
-                onChange={(e) =>
-                  setEvent({ ...event, EndingTime: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div>
-              <h1 className="mb-3 ml-1 font-semibold">Number of Person:</h1>
-              <TextField
-                id="outlined-basic"
-                className="w-full"
-                variant="outlined"
-                type="number"
-                value={event.NumOfPerson}
-                onChange={(e) =>
-                  setEvent({ ...event, NumOfPerson: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div>
-              <h1 className="mb-3 ml-1 font-semibold">Location</h1>
-              <TextField
-                id="outlined-basic"
-                className="w-full"
-                variant="outlined"
-                value={event.Location}
-                onChange={(e) =>
-                  setEvent({ ...event, Location: e.target.value })
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <div className="p-1">
-                <h1 className="text-lg font-semibold mb-4">
-                  Upload Event Image
-                </h1>
-                <ImageUpload onUpload={handleImageUpload} />
+            <p className="text-gray-600">
+              Our frictionless agency user experience platform provides
+              dedicated business development and support resources, so you can
+              create engagement strategies and unforgettable customer
+              experiences.
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* form */}
+      <div
+        ref={formRef}
+        className="min-h-screen flex items-center justify-center bg-[#fff000] p-6"
+      >
+        <div className="w-full max-w-3xl bg-transparent">
+          <h1 className="text-center text-3xl font-bold text-black mb-8">
+            Join Our Growing Partner Community
+          </h1>
+          <form
+            className="space-y-6 bg-white rounded-xl px-10 py-20"
+            onSubmit={handleSubmit}
+          >
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* First Name */}
+              <div>
+                <label className="block text-black font-medium mb-2">
+                  First Name*
+                </label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                    //console.log(e.target.value);
+                  }}
+                  placeholder="First name..."
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  required
+                />
+              </div>
+              {/* Last Name */}
+              <div>
+                <label className="block text-black font-medium mb-2">
+                  Last Name*
+                </label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                    //console.log(e.target.value);
+                  }}
+                  placeholder="Last Name..."
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  required
+                />
+              </div>
+              {/* Work Email */}
+              <div>
+                <label className="block text-black font-medium mb-2">
+                  Work Email*
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Work email..."
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  required
+                />
+              </div>
+              {/* Phone Number */}
+              <div>
+                <label className="block text-black font-medium mb-2">
+                  Phone Number*
+                </label>
+                <input
+                  type="tel"
+                  value={phoneNo}
+                  onChange={(e) => setPhoneNo(e.target.value)}
+                  placeholder="Phone..."
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  required
+                />
+              </div>
+              {/* Job Title */}
+              <div>
+                <label className="block text-black font-medium mb-2">
+                  Job Title*
+                </label>
+                <input
+                  type="text"
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                  placeholder="Job Title"
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                  required
+                />
+              </div>
+              {/* Type of Partnership */}
+              <div>
+                <label className="block text-black font-medium mb-2">
+                  Type of Partnership*
+                </label>
+                <select
+                  value={partnershipType}
+                  onChange={(e) => setPartnershipType(e.target.value)}
+                  className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black selected"
+                  required
+                >
+                  <option disabled value="">
+                    Type of Partnership
+                  </option>
+                  <option>App Market Partners</option>
+                  <option>Agency Partners</option>
+                </select>
               </div>
             </div>
-          </div>
-          <div className="w-full">
-            <h1 className="mb-3 ml-1 font-semibold">Event Description</h1>
-            <textarea
-              rows="6"
-              placeholder="Description"
-              value={event.Description}
-              className="w-full border border-gray-300 px-4 py-2 ml-1"
-              onChange={(e) =>
-                setEvent({ ...event, Description: e.target.value })
-              }
-              required
-            ></textarea>
-          </div>
-          <div className="flex justify-end mt-5">
-            <Button
-              type="submit"
-              variant="outlined"
-              className="py-2 border-black text-white bg-black tracking-wider rounded-xl hover:scale-95"
+            {/* Desired Partnership Details */}
+            <div>
+              <label className="block text-black font-medium mb-2">
+                Desired partnership details*
+              </label>
+              <textarea
+                rows="3"
+                value={detail}
+                onChange={(e) => setDetail(e.target.value)}
+                placeholder="Please share details on your desired partnership"
+                className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+                required
+              ></textarea>
+            </div>
+            {/* Checkbox */}
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-black border-gray-300 rounded focus:ring-black "
+                checked={isChecked}
+                onChange={(e) => setIsChecked(e.target.checked)}
+                required
+              />
+              <label className="ml-2 text-black text-sm">
+                I consent to receive emails from Bizzabo about upcoming events
+                and more. I reviewed and agree to mz_eventsphere
+                <Link href={"/"} className="text-blue-500 underline">
+                  Privacy Policy
+                </Link>
+              </label>
+            </div>
+            {/* Submit Button */}
+            <div className="text-center">
+              <button
+                type="submit"
+                className="bg-black text-white font-medium py-3 px-7 rounded-xl hover:scale-95"
+              >
+                Become a Partner
+              </button>
+            </div>
+          </form>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity={alertSeverity}
+              variant="filled"
+              sx={{ width: "100%" }}
             >
-              Submit Event
-            </Button>
-          </div>
-        </form>
+              {alertMessage}
+            </Alert>
+          </Snackbar>
+        </div>
       </div>
     </div>
   );

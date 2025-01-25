@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import CloseIcon from "@mui/icons-material/Close";
 
 // Pages and Settings
-const pages = ["Home", "About", "Events", "Contact", "EventForm", "Login"];
+const pages = ["Home", "About", "Events", "Contact", "EventForm"];
 
 function ResponsiveAppBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);

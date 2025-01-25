@@ -37,12 +37,13 @@ export default function Header({ toggleSidebar }) {
           type="text"
           placeholder="Search..."
           name="search"
-          className="w-full lg:w-[75%] mt-1 text-black border-[1px] border-gray-200 px-5 py-2 rounded-md"
+          className="w-full lg:w-[70%] mt-1 text-black border-[1px] border-gray-200 px-5 py-2 rounded-md"
         />
       </div>
-      {signedInUser ? (
-        <div>
-          <div className="w-full lg:w-[50%] flex gap-3 justify-center lg:justify-between py-1">
+     
+        <div className="w-full lg:w-[50%]">
+        {signedInUser ? (
+          <div className="w-full flex gap-3 justify-center lg:justify-around py-1">
             <div className="flex items-center">
               <h1 className="tracking-wide">
                 <b>Email :</b> {signedInUser.email || "User Not Signed In"}
@@ -54,10 +55,11 @@ export default function Header({ toggleSidebar }) {
               </button>
             </div>
           </div>
+          ) : (<div className="flex items-center font-semibold">
+            <p>No Admin Signed In!!!</p>
+          </div>)}
         </div>
-      ) : (<div className="flex items-center font-semibold">
-        <p>No Admin Signed In!!!</p>
-      </div>)}
+      
     </div>
   );
 }

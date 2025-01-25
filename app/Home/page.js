@@ -21,6 +21,7 @@ export default function Home() {
 
   const sendMail = async (e) => {
     e.preventDefault();
+    setEmailError("");
     if (emailError === "Email is valid") {
       const resp = await Mail({
         to: email,

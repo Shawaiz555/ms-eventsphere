@@ -47,7 +47,19 @@ export default function Page() {
   const [open, setOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
-
+  const [emailError, setEmailError] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(null);
+  const emailValidation = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmail(email); // Update email state
+    if (emailPattern.test(email)) {
+      setEmailError("Email is valid");
+      setIsEmailValid(true);
+    } else {
+      setEmailError("Email is Invalid");
+      setIsEmailValid(false);
+    }
+  };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -67,55 +79,59 @@ export default function Page() {
       partnershipType,
       detail,
     };
-
-    try {
-      const response = await fetch("/API/Partners", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(partnerData),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setAlertMessage("Form submitted successfully!");
-        setAlertSeverity("success");
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPhoneNo("");
-        setJobTitle("");
-        setPartnershipType("");
-        setDetail("");
-        setIsChecked(false);
-        setOpen(true);
-        const fullName = `${firstName} ${lastName}`;
-        const resp = await Mail({
-          to: email,
-          subject: `Thank You for Your Interest in Partnering with Us, ${fullName}!`,
-          message: `<p>Dear <strong>${fullName}</strong>,</p>
-          <p>I hope this message finds you well.</p>
-          <p>Thank you for showing interest in becoming a part of our team. We truly appreciate your enthusiasm and the time you've taken to connect with us. We are currently reviewing all applications and will be in touch with you soon regarding the next steps.</p>
-          <p>We look forward to possibly working together and will contact you shortly.</p>
-          <p>Best regards, <br>
-             <strong>Zain Imran</strong><br>
-             <strong>CTO</strong><br>
-             <strong>EventSphere</strong><br>
-             <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
-          </p>`,
+    if (emailError === "Email is valid") {
+      try {
+        const response = await fetch("/API/Partners", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(partnerData),
         });
-        
-      } else {
-        setAlertMessage("Submission failed. Please try again.");
-        setAlertSeverity("warning");
+
+        const result = await response.json();
+
+        if (result.success) {
+          setAlertMessage("Form submitted successfully!");
+          setAlertSeverity("success");
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPhoneNo("");
+          setJobTitle("");
+          setPartnershipType("");
+          setDetail("");
+          setIsChecked(false);
+          setOpen(true);
+          setEmailError("")
+          const fullName = `${firstName} ${lastName}`;
+          const resp = await Mail({
+            to: email,
+            subject: `Thank You for Your Interest in Partnering with Us, ${fullName}!`,
+            message: `<p>Dear <strong>${fullName}</strong>,</p>
+            <p>I hope this message finds you well.</p>
+            <p>Thank you for showing interest in becoming a part of our team. We truly appreciate your enthusiasm and the time you've taken to connect with us. We are currently reviewing all applications and will be in touch with you soon regarding the next steps.</p>
+            <p>We look forward to possibly working together and will contact you shortly.</p>
+            <p>Best regards, <br>
+               <strong>Zain Imran</strong><br>
+               <strong>CTO</strong><br>
+               <strong>EventSphere</strong><br>
+               <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
+            </p>`,
+          });
+        } else {
+          setAlertMessage("Submission failed. Please try again.");
+          setAlertSeverity("warning");
+          setOpen(true);
+        }
+      } catch (error) {
+        setAlertMessage("An error occurred. Please check your network.");
+        setAlertSeverity("error");
         setOpen(true);
       }
-    } catch (error) {
-      setAlertMessage("An error occurred. Please check your network.");
-      setAlertSeverity("error");
-      setOpen(true);
+    }
+    else{
+      alert("First enter a valid email")
     }
   };
 
@@ -277,11 +293,16 @@ export default function Page() {
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => emailValidation(e.target.value)}
                   placeholder="Work email..."
                   className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 />
+                <p
+                  className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
+                >
+                  {emailError}
+                </p>
               </div>
               {/* Phone Number */}
               <div>

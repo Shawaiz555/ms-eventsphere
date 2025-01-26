@@ -41,7 +41,7 @@ function ResponsiveAppBar() {
         if (user) {
             setSignedInUser(user);
         }
-    })
+    },[setSignedInUser])
 
     return (
         <AppBar position="fixed" className="bg-[#fff000] py-1 shadow-sm">

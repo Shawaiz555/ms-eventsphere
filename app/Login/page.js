@@ -86,7 +86,6 @@ export default function Page() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log(signUpUser);
     if (emailError === "Email is valid") {
       if (
         signUpUser.name &&

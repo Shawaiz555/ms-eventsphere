@@ -47,7 +47,7 @@ export async function POST(req) {
       "eventLocation",
       "noOfPerson",
       "eventDescription",
-      "status",
+      // "status",
     ];
 
     // Ensure all fields are provided
@@ -83,7 +83,7 @@ export async function POST(req) {
       noOfPerson: parseInt(formData.get('noOfPerson')),
       eventDescription: formData.get('eventDescription'),
       image, // Store the image path here
-      status: formData.get('status'),
+      // status: formData.get('status'),
     });
 
     await event.save();

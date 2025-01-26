@@ -5,17 +5,17 @@ const teamMembers = [
   {
     name: "Muhammad Shawaiz",
     role: "CEO",
-    image: "/Images/ProfilePic.jpg",
+    image: "/Images/TeamMember1.jpg",
   },
   {
     name: "Zain Imran",
     role: "CTO",
-    image: "/Images/ProfilePic.jpg",
+    image: "/Images/TeamMember2.jpg",
   },
   {
     name: "Hamza Ali Minhas",
     role: "Designer",
-    image: "/Images/ProfilePic.jpg",
+    image: "/Images/TeamMember3.jpg",
   },
 ];
 
@@ -64,7 +64,7 @@ export default function Page() {
                 alt={member.name}
                 width={200}
                 height={200}
-                className="w-full md:w-[40%] lg:w-[60%] rounded-xl mb-4"
+                className="w-full h-[70%] md:w-[40%] lg:w-[70%] rounded-xl mb-4"
               />
               <h2 className="text-md md:text-xl font-semibold">{member.name}</h2>
               <p className="text-sm">{member.role}</p>
@@ -101,7 +101,7 @@ export default function Page() {
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div className="bg-white p-6 px-10 rounded-lg shadow-lg">
             <p className="text-lg text-gray-700 mb-4">
-              "EventPro managed our annual conference flawlessly. From the
+              "MS-EventSphere Management managed our annual conference flawlessly. From the
               initial planning to the final execution, they were exceptional.
               Highly recommend their services!"
             </p>
@@ -110,7 +110,7 @@ export default function Page() {
           </div>
           <div className="bg-white p-6 px-10 rounded-lg shadow-lg">
             <p className="text-lg text-gray-700 mb-4">
-              "Our wedding day was made perfect by EventPro. The attention to
+              "Our wedding day was made perfect by MS-EventSphere Management. The attention to
               detail and personal touch made all the difference. We couldn’t
               have asked for a better team."
             </p>

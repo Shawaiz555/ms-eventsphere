@@ -57,16 +57,17 @@ export default function Page() {
           );
 
           const data = await response.json();
+          console.log(data["data"]);
 
           if (response.ok) {
             toast.success("Signed In Successfully!");
+            localStorage.setItem('signedInUser',JSON.stringify(data["data"]));
             setSignInUser({ email: "", password: "" });
             setEmailError("");
-            localStorage.setItem('signedInUser',JSON.stringify(signInUser));
 
-            if (data.role === "admin") {
+            if (data["data"].role === "admin") {
               route.push("/Dashboard");
-            } else if (data.role === "user") {
+            } else if (data["data"].role === "user") {
               route.push("/Home");
             } else {
               toast.error("User role not found.");

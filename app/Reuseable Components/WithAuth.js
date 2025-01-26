@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
+// Working on matching of user through role is to be done!!
 
 const withAuth = (WrappedComponent) => {
     return function AuthHOC(props) {
@@ -22,7 +23,7 @@ const withAuth = (WrappedComponent) => {
         // Optionally, you can render a loading spinner here
         return <p>Loading...</p>;
       }
-      if(user.email === "Shawaizbutt555@gmail.com")
+      if(user.role === "admin")
       {
         return <WrappedComponent {...props} />; // Render the wrapped component if authenticated
       }

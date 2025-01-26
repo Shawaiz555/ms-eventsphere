@@ -17,7 +17,7 @@ const pages = ["Home", "About", "Events", "Contact", "EventForm"];
 
 function ResponsiveAppBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [signedInUser, setSignedInUser] = useState();
+    const [signedInUser, setSignedInUser] = useState(null);
     const router = useRouter();
 
     // Sidebar Handlers

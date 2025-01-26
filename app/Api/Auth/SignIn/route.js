@@ -20,9 +20,9 @@ export async function GET(req) {
 
     await connectDB();
 
-    let user = await Admin.findOne({ email });
-    if (user) {
-      const isMatch = await bcrypt.compare(password, user.password);
+    let adminUser = await Admin.findOne({ email });
+    if (adminUser) {
+      const isMatch = await bcrypt.compare(password, adminUser.password);
       if (!isMatch) {
         return NextResponse.json(
           { message: "Invalid credentials" },
@@ -31,12 +31,12 @@ export async function GET(req) {
       }
       // If credentials are valid
       return NextResponse.json(
-        { message: "Sign-in successful", role: "admin" }, // Return admin role
+        { message: "Sign-in successful", data:{ role: "admin", email : adminUser.email }}, // Return admin role
         { status: 200 }
       );
     }
 
-    user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
@@ -47,7 +47,7 @@ export async function GET(req) {
       }
       // If credentials are valid
       return NextResponse.json(
-        { message: "Sign-in successful", role: "user" }, // Return user role
+        { message: "Sign-in successful", data:{ role: "user", email : user.email } }, // Return user role
         { status: 200 }
       );
     }

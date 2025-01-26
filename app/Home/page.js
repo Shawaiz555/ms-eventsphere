@@ -22,20 +22,21 @@ export default function Home() {
   const sendMail = async (e) => {
     e.preventDefault();
     setEmailError("");
+    setEmail("");
     if (emailError === "Email is valid") {
       const resp = await Mail({
         to: email,
         subject: `Thank You for visiting our site`,
         message: `<p>Dear </p>
-                    <p>I hope you are well</p>
-                    <h4>Thank you </h4>
-                    <p>Best regards, <br>
-                       <strong>Zain Imran</strong><br>
-                       <strong>CTO</strong><br>
-                       <strong>EventSphere</strong><br>
-                       <strong>We will provide a demo to you as soon as possible</strong><br>
-                       <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
-                    </p>`,
+        <p>I hope you are well</p>
+        <h4>Thank you </h4>
+        <p>Best regards, <br>
+           <strong>Zain Imran</strong><br>
+           <strong>CTO</strong><br>
+           <strong>EventSphere</strong><br>
+           <strong>We will provide a demo to you as soon as possible</strong><br>
+           <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
+        </p>`,
       });
     }
   };
@@ -76,12 +77,11 @@ export default function Home() {
 
             <button
               onClick={sendMail}
-              className="w-[45%] sm:w-[30%] md:w-[18%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-5 py-4 sm:py-1 rounded-2xl hover:scale-95"
+              className="w-[45%] sm:w-[30%] md:w-[18%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-6 py-3 sm:py-1 rounded-2xl hover:scale-95 whitespace-nowrap flex items-center justify-center"
             >
-              Get Demo
+              click for magic
             </button>
           </div>
-
         </div>
         <p
           className={`text-md tracking-wider font-serif text-center pb-6 pt-2 ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}

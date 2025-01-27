@@ -59,7 +59,7 @@ export default function Page() {
           const data = await response.json();
 
           if (response.ok) {
-            toast.success("Signed In Successfully!");
+            toast.success(`${data["data"].role === "admin" ? "Admin" : "User"} Sign In  Successfully!`);
             localStorage.setItem('signedInUser',JSON.stringify(data["data"]));
             setSignInUser({ email: "", password: "" });
             setEmailError("");
@@ -107,6 +107,8 @@ export default function Page() {
 
             if (response.ok) {
               toast.success(`${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`);
+              setSignUpUser({ name:"", email: "", password: "", confirmPassword: ""});
+              setEmailError("");
               const resp = await Mail({
                 to: signUpUser.email,
                 subject: ` Welcome to EventSphere, ${signUpUser.name}! 🚀`,
@@ -124,13 +126,7 @@ export default function Page() {
               <p>Best regards,</p>
               <p><strong>The EventSpher Team</strong></p>`,
               });
-              setSignUpUser({
-                name: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-              });
-              setEmailError("");
+              
             } else {
               toast.error(data.message);
             }

@@ -2,10 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import { Mail } from "../lib/send-mail";
+import { toast } from "react-toastify";
 
 const benefits = [
   {
@@ -44,9 +42,6 @@ export default function Page() {
   const [partnershipType, setPartnershipType] = useState("");
   const [detail, setDetail] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("success");
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
   const emailValidation = (email) => {
@@ -59,12 +54,6 @@ export default function Page() {
       setEmailError("Email is Invalid");
       setIsEmailValid(false);
     }
-  };
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
   };
 
   const handleSubmit = async (e) => {
@@ -92,8 +81,7 @@ export default function Page() {
         const result = await response.json();
 
         if (result.success) {
-          setAlertMessage("Form submitted successfully!");
-          setAlertSeverity("success");
+          toast.success("Form submitted successfully!");
           setFirstName("");
           setLastName("");
           setEmail("");
@@ -102,7 +90,6 @@ export default function Page() {
           setPartnershipType("");
           setDetail("");
           setIsChecked(false);
-          setOpen(true);
           setEmailError("")
           const fullName = `${firstName} ${lastName}`;
           const resp = await Mail({
@@ -120,18 +107,14 @@ export default function Page() {
             </p>`,
           });
         } else {
-          setAlertMessage("Submission failed. Please try again.");
-          setAlertSeverity("warning");
-          setOpen(true);
+          toast.error("Form not submitted!!!");
         }
       } catch (error) {
-        setAlertMessage("An error occurred. Please check your network.");
-        setAlertSeverity("error");
-        setOpen(true);
+        toast.error("An error occurred. Please check your network."); 
       }
     }
     else{
-      alert("First enter a valid email")
+      toast.error("First enter a valid email")
     }
   };
 
@@ -392,16 +375,6 @@ export default function Page() {
               </button>
             </div>
           </form>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert
-              onClose={handleClose}
-              severity={alertSeverity}
-              variant="filled"
-              sx={{ width: "100%" }}
-            >
-              {alertMessage}
-            </Alert>
-          </Snackbar>
         </div>
       </div>
     </div>

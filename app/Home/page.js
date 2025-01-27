@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Mail } from "../lib/send-mail";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const [emailError, setEmailError] = useState("");
@@ -24,6 +25,7 @@ export default function Home() {
     setEmailError("");
     setEmail("");
     if (emailError === "Email is valid") {
+      toast.success("Email sent Successfully!!!");
       const resp = await Mail({
         to: email,
         subject: `Thank You for visiting our site`,
@@ -317,7 +319,7 @@ export default function Home() {
             <div className="flex justify-center md:items-center gap-4 shadow-2xl py-7 px-5 md:py-6 md:px-6 rounded-xl">
               <div className="flex">
                 <Image
-                  src="/Images/TopEventImg1.png"
+                  src="/Images/TopEventImg2.png"
                   width={50}
                   height={50}
                   alt="Manager Image"
@@ -336,7 +338,7 @@ export default function Home() {
             <div className="flex justify-center md:items-center gap-4 shadow-2xl py-7 px-5 md:py-6 md:px-6 rounded-xl">
               <div className="flex">
                 <Image
-                  src="/Images/TopEventImg2.png"
+                  src="/Images/TopEventImg1.png"
                   width={50}
                   height={50}
                   alt="Manager Image"

@@ -3,15 +3,13 @@ import { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Mail } from "../lib/send-mail";
+import { toast } from "react-toastify";
 export default function Page() {
   const [fullName, setFullName] = useState("");
 
   const [email, setEmail] = useState("");
 
   const [message, setMessege] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("success");
-  const [open, setOpen] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
   const emailValidation = (email) => {
@@ -24,12 +22,6 @@ export default function Page() {
       setEmailError("Email is Invalid");
       setIsEmailValid(false);
     }
-  };
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,13 +43,11 @@ export default function Page() {
       const result = await response.json();
 
       if (result.success) {
-        setAlertMessage("Form submitted successfully!");
-        setAlertSeverity("success");
+        toast.success("Form submitted successfully!");
         setFullName("");
         setEmail("");
         setEmailError("");
         setMessege("");
-        setOpen(true);
         const resp = await Mail({
           to: email,
           subject: ` Thank You for Reaching Out, ${fullName}!`,
@@ -170,16 +160,6 @@ export default function Page() {
                 </button>
               </div>
             </form>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-              <Alert
-                onClose={handleClose}
-                severity={alertSeverity}
-                variant="filled"
-                sx={{ width: "100%" }}
-              >
-                {alertMessage}
-              </Alert>
-            </Snackbar>
           </div>
         </div>
       </div>

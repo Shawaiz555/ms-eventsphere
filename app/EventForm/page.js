@@ -1,16 +1,16 @@
 // page.js
 "use client";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import ImageUpload from "../Reuseable Components/ImageUpload";
 import { Mail } from "../lib/send-mail";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [event, setEvent] = useState({
     Name: "",
     EventTitle: "",
-    Email: "",
     Date: "",
     StartingTime: "",
     EndingTime: "",
@@ -20,32 +20,22 @@ export default function Page() {
     Status: "Pending",
   });
   const [imageFile, setImageFile] = useState([]);
-  const [emailError, setEmailError] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(null);
-
-  const emailValidation = (em) => {
-    setEvent({ ...event, Email: em });
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailPattern.test(em)) {
-      setEmailError("Email is valid");
-      setIsEmailValid(true);
-    } else {
-      setEmailError("Email is Invalid");
-      setIsEmailValid(false);
-    }
-  };
+  const [loginedUserEmail, setLoginedUserEmail] = useState("");
 
   const handleImageUpload = (file) => {
     setImageFile(file);
   };
 
+  useEffect(() => {
+    const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
+    setLoginedUserEmail(signedInUser?.email || "");
+  }, []);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (emailError === "Email is valid") {
+    
       if (
         event.Name &&
-        event.Email &&
         event.EventTitle &&
         event.StartingTime &&
         event.Date &&
@@ -54,10 +44,11 @@ export default function Page() {
         event.Location &&
         event.Description
       ) {
+        console.log(loginedUserEmail);
         try {
           const formData = new FormData();
           formData.append("name", event.Name);
-          formData.append("email", event.Email);
+          formData.append("email", loginedUserEmail);
           formData.append("eventTitle", event.EventTitle);
           formData.append("eventDate", event.Date);
           formData.append("eventStartingTime", event.StartingTime);
@@ -71,6 +62,8 @@ export default function Page() {
             formData.append("image", imageFile);
           }
 
+          console.log(formData);
+
           const response = await fetch("/Api/Events", {
             method: "POST",
             body: formData,
@@ -78,11 +71,10 @@ export default function Page() {
 
           const result = await response.json();
           if (response.ok) {
-            alert("Event Submitted successfully!");
+            toast.success("Event Submitted successfully!");
             setEvent({
               Name: "",
               EventTitle: "",
-              Email: "",
               Date: "",
               StartingTime: "",
               EndingTime: "",
@@ -93,28 +85,26 @@ export default function Page() {
             setImageFile(null);
             document.querySelector('input[type="file"]').value = null;
             setEmailError("");
-            const resp = await Mail({
-              to: event.Email,
+            await Mail({
+              to: loginedUserEmail,
               subject: `Thank You for Submitting Your Event, ${event.Name}! 🎉`,
               message: `<p>Dear ${event.Name},</p>
-              <p>We appreciate you taking the time to share your event, "<strong>${event.EventTitle}</strong>", with us on EventSpher.</p>
-              <p>Our team has received the details and will review them shortly. Once approved, your event will be published on our platform, making it accessible to our community of event enthusiasts.</p>
-              <p>If you have any additional details or updates to share, or if there’s an urgent concern, please don’t hesitate to reply to this email. We’re here to help.</p>
-              <p>Thank you for choosing EventSpher to showcase your event. We’re excited to help you reach a wider audience and make your event a success!</p>
-              <p>Best regards,</p>
-              <p><strong>The EventSpher Team</strong></p>
-              `,
+                <p>We appreciate you taking the time to share your event, "<strong>${event.EventTitle}</strong>", with us on EventSpher.</p>
+                <p>Our team has received the details and will review them shortly. Once approved, your event will be published on our platform, making it accessible to our community of event enthusiasts.</p>
+                <p>Thank you for choosing EventSpher to showcase your event. We’re excited to help you reach a wider audience and make your event a success!</p>
+                <p>Best regards,</p>
+                <p><strong>The EventSpher Team</strong></p>`,
             });
           } else {
             console.error(result);
-            alert("Failed to create event");
+            toast.error("Failed to create event");
           }
         } catch (error) {
           console.error("Error submitting event:", error);
-          alert("An error occurred while creating the event");
+          toast.error("An error occurred while creating the event");
         }
       }
-    }
+    
   };
 
   return (
@@ -152,15 +142,10 @@ export default function Page() {
                 type="email"
                 className="w-full"
                 variant="outlined"
-                value={event.Email}
-                onChange={(e) => emailValidation(e.target.value)}
+                value={loginedUserEmail}
+                disabled
                 required
               />
-              <p
-                className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
-              >
-                {emailError}
-              </p>
             </div>
             <div>
               <h1 className="mb-3 ml-1 font-semibold">Event Title:</h1>

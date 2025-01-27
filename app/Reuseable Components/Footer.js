@@ -1,8 +1,41 @@
 import Link from 'next/link';
 import { IconButton } from '@mui/material';
 import { Facebook, Instagram, Twitter } from '@mui/icons-material';
+import { useEffect, useState } from 'react';
+import { Mail } from "../lib/send-mail";
+import { toast } from "react-toastify";
 
 export default function Footer() {
+
+    const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  
+
+  useEffect(() => {
+    const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
+    setLoginedUserEmail(signedInUser?.email || "");
+  }, []);
+  
+
+  const sendMail = async (e) => {
+    e.preventDefault();
+    
+      toast.success("Email sent Successfully!!!");
+       await Mail({
+        to: loginedUserEmail,
+        subject: `Thank You for visiting our site`,
+        message: `<p>Dear </p>
+        <p>I hope you are well</p>
+        <h4>Thank you </h4>
+        <p>Best regards, <br>
+           <strong>Zain Imran</strong><br>
+           <strong>CTO</strong><br>
+           <strong>EventSphere</strong><br>
+           <strong>We will provide a demo to you as soon as possible</strong><br>
+           <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
+        </p>`,
+      });
+    
+  };
     return (
         <div className="w-full py-3 px-10 rounded-xl md:w-full grid justify-center grid-cols-1 gap-10 lg:gap-0 lg:grid-cols-3">
             <div>
@@ -80,9 +113,9 @@ export default function Footer() {
             <div>
                 <h1 className="text-center text-xl md:text-2xl font-bold tracking-wide">News Letter</h1>
                 <div className='mt-10'>
-                    <input type="text" placeholder='Enter the Email...' className='w-full text-black border-[1px] border-gray-300 rounded-lg px-3 py-2' />
+                    <input type="text" placeholder='Enter the Email...' className='w-full text-black border-[1px] border-gray-300 rounded-lg px-3 py-2' value={loginedUserEmail} disabled />
                     <div className='flex justify-end'>
-                        <button className='bg-black text-white px-7 py-3 tracking-wide font-semibold rounded-xl mt-4 hover:scale-95'>Get Demo</button>
+                        <button className='bg-black text-white px-7 py-3 tracking-wide font-semibold rounded-xl mt-4 hover:scale-95' onClick={sendMail}>Get Demo</button>
                     </div>
 
                 </div>

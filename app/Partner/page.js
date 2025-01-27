@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mail } from "../lib/send-mail";
 import { toast } from "react-toastify";
 
@@ -36,25 +36,19 @@ export default function Page() {
   };
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [partnershipType, setPartnershipType] = useState("");
   const [detail, setDetail] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [emailError, setEmailError] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(null);
-  const emailValidation = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setEmail(email); // Update email state
-    if (emailPattern.test(email)) {
-      setEmailError("Email is valid");
-      setIsEmailValid(true);
-    } else {
-      setEmailError("Email is Invalid");
-      setIsEmailValid(false);
-    }
-  };
+  
+  const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  
+
+  useEffect(() => {
+    const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
+    setLoginedUserEmail(signedInUser?.email || "");
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,13 +56,13 @@ export default function Page() {
     const partnerData = {
       firstName,
       lastName,
-      email,
+      email:loginedUserEmail,
       phoneNo,
       jobTitle,
       partnershipType,
       detail,
     };
-    if (emailError === "Email is valid") {
+    
       try {
         const response = await fetch("/Api/Partners", {
           method: "POST",
@@ -84,16 +78,14 @@ export default function Page() {
           toast.success("Form submitted successfully!");
           setFirstName("");
           setLastName("");
-          setEmail("");
           setPhoneNo("");
           setJobTitle("");
           setPartnershipType("");
           setDetail("");
           setIsChecked(false);
-          setEmailError("")
           const fullName = `${firstName} ${lastName}`;
-          const resp = await Mail({
-            to: email,
+           await Mail({
+            to: loginedUserEmail,
             subject: `Thank You for Your Interest in Partnering with Us, ${fullName}!`,
             message: `<p>Dear <strong>${fullName}</strong>,</p>
             <p>I hope this message finds you well.</p>
@@ -112,10 +104,7 @@ export default function Page() {
       } catch (error) {
         toast.error("An error occurred. Please check your network."); 
       }
-    }
-    else{
-      toast.error("First enter a valid email")
-    }
+    
   };
 
   return (
@@ -275,17 +264,13 @@ export default function Page() {
                 </label>
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => emailValidation(e.target.value)}
+                  value={loginedUserEmail}
+                  disabled
                   placeholder="Work email..."
                   className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 />
-                <p
-                  className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
-                >
-                  {emailError}
-                </p>
+                
               </div>
               {/* Phone Number */}
               <div>

@@ -1,37 +1,28 @@
 "use client";
-import { useState } from "react";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import { useEffect, useState } from "react";
 import { Mail } from "../lib/send-mail";
 import { toast } from "react-toastify";
 export default function Page() {
   const [fullName, setFullName] = useState("");
 
-  const [email, setEmail] = useState("");
-
   const [message, setMessege] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(null);
-  const emailValidation = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setEmail(email); // Update email state
-    if (emailPattern.test(email)) {
-      setEmailError("Email is valid");
-      setIsEmailValid(true);
-    } else {
-      setEmailError("Email is Invalid");
-      setIsEmailValid(false);
-    }
-  };
+  const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  
+
+  useEffect(() => {
+    const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
+    setLoginedUserEmail(signedInUser?.email || "");
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const ContactData = {
       fullName,
-      email,
+      email:loginedUserEmail,
       message,
     };
-    if (emailError === "Email is valid") {
+      console.log(ContactData.loginedUserEmail);
       const response = await fetch("/Api/Contact", {
         method: "POST",
         headers: {
@@ -45,28 +36,24 @@ export default function Page() {
       if (result.success) {
         toast.success("Form submitted successfully!");
         setFullName("");
-        setEmail("");
-        setEmailError("");
         setMessege("");
-        const resp = await Mail({
-          to: email,
+        await Mail({
+          to: loginedUserEmail,
           subject: ` Thank You for Reaching Out, ${fullName}!`,
           message: `<h1>Hello ${fullName},</h1>
-          <p>Thank you for getting in touch with us. We have received your message and our team will review it shortly. We’ll get back to you as soon as possible with a response.</p>
+          <p>Thank you for getting in touch with us. We have received your message:</p>
+          <p>"${message}"</p>
+          <p>Our team will review it shortly. We’ll get back to you as soon as possible with a response.</p>
           <p>If you have any additional details to share or urgent concerns, feel free to reply to this email. We're here to assist you!</p>
           <p>Best regards,</p>
-          <p><strong>The EventSpher Team</strong></p>`,
+          <p><strong>The EventSpher Team</strong></p>
+          `,
         });
       } else {
-        setAlertMessage("Submission failed. Please try again.");
-        setAlertSeverity("warning");
-        setOpen(true);
+        toast.error(result.message);
       }
-      console.log(resp);
-    }
-    else{
-      alert("First enter a valid email")
-    }
+      
+  
   };
   return (
     <div>
@@ -127,16 +114,12 @@ export default function Page() {
                   </label>
                   <input
                     type="email"
-                    value={email}
-                    onChange={(e) => emailValidation(e.target.value)}
+                    value={loginedUserEmail}
+                    disabled
                     className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
                     placeholder="Enter your email address"
                   />
-                  <p
-                  className={`text-md tracking-wider font-serif ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
-                >
-                  {emailError}
-                </p>
+                  
                 </div>
               </div>
               <div className="mt-6">

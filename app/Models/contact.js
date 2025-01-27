@@ -4,7 +4,7 @@ const ContactSchema = new Schema({
   fullName: { type: String, required: true },
   email: {
     type: String,
-    unique: true,
+    unique: false,
     required: [true, "Email is required"],
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,

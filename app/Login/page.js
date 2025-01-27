@@ -107,6 +107,7 @@ export default function Page() {
 
             if (response.ok) {
               toast.success(`${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`);
+              setIsSignUp(false);
               setSignUpUser({ name:"", email: "", password: "", confirmPassword: ""});
               setEmailError("");
               const resp = await Mail({

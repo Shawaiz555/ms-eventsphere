@@ -15,26 +15,33 @@ const transporter = nodemailer.createTransport({
     pass: SMTP_SERVER_PASSWORD,
   },
 });
-export async function Mail({ to, subject, messege }) {
+export async function Mail({ to, subject, message }) {
   try {
     const isVerified = await transporter.verify();
+    console.log("SMTP server verified:", isVerified);
   } catch (error) {
     console.error(
-      "Something Went Wrong",
+      "Something went wrong during SMTP verification:",
       SMTP_SERVER_USERNAME,
       SMTP_SERVER_PASSWORD,
       error
     );
     return;
   }
-  const info = await transporter.sendMail({
-    from: SMTP_SERVER_USERNAME,
-    to: to,
-    subject: subject,
-    html: messege,
-  });
 
-  console.log("Message Sent", info.messageId);
-  console.log("Mail sent to", to);
-  return info;
+  try {
+    const info = await transporter.sendMail({
+      from: SMTP_SERVER_USERNAME,
+      to: to,
+      subject: subject,
+      html: message,
+    });
+
+    console.log("Message Sent:", info.messageId);
+    console.log("Mail sent to:", to);
+    return info;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
 }

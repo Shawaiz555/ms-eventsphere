@@ -1,33 +1,25 @@
 "use client";
 import Image from "next/image";
 import { Mail } from "../lib/send-mail";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Home() {
-  const [emailError, setEmailError] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(null);
-  const [email, setEmail] = useState("");
-  const emailValidation = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setEmail(email); // Update email state
-    if (emailPattern.test(email)) {
-      setEmailError("Email is valid");
-      setIsEmailValid(true);
-    } else {
-      setEmailError("Email is Invalid");
-      setIsEmailValid(false);
-    }
-  };
+  const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  
+
+  useEffect(() => {
+    const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
+    setLoginedUserEmail(signedInUser?.email || "");
+  }, []);
+  
 
   const sendMail = async (e) => {
     e.preventDefault();
-    setEmailError("");
-    setEmail("");
-    if (emailError === "Email is valid") {
+    
       toast.success("Email sent Successfully!!!");
-      const resp = await Mail({
-        to: email,
+       await Mail({
+        to: loginedUserEmail,
         subject: `Thank You for visiting our site`,
         message: `<p>Dear </p>
         <p>I hope you are well</p>
@@ -40,7 +32,7 @@ export default function Home() {
            <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
         </p>`,
       });
-    }
+    
   };
 
   return (
@@ -70,10 +62,10 @@ export default function Home() {
           <div className="w-full lg:w-[55%] flex flex-col sm:flex-row sm:justify-center gap-3 px-7">
             <input
               type="email"
-              value={email}
-              onChange={(e) => emailValidation(e.target.value)}
+              value={loginedUserEmail}
+              disabled
               placeholder="Enter Your Email..."
-              className="w-full sm:w-[60%] rounded-xl px-5 py-3"
+              className="w-full sm:w-[60%] rounded-xl px-5 py-3 border border-black"
               required
             />
 
@@ -85,11 +77,6 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <p
-          className={`text-md tracking-wider font-serif text-center pb-6 pt-2 ${isEmailValid === true ? "text-green-500" : isEmailValid === false ? "text-red-500" : ""}`}
-        >
-          {emailError}
-        </p>
         <div>
           <h1 className="text-center text-3xl sm:text-4xl font-semibold mb-10">
             Sponsores:

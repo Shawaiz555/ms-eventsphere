@@ -57,7 +57,6 @@ export default function Page() {
           );
 
           const data = await response.json();
-          console.log(data["data"]);
 
           if (response.ok) {
             toast.success("Signed In Successfully!");
@@ -107,9 +106,7 @@ export default function Page() {
             const data = await response.json();
 
             if (response.ok) {
-              toast.success(
-                `${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`
-              );
+              toast.success(`${data.role === "admin" ? "Admin" : "User"} Registered Successfully!`);
               const resp = await Mail({
                 to: signUpUser.email,
                 subject: ` Welcome to EventSphere, ${signUpUser.name}! 🚀`,

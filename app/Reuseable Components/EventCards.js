@@ -129,8 +129,10 @@ export default function EventCards({ dashboard }) {
                                         <p className="mb-4"><b>Location:</b> {event.eventLocation}</p>
 
                                         <p className="mb-4"><b>Number Of Persons:</b> {event.noOfPerson}</p>
-
-                                        <p className="mb-1"><b>Status:</b> {event.status || "Pending"}</p>
+                                        {dashboard && (
+                                            <p className="mb-1"><b>Status:</b> {event.status || "Pending"}</p>
+                                        )}
+                                        
                                     </div>
                                 </CardContent>
                                 <CardActions className="flex justify-center gap-3 mb-3">

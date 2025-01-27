@@ -79,7 +79,7 @@ export default function Home() {
               onClick={sendMail}
               className="w-[45%] sm:w-[30%] md:w-[18%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-6 py-3 sm:py-1 rounded-2xl hover:scale-95 whitespace-nowrap flex items-center justify-center"
             >
-              click for magic
+              Click for Demo
             </button>
           </div>
         </div>

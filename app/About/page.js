@@ -64,7 +64,7 @@ export default function Page() {
                 alt={member.name}
                 width={200}
                 height={200}
-                className="w-full h-[70%] md:w-[40%] lg:w-[70%] rounded-xl mb-4"
+                className="w-full h-[70%] md:w-[40%] object-cover lg:w-[70%] rounded-xl mb-4"
               />
               <h2 className="text-md md:text-xl font-semibold">{member.name}</h2>
               <p className="text-sm">{member.role}</p>

@@ -49,7 +49,7 @@ const eventSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Published"], // Limit the status to these two values
+      enum: ["Pending", "Published","UnPublished"], // Limit the status to these three values
       default: "Pending",
     },
   },

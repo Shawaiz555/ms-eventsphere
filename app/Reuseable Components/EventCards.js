@@ -87,6 +87,24 @@ export default function EventCards({ dashboard }) {
         getEvents();
     };
 
+    const handleUnPublish = async (id) => {
+        const resp = await fetch(`/Api/Events?id=${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "UnPublished" }),
+        });
+
+        if (resp.ok) {
+            toast.success("Event UnPublished Successfully!");
+            setEvents((prev) =>
+                prev.map((event) =>
+                    event._id === id ? { ...event, status: "UnPublished" } : event
+                )
+            );
+        }
+        getEvents();
+    };
+
     return (
         <div>
             <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:px-10 my-10">
@@ -134,7 +152,7 @@ export default function EventCards({ dashboard }) {
                                         {dashboard && (
                                             <p className="mb-1"><b>Status:</b> {event.status || "Pending"}</p>
                                         )}
-                                        
+
                                     </div>
                                 </CardContent>
                                 <CardActions className="flex justify-center gap-3 mb-3">
@@ -155,6 +173,31 @@ export default function EventCards({ dashboard }) {
                                                 Delete
                                             </Button>
                                             {event.status === "Pending" && (
+                                                <div>
+                                                    <Button
+                                                        variant="contained"
+                                                        className="bg-black hover:scale-95"
+                                                        disabled={event.status === "Published"}
+                                                        onClick={() => handlePublish(event._id)}
+                                                    >
+                                                        Publish
+                                                    </Button>
+
+                                                </div>
+                                            )}
+                                            {event.status === "Published" && (
+                                                <div>
+                                                    <Button
+                                                        variant="contained"
+                                                        className="bg-black hover:scale-95"
+                                                        onClick={() => handleUnPublish(event._id)}
+                                                    >
+                                                        UnPublish
+                                                    </Button>
+                                                </div>
+                                            )}
+                                            {event.status === "UnPublished" && (
+                                                <div>
                                                 <Button
                                                     variant="contained"
                                                     className="bg-black hover:scale-95"
@@ -163,6 +206,8 @@ export default function EventCards({ dashboard }) {
                                                 >
                                                     Publish
                                                 </Button>
+
+                                            </div>
                                             )}
                                         </>
                                     )}

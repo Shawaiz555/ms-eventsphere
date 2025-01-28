@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 export default function Footer() {
 
-    const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  const [loginedUserEmail, setLoginedUserEmail] = useState("");
   
 
   useEffect(() => {

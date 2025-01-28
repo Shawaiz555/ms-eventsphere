@@ -13,6 +13,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
+import { toast } from "react-toastify";
 
 export default function EventCards({ dashboard }) {
     const [events, setEvents] = useState([]);
@@ -76,6 +77,7 @@ export default function EventCards({ dashboard }) {
         });
 
         if (resp.ok) {
+            toast.success("Event published Successfully!");
             setEvents((prev) =>
                 prev.map((event) =>
                     event._id === id ? { ...event, status: "Published" } : event

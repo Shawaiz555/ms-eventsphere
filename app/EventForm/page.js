@@ -30,61 +30,63 @@ export default function Page() {
     const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
     setLoginedUserEmail(signedInUser?.email || "");
   }, []);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-      if (
-        event.Name &&
-        event.EventTitle &&
-        event.StartingTime &&
-        event.Date &&
-        event.EndingTime &&
-        event.NumOfPerson &&
-        event.Location &&
-        event.Description
-      ) {
-        console.log(loginedUserEmail);
-        try {
-          const formData = new FormData();
-          formData.append("name", event.Name);
-          formData.append("email", loginedUserEmail);
-          formData.append("eventTitle", event.EventTitle);
-          formData.append("eventDate", event.Date);
-          formData.append("eventStartingTime", event.StartingTime);
-          formData.append("eventEndingTime", event.EndingTime);
-          formData.append("noOfPerson", event.NumOfPerson);
-          formData.append("eventLocation", event.Location);
-          formData.append("eventDescription", event.Description);
-          formData.append("status", event.Status); // Append status here
+    if (
+      event.Name &&
+      event.EventTitle &&
+      event.StartingTime &&
+      event.Date &&
+      event.EndingTime &&
+      event.NumOfPerson &&
+      event.Location &&
+      event.Description
+    ) {
+      try {
+        const formData = new FormData();
+        formData.append("name", event.Name);
+        formData.append("email", loginedUserEmail);
+        formData.append("eventTitle", event.EventTitle);
+        formData.append("eventDate", event.Date);
+        formData.append("eventStartingTime", event.StartingTime);
+        formData.append("eventEndingTime", event.EndingTime);
+        formData.append("noOfPerson", event.NumOfPerson);
+        formData.append("eventLocation", event.Location);
+        formData.append("eventDescription", event.Description);
+        formData.append("status", event.Status); // Append status here
 
-          if (imageFile) {
-            formData.append("image", imageFile);
-          }
+        if (imageFile) {
+          formData.append("image", imageFile);
+        }
 
-          console.log(formData);
+        console.log(formData);
 
-          const response = await fetch("/Api/Events", {
-            method: "POST",
-            body: formData,
+        const response = await fetch("/Api/Events", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+          toast.success("Event Submitted successfully!");
+          setEvent({
+            Name: "",
+            EventTitle: "",
+            Date: "",
+            StartingTime: "",
+            EndingTime: "",
+            NumOfPerson: "",
+            Location: "",
+            Description: "",
+            Status: "Pending",
           });
-
-          const result = await response.json();
-          if (response.ok) {
-            toast.success("Event Submitted successfully!");
-            setEvent({
-              Name: "",
-              EventTitle: "",
-              Date: "",
-              StartingTime: "",
-              EndingTime: "",
-              NumOfPerson: "",
-              Location: "",
-              Description: "",
-            });
-            setImageFile(null);
-            document.querySelector('input[type="file"]').value = null;
-            setEmailError("");
+          setImageFile(null);
+          document.querySelector('input[type="file"]').value = null;
+          
+          try {
             await Mail({
               to: loginedUserEmail,
               subject: `Thank You for Submitting Your Event, ${event.Name}! 🎉`,
@@ -95,16 +97,19 @@ export default function Page() {
                 <p>Best regards,</p>
                 <p><strong>The EventSpher Team</strong></p>`,
             });
-          } else {
-            console.error(result);
-            toast.error("Failed to create event");
+          } catch (mailError) {
+            console.error("Error sending mail:", mailError);
+            toast.error("Event submitted but email notification failed.");
           }
-        } catch (error) {
-          console.error("Error submitting event:", error);
-          toast.error("An error occurred while creating the event");
+        } else {
+          console.error(result);
+          toast.error("Failed to create event");
         }
+      } catch (error) {
+        console.error("Error submitting event:", error);
+        toast.error("An error occurred while creating the event");
       }
-    
+    }
   };
 
   return (

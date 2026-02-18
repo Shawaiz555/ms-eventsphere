@@ -2,14 +2,258 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   GLOBAL THEME SYSTEM — MS-EventSphere
+   Deep Space Dark Theme
+
+   To switch themes: only edit the CSS variables in :root
+   All pages use these tokens via Tailwind custom classes
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* === COLOR PALETTE === */
+  --color-bg: #030712;              /* Deep space black */
+  --color-surface: #0f172a;         /* Dark navy card bg */
+  --color-surface-2: #1e293b;       /* Slightly lighter surface */
+  --color-surface-3: #162032;       /* Mid-level surface */
+
+  /* Accent Colors */
+  --color-primary: #60a5fa;         /* Electric blue */
+  --color-primary-dark: #3b82f6;    /* Deeper blue */
+  --color-accent: #06b6d4;          /* Cyan */
+  --color-accent-2: #8b5cf6;        /* Purple */
+  --color-accent-3: #f472b6;        /* Pink (sparingly) */
+
+  /* Text */
+  --color-text-primary: #f1f5f9;    /* Near white */
+  --color-text-muted: #94a3b8;      /* Slate gray */
+  --color-text-faint: #475569;      /* Very muted */
+
+  /* Borders & Effects */
+  --color-border: rgba(96, 165, 250, 0.15);
+  --color-border-bright: rgba(96, 165, 250, 0.4);
+  --color-glow: rgba(96, 165, 250, 0.2);
+
+  /* === GRADIENTS === */
+  --gradient-hero: linear-gradient(135deg, #030712 0%, #0f172a 50%, #1a0a2e 100%);
+  --gradient-card: linear-gradient(145deg, #0f172a, #1e293b);
+  --gradient-button: linear-gradient(135deg, #3b82f6, #06b6d4);
+  --gradient-button-hover: linear-gradient(135deg, #2563eb, #0891b2);
+  --gradient-section: linear-gradient(180deg, #030712 0%, #0f172a 100%);
+  --gradient-text: linear-gradient(135deg, #60a5fa, #06b6d4);
+  --gradient-accent: linear-gradient(135deg, #8b5cf6, #60a5fa);
+  --gradient-glow-overlay: linear-gradient(135deg, rgba(96,165,250,0.05), rgba(6,182,212,0.05));
+
+  /* === LEGACY (keep for Tailwind built-in bg/text) === */
+  --background: #030712;
+  --foreground: #f1f5f9;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+/* Glassmorphism card */
+.glass {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(96, 165, 250, 0.15);
+}
+
+.glass-light {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+/* Gradient text */
+.text-gradient {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient button */
+.btn-gradient {
+  background: var(--gradient-button);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gradient:hover {
+  background: var(--gradient-button-hover);
+  box-shadow: 0 0 20px rgba(96, 165, 250, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-gradient:hover::after {
+  opacity: 1;
+}
+
+/* Glow border input */
+.input-glow {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  color: #f1f5f9;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-glow::placeholder {
+  color: #475569;
+}
+
+.input-glow:focus {
+  outline: none;
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+/* Glowing card hover */
+.card-glow {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-glow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(96, 165, 250, 0.2);
+}
+
+/* Gradient top border for cards */
+.border-gradient-top {
+  position: relative;
+}
+
+.border-gradient-top::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-button);
+  border-radius: 1rem 1rem 0 0;
+}
+
+/* Animated mesh background */
+.mesh-bg {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(at 20% 25%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+    radial-gradient(at 80% 75%, rgba(139, 92, 246, 0.06) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.04) 0px, transparent 60%);
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Section divider glow */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(96,165,250,0.3), transparent);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.5);
+}
+
+/* MUI overrides for dark theme */
+.MuiInputBase-root {
+  color: #f1f5f9 !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: rgba(96, 165, 250, 0.2) !important;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(96, 165, 250, 0.4) !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(96, 165, 250, 0.6) !important;
+}
+
+.MuiInputLabel-root {
+  color: #94a3b8 !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #60a5fa !important;
+}
+
+.MuiInputBase-input {
+  color: #f1f5f9 !important;
+}
+
+/* Toast dark theme override */
+.Toastify__toast {
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(96, 165, 250, 0.2) !important;
 }

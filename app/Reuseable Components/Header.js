@@ -1,17 +1,19 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function Header({ toggleSidebar }) {
   const [signedInUser, setSignedInUser] = useState(null);
-
   const route = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem('signedInUser');
+    localStorage.removeItem("signedInUser");
     setSignedInUser(null);
     route.push("/");
-  }
+  };
 
   useEffect(() => {
     // Access localStorage inside useEffect
@@ -22,44 +24,124 @@ export default function Header({ toggleSidebar }) {
   }, []);
 
   return (
-    <div className="w-full flex flex-col lg:flex-row px-5 border-[1px] border-gray-100 py-2 bg-gray-50">
-      <div className="w-full lg:w-[50%] flex items-center">
-        {/* Toggle Button for Small and Medium Devices */}
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "12px 24px",
+        background: "rgba(15, 23, 42, 0.95)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(96, 165, 250, 0.1)",
+        gap: "16px",
+      }}
+    >
+      {/* Left: Toggle + Search */}
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", flex: 1 }}>
+        {/* Sidebar toggle (mobile) */}
         <button
           onClick={toggleSidebar}
-          className="py-2 px-5 bg-black text-white rounded mr-4 mt-1 lg:hidden"
+          style={{
+            padding: "9px",
+            background: "rgba(96,165,250,0.08)",
+            border: "1px solid rgba(96,165,250,0.15)",
+            borderRadius: "8px",
+            cursor: "pointer",
+            color: "#60a5fa",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
+          }}
+          className="lg:hidden"
         >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M2 5h16v2H2V5zm0 6h16v2H2v-2zm0 6h16v2H2v-2z" />
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <rect x="1" y="3" width="16" height="2" rx="1" fill="currentColor"/>
+            <rect x="1" y="8" width="16" height="2" rx="1" fill="currentColor"/>
+            <rect x="1" y="13" width="16" height="2" rx="1" fill="currentColor"/>
           </svg>
         </button>
-        <input
-          type="text"
-          placeholder="Search..."
-          name="search"
-          className="w-full lg:w-[70%] mt-1 text-black border-[1px] border-gray-200 px-5 py-2 rounded-md"
-        />
-      </div>
-     
-        <div className="w-full lg:w-[50%]">
-        {signedInUser ? (
-          <div className="w-full flex gap-3 justify-center lg:justify-around py-1">
-            <div className="flex items-center">
-              <h1 className="tracking-wide">
-                <b>Email :</b> {signedInUser.email || "User Not Signed In"}
-              </h1>
-            </div>
-            <div>
-              <button className="bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95" onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
-          </div>
-          ) : (<div className="flex items-center font-semibold">
-            <p>No Admin Signed In!!!</p>
-          </div>)}
+
+        {/* Search */}
+        <div style={{ position: "relative", maxWidth: "360px", flex: 1 }}>
+          <SearchIcon
+            sx={{
+              position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)",
+              color: "#64748b", fontSize: "1.1rem",
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Search..."
+            name="search"
+            style={{
+              width: "100%",
+              background: "rgba(3, 7, 18, 0.6)",
+              border: "1px solid rgba(96,165,250,0.15)",
+              borderRadius: "10px",
+              padding: "9px 16px 9px 38px",
+              color: "#f1f5f9",
+              fontSize: "0.875rem",
+              outline: "none",
+              transition: "border-color 0.3s",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = "rgba(96,165,250,0.4)")}
+            onBlur={(e) => (e.target.style.borderColor = "rgba(96,165,250,0.15)")}
+          />
         </div>
-      
+      </div>
+
+      {/* Right: User info */}
+      <div>
+        {signedInUser ? (
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{
+              display: "flex", alignItems: "center", gap: "8px",
+              background: "rgba(96,165,250,0.06)",
+              border: "1px solid rgba(96,165,250,0.12)",
+              borderRadius: "8px", padding: "7px 14px",
+            }}>
+              <PersonOutlineIcon sx={{ color: "#60a5fa", fontSize: "1rem" }} />
+              <span style={{ color: "#94a3b8", fontSize: "0.8rem", maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {signedInUser.email || "Admin"}
+              </span>
+            </div>
+            <button
+              onClick={handleLogout}
+              style={{
+                display: "flex", alignItems: "center", gap: "6px",
+                background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+                border: "none",
+                borderRadius: "8px", padding: "8px 16px",
+                color: "#fff", fontSize: "0.8rem", fontWeight: 600,
+                cursor: "pointer", transition: "all 0.3s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "linear-gradient(135deg, #2563eb, #0891b2)";
+                e.currentTarget.style.boxShadow = "0 0 12px rgba(96,165,250,0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "linear-gradient(135deg, #3b82f6, #06b6d4)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <LogoutIcon sx={{ fontSize: "0.9rem" }} />
+              Logout
+            </button>
+          </div>
+        ) : (
+          <div style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            background: "rgba(96,165,250,0.04)",
+            border: "1px solid rgba(96,165,250,0.1)",
+            borderRadius: "8px", padding: "7px 14px",
+          }}>
+            <PersonOutlineIcon sx={{ color: "#64748b", fontSize: "1rem" }} />
+            <span style={{ color: "#64748b", fontSize: "0.8rem" }}>No Admin Signed In</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

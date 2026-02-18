@@ -103,28 +103,69 @@ export default function page() {
     }, []);
 
     return (
-        <div>
-            <div>
+        <div style={{ background: "var(--color-bg)", minHeight: "100vh" }}>
+
+            {/* Stat Cards */}
+            <div style={{ padding: "8px 0 0" }}>
                 <Cards />
             </div>
-            <div className="mb-5 px-8">
-                <div className="mt-10">
-                    <h1 className="text-2xl lg:text-4xl text-center font-bold tracking-wide">Analytics</h1>
+
+            {/* Analytics Section */}
+            <div style={{ padding: "32px 24px 60px" }}>
+                <div style={{ marginBottom: "32px" }}>
+                    <p style={{ color: "#94a3b8", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "8px" }}>
+                        DATA
+                    </p>
+                    <h2 style={{
+                        fontSize: "1.8rem", fontWeight: 700,
+                        background: "linear-gradient(135deg, #f1f5f9, #94a3b8)",
+                        WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                    }}>
+                        Analytics
+                    </h2>
                 </div>
 
-                <div className='w-full lg:w-[100%] flex justify-center mt-10'>
-                    <div className='w-full lg:w-[80%] flex justify-center border-[1px] border-gray-300 rounded-xl'>
+                <div
+                    style={{
+                        background: "linear-gradient(145deg, #0f172a, #1e293b)",
+                        border: "1px solid rgba(96,165,250,0.12)",
+                        borderRadius: "16px",
+                        overflow: "hidden",
+                    }}
+                >
+                    <div style={{ height: "2px", background: "linear-gradient(90deg, #3b82f6, #06b6d4, #8b5cf6)" }} />
+                    <div style={{ padding: "20px 24px 8px" }}>
+                        <p style={{ color: "#94a3b8", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "4px" }}>
+                            EVENTS
+                        </p>
+                        <h3 style={{ color: "#f1f5f9", fontWeight: 700, fontSize: "1rem" }}>
+                            Daily &amp; Cumulative Events This Month
+                        </h3>
+                    </div>
+                    <div style={{ padding: "8px 16px 24px" }}>
                         {analyticsData && (
                             <ScatterChart
                                 dataset={analyticsData.series[0].data} // Default dataset
                                 series={analyticsData.series} // Include both daily and cumulative events
                                 {...chartSetting}
+                                sx={{
+                                    ...chartSetting.sx,
+                                    width: "100%",
+                                    "& .MuiChartsAxis-line": { stroke: "rgba(96,165,250,0.15)" },
+                                    "& .MuiChartsAxis-tick": { stroke: "rgba(96,165,250,0.15)" },
+                                    "& .MuiChartsAxis-label": { fill: "#94a3b8" },
+                                    "& .MuiChartsAxis-tickLabel": { fill: "#94a3b8" },
+                                    "& .MuiScatterElement-root": { fill: "#60a5fa" },
+                                    "& .MuiChartsLegend-label": { fill: "#94a3b8" },
+                                    background: "transparent",
+                                }}
                                 className="w-full"
                             />
                         )}
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }

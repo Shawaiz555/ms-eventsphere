@@ -9,208 +9,465 @@ import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import CloseIcon from "@mui/icons-material/Close";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LogoutIcon from "@mui/icons-material/Logout";
+import HomeIcon from "@mui/icons-material/Home";
+import InfoIcon from "@mui/icons-material/Info";
+import EventIcon from "@mui/icons-material/Event";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import GroupsIcon from "@mui/icons-material/Groups";
 
-// Pages and Settings
-const pages = ["Home", "About", "Events", "Contact", "EventForm"];
+const pages = [
+  { name: "Home", path: "/Home", Icon: HomeIcon },
+  { name: "About", path: "/About", Icon: InfoIcon },
+  { name: "Events", path: "/Events", Icon: EventIcon },
+  { name: "Contact", path: "/Contact", Icon: ContactMailIcon },
+  { name: "EventForm", path: "/EventForm", Icon: AddCircleOutlineIcon },
+  { name: "Partner", path: "/Partner", Icon: GroupsIcon },
+];
 
 function ResponsiveAppBar() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [signedInUser, setSignedInUser] = useState(null);
-    const router = useRouter();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [signedInUser, setSignedInUser] = useState(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
-    // Sidebar Handlers
-    const handleToggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleNavigate = (path) => {
+    setIsSidebarOpen(false);
+    router.push(path);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("signedInUser");
+    setSignedInUser(null);
+    router.push("/");
+  };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("signedInUser"));
+    if (user) {
+      setSignedInUser(user);
+    }
+  }, [setSignedInUser]);
+
+  // Close mobile sidebar on ESC key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setIsSidebarOpen(false);
     };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
-    const handleNavigate = (page) => {
-        setIsSidebarOpen(false); // Close the sidebar after navigation
-        router.push(`/${page}`);
-    };
+  return (
+    <>
+      <AppBar
+        position="fixed"
+        sx={{
+          background: "rgba(3, 7, 18, 0.90)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderBottom: "1px solid rgba(96, 165, 250, 0.12)",
+          boxShadow: "0 4px 24px rgba(0, 0, 0, 0.4)",
+        }}
+      >
+        <Container maxWidth="xl" className="px-5 lg:px-10">
+          <Toolbar sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
+            {/* Logo */}
+            <Box
+              component="a"
+              href="/"
+              sx={{ display: "flex", alignItems: "center", flexShrink: 0, textDecoration: "none" }}
+            >
+              <Image
+                src="/Icons/ProjectLogo.png"
+                width={140}
+                height={56}
+                alt="MS-EventSphere Logo"
+                className="w-24 h-24"
+              />
+            </Box>
 
-    const handleLogout = ()=>{
-        localStorage.removeItem('signedInUser');
-        setSignedInUser(null);
-        router.push("/");
-   }
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('signedInUser'));
-        if (user) {
-            setSignedInUser(user);
-        }
-    },[setSignedInUser])
-
-    return (
-        <AppBar position="fixed" className="bg-[#fff000] py-1 shadow-sm">
-            <Container maxWidth="xl">
-                <Toolbar className="flex justify-between gap-5">
-                    {/* Logo */}
-                    <Image
-                        src="/Icons/ProjectLogo.png"
-                        width={30}
-                        height={30}
-                        alt="Project image"
-                        className="w-[55px] h-[55px] lg:w-[65px] lg:h-[65px] rounded-[100%]"
-                    />
-
-                    {/* Title */}
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: "none", md: "flex" },
-                            fontFamily: "Times New Roman",
-                            fontWeight: 700,
-                            letterSpacing: ".1rem",
-                            color: "black",
-                            textDecoration: "none",
-                        }}
-                    >
-                        MS-EventSphere
-                    </Typography>
-
-                    {/* Mobile Sidebar Toggle Button */}
-                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="toggle sidebar"
-                            onClick={handleToggleSidebar}
-                            color="black"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    </Box>
-
-                    {/* Desktop Menu */}
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            display: {
-                                xs: "none",
-                                md: "flex",
-                                justifyContent: "center",
-                                gap: "40px",
-                            },
-                        }}
-                    >
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={() => router.push(`/${page}`)}
-                                sx={{
-                                    my: 2,
-                                    color: router.pathname === `/${page}` ? "blue" : "black",
-                                    display: "block",
-                                    letterSpacing: "1px",
-                                    font: "small",
-                                }}
-                                className="hover:scale-95"
-                            >
-                                {page.replace("-", " ").toUpperCase()}
-                            </Button>
-                        ))}
-                    </Box>
-                    <div>
-                        <div>
-                            {signedInUser ? (
-                                <div className="flex gap-4 items-center">
-                                 <p className="text-black"><b>Email :</b> {signedInUser.email}</p>
-                                <button className="bg-black text-white px-8 py-2 rounded-xl tracking-wider hover:scale-95" onClick={handleLogout}>
-                                    Logout
-                                </button>
-                                </div>
-                                
-                            ) : <div className="flex items-center text-black font-semibold">
-                                    <p>No User Signed In!!!</p>
-                                </div>}
-                        </div>
-
-                    </div>
-                </Toolbar>
-            </Container>
-
-            {/* Sidebar */}
-            {isSidebarOpen && (
-                <Box
+            {/* Desktop Nav Links */}
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", md: "flex" },
+                justifyContent: "center",
+                gap: "4px",
+              }}
+            >
+              {pages.map((page) => {
+                const isActive = pathname === page.path || (page.path !== "/" && pathname?.startsWith(page.path));
+                return (
+                  <Button
+                    key={page.name}
+                    onClick={() => router.push(page.path)}
                     sx={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        height: "100%",
-                        width: "300px",
-                        boxShadow: "2px 0px 5px rgba(0, 0, 0, 0.3)",
-                        zIndex: 1300,
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: "20px",
-                        transform: isSidebarOpen ? "translateX(0)" : "translateX(-100%)",
-                        transition: "transform 0.3s ease-in-out",
+                      color: isActive ? "#60a5fa" : "#94a3b8",
+                      fontSize: "0.8rem",
+                      letterSpacing: "0.04em",
+                      fontWeight: isActive ? 600 : 500,
+                      px: 1.5,
+                      py: 1,
+                      borderRadius: "8px",
+                      position: "relative",
+                      textTransform: "none",
+                      transition: "all 0.2s ease",
+                      background: isActive ? "rgba(96,165,250,0.08)" : "transparent",
+                      "&:hover": {
+                        color: "#60a5fa",
+                        background: "rgba(96, 165, 250, 0.08)",
+                      },
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 4,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: isActive ? "60%" : "0%",
+                        height: "2px",
+                        background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+                        borderRadius: "2px",
+                        transition: "width 0.3s ease",
+                      },
+                      "&:hover::after": {
+                        width: "60%",
+                      },
                     }}
-                    className="bg-[#fff000]"
-                >
-                    {/* Sidebar Header: Logo and Title */}
-                    <Box
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                            marginBottom: "20px", // Add space below the header
-                        }}
-                    >
-                        <Image
-                            src="/Icons/ProjectLogo.png"
-                            width={30}
-                            height={30}
-                            alt="Project Logo"
-                            className="w-[55px] h-[55px] lg:w-[65px] lg:h-[65px] rounded-[100%]"
-                        />
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            sx={{
-                                fontFamily: "Times New Roman",
-                                fontWeight: 700,
-                                letterSpacing: ".1rem",
-                                color: "black",
-                            }}
-                        >
-                            MS-EventSphere
-                        </Typography>
-                    </Box>
+                  >
+                    {page.name === "EventForm" ? "Create Event" : page.name}
+                  </Button>
+                );
+              })}
+            </Box>
 
-                    {/* Close Button */}
-                    <IconButton
-                        onClick={handleToggleSidebar}
-                        sx={{ alignSelf: "flex-end", marginBottom: "20px" }}
+            {/* Right side: User + Logout + Mobile hamburger */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {/* User info (desktop) */}
+              {signedInUser ? (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Box
+                    sx={{
+                      display: { xs: "none", sm: "flex" },
+                      alignItems: "center",
+                      gap: 1,
+                      background: "rgba(96, 165, 250, 0.08)",
+                      border: "1px solid rgba(96, 165, 250, 0.15)",
+                      borderRadius: "8px",
+                      px: 1.5,
+                      py: 0.75,
+                    }}
+                  >
+                    <PersonOutlineIcon sx={{ color: "#60a5fa", fontSize: "1rem" }} />
+                    <Typography
+                      sx={{
+                        color: "#94a3b8",
+                        fontSize: "0.78rem",
+                        maxWidth: "160px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
                     >
-                        <CloseIcon />
-                    </IconButton>
-
-                    {/* Sidebar Links */}
-                    {pages.map((page) => (
-                        <Button
-                            key={page}
-                            onClick={() => handleNavigate(page)}
-                            sx={{
-                                textAlign: "center",
-                                color: "black",
-                                padding: "10px 0",
-                                justifyContent: "flex-center",
-                            }}
-                        >
-                            {page.replace("-", " ").toUpperCase()}
-                        </Button>
-                    ))}
+                      {signedInUser.email}
+                    </Typography>
+                  </Box>
+                  <Button
+                    onClick={handleLogout}
+                    startIcon={<LogoutIcon sx={{ fontSize: "0.9rem" }} />}
+                    sx={{
+                      display: { xs: "none", md: "flex" },
+                      background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+                      color: "#fff",
+                      fontSize: "0.78rem",
+                      fontWeight: 600,
+                      px: 2,
+                      py: 0.75,
+                      borderRadius: "8px",
+                      textTransform: "none",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        background: "linear-gradient(135deg, #2563eb, #0891b2)",
+                        boxShadow: "0 0 16px rgba(96, 165, 250, 0.35)",
+                        transform: "translateY(-1px)",
+                      },
+                    }}
+                  >
+                    Logout
+                  </Button>
                 </Box>
-            )}
-        </AppBar>
-    );
+              ) : (
+                <Box
+                  sx={{
+                    display: { xs: "none", sm: "flex" },
+                    alignItems: "center",
+                    gap: 1,
+                    background: "rgba(96, 165, 250, 0.06)",
+                    border: "1px solid rgba(96, 165, 250, 0.12)",
+                    borderRadius: "8px",
+                    px: 1.5,
+                    py: 0.75,
+                  }}
+                >
+                  <PersonOutlineIcon sx={{ color: "#64748b", fontSize: "1rem" }} />
+                  <Typography sx={{ color: "#64748b", fontSize: "0.78rem" }}>
+                    Not signed in
+                  </Typography>
+                </Box>
+              )}
+
+              {/* Mobile hamburger */}
+              <IconButton
+                size="large"
+                aria-label="open menu"
+                onClick={handleToggleSidebar}
+                sx={{
+                  display: { xs: "flex", md: "none" },
+                  color: isSidebarOpen ? "#60a5fa" : "#94a3b8",
+                  background: isSidebarOpen ? "rgba(96,165,250,0.1)" : "transparent",
+                  border: "1px solid",
+                  borderColor: isSidebarOpen ? "rgba(96,165,250,0.3)" : "rgba(96,165,250,0.15)",
+                  borderRadius: "10px",
+                  width: "40px",
+                  height: "40px",
+                  "&:hover": {
+                    background: "rgba(96, 165, 250, 0.1)",
+                    borderColor: "rgba(96,165,250,0.3)",
+                    color: "#60a5fa",
+                  },
+                }}
+              >
+                {isSidebarOpen ? <CloseIcon sx={{ fontSize: "1.2rem" }} /> : <MenuIcon sx={{ fontSize: "1.2rem" }} />}
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <Box
+          onClick={handleToggleSidebar}
+          sx={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.6)",
+            backdropFilter: "blur(4px)",
+            zIndex: 1299,
+            display: { xs: "block", md: "none" },
+          }}
+        />
+      )}
+
+      {/* Mobile Sidebar Drawer */}
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          right: 0,
+          height: "100%",
+          width: "300px",
+          background: "#030712",
+          borderLeft: "1px solid rgba(96, 165, 250, 0.15)",
+          boxShadow: "-8px 0 40px rgba(0, 0, 0, 0.7)",
+          zIndex: 1300,
+          display: { xs: "flex", md: "none" },
+          flexDirection: "column",
+          transform: isSidebarOpen ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
+        {/* Drawer Header */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "20px 20px 16px",
+            borderBottom: "1px solid rgba(96,165,250,0.1)",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Image
+              src="/Icons/ProjectLogo.png"
+              width={130}
+              height={52}
+              alt="MS-EventSphere Logo"
+              className="w-24 h-24"
+            />
+          </Box>
+          <IconButton
+            onClick={handleToggleSidebar}
+            sx={{
+              color: "#94a3b8",
+              background: "rgba(96,165,250,0.06)",
+              border: "1px solid rgba(96,165,250,0.12)",
+              borderRadius: "8px",
+              width: "34px",
+              height: "34px",
+              "&:hover": {
+                color: "#60a5fa",
+                background: "rgba(96, 165, 250, 0.12)",
+                borderColor: "rgba(96,165,250,0.25)",
+              },
+            }}
+          >
+            <CloseIcon sx={{ fontSize: "1rem" }} />
+          </IconButton>
+        </Box>
+
+        {/* Nav label */}
+        <Box sx={{ padding: "16px 20px 8px" }}>
+          <Typography sx={{ color: "#64748b", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+            Navigation
+          </Typography>
+        </Box>
+
+        {/* Drawer Nav Links */}
+        <Box sx={{ flex: 1, padding: "4px 12px", overflowY: "auto" }}>
+          {pages.map((page) => {
+            const isActive = pathname === page.path || (page.path !== "/" && pathname?.startsWith(page.path));
+            const { Icon } = page;
+            return (
+              <Box
+                key={page.name}
+                onClick={() => handleNavigate(page.path)}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  padding: "12px 14px",
+                  borderRadius: "10px",
+                  marginBottom: "4px",
+                  cursor: "pointer",
+                  color: isActive ? "#60a5fa" : "#94a3b8",
+                  background: isActive
+                    ? "rgba(96,165,250,0.1)"
+                    : "transparent",
+                  border: isActive
+                    ? "1px solid rgba(96,165,250,0.2)"
+                    : "1px solid transparent",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    color: "#60a5fa",
+                    background: "rgba(96,165,250,0.08)",
+                    borderColor: "rgba(96,165,250,0.15)",
+                    paddingLeft: "18px",
+                  },
+                }}
+              >
+                <Icon sx={{ fontSize: "1.1rem", color: "inherit", flexShrink: 0 }} />
+                <Typography sx={{ fontSize: "0.9rem", fontWeight: isActive ? 600 : 500, color: "inherit" }}>
+                  {page.name === "EventForm" ? "Create Event" : page.name}
+                </Typography>
+                {isActive && (
+                  <Box
+                    sx={{
+                      marginLeft: "auto",
+                      width: "6px",
+                      height: "6px",
+                      borderRadius: "50%",
+                      background: "#60a5fa",
+                      boxShadow: "0 0 8px rgba(96,165,250,0.6)",
+                    }}
+                  />
+                )}
+              </Box>
+            );
+          })}
+        </Box>
+
+        {/* Bottom: user info + logout */}
+        <Box
+          sx={{
+            padding: "16px 16px 24px",
+            borderTop: "1px solid rgba(96,165,250,0.1)",
+          }}
+        >
+          {signedInUser ? (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "12px 14px",
+                  background: "rgba(96,165,250,0.06)",
+                  border: "1px solid rgba(96,165,250,0.12)",
+                  borderRadius: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                <PersonOutlineIcon sx={{ color: "#60a5fa", fontSize: "1.1rem", flexShrink: 0 }} />
+                <Typography
+                  sx={{
+                    color: "#94a3b8",
+                    fontSize: "0.78rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {signedInUser.email}
+                </Typography>
+              </Box>
+              <Box
+                onClick={handleLogout}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  padding: "12px",
+                  background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  "&:hover": {
+                    boxShadow: "0 0 20px rgba(96,165,250,0.35)",
+                    opacity: 0.9,
+                  },
+                }}
+              >
+                <LogoutIcon sx={{ color: "#fff", fontSize: "1rem" }} />
+                <Typography sx={{ color: "#fff", fontWeight: 600, fontSize: "0.875rem" }}>
+                  Sign Out
+                </Typography>
+              </Box>
+            </>
+          ) : (
+            <Box
+              onClick={() => { setIsSidebarOpen(false); router.push("/Login"); }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                padding: "12px",
+                background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+                borderRadius: "10px",
+                cursor: "pointer",
+                "&:hover": { opacity: 0.9 },
+              }}
+            >
+              <PersonOutlineIcon sx={{ color: "#fff", fontSize: "1rem" }} />
+              <Typography sx={{ color: "#fff", fontWeight: 600, fontSize: "0.875rem" }}>
+                Sign In
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </Box>
+    </>
+  );
 }
 
 export default ResponsiveAppBar;

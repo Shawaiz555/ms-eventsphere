@@ -3,25 +3,25 @@ import Image from "next/image";
 import { Mail } from "../lib/send-mail";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import StarIcon from "@mui/icons-material/Star";
 
 export default function Home() {
   const [loginedUserEmail, setLoginedUserEmail] = useState("");
-  
 
   useEffect(() => {
     const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
     setLoginedUserEmail(signedInUser?.email || "");
   }, []);
-  
 
   const sendMail = async (e) => {
     e.preventDefault();
-    
-      toast.success("Email sent Successfully!!!");
-       await Mail({
-        to: loginedUserEmail,
-        subject: `Thank You for visiting our site`,
-        message: `<p>Dear </p>
+
+    toast.success("Email sent Successfully!!!");
+    await Mail({
+      to: loginedUserEmail,
+      subject: `Thank You for visiting our site`,
+      message: `<p>Dear </p>
         <p>I hope you are well</p>
         <h4>Thank you </h4>
         <p>Best regards, <br>
@@ -31,319 +31,534 @@ export default function Home() {
            <strong>We will provide a demo to you as soon as possible</strong><br>
            <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
         </p>`,
-      });
-    
+    });
   };
 
   return (
-    <div>
-      <div className="bg-[#fff000]">
-        <div className="flex justify-center py-20">
-          <div className="mt-10">
-            <p className="text-md sm:text-xl lg:text-xl text-center font-light tracking-wide">
-              The MS-EventSphere Experience OS: One platform for all of your B2B
-              events
-            </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif md:tracking-wider text-center mt-3">
-              Unlimited events for
-            </h1>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif md:tracking-wider text-center mt-3">
-              limitless event professionals
-            </h1>
-            <p className="text-md sm:text-xl lg:text-xl text-center mt-4 font-light tracking-wide">
-              Raise the bar with software that is easy to
-            </p>
-            <p className="text-md sm:text-xl lg:text-xl text-center mt-1 font-light tracking-wide">
-              customize and built to boost event ROI year-round.
-            </p>
+    <div style={{ background: "var(--color-bg)" }}>
+
+      {/* ── HERO SECTION ── */}
+      <section
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "120px 24px 80px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Full-screen background image */}
+        <Image
+          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1800&q=85"
+          fill
+          alt="Event hero background"
+          style={{ objectFit: "cover", objectPosition: "center" }}
+          priority
+        />
+
+        {/* Multi-layer dark overlay — stronger than other heroes */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(180deg, rgba(3,7,18,0.82) 0%, rgba(3,7,18,0.65) 50%, rgba(3,7,18,0.88) 100%)",
+        }} />
+        {/* Side vignette */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "radial-gradient(ellipse at center, transparent 30%, rgba(3,7,18,0.7) 100%)",
+        }} />
+
+        {/* Coloured glow accents over the image */}
+        <div style={{
+          position: "absolute", top: "15%", left: "5%",
+          width: "520px", height: "520px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+        <div style={{
+          position: "absolute", bottom: "10%", right: "5%",
+          width: "420px", height: "420px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+
+        {/* ── Content wrapper — sits above all overlays ── */}
+        <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+
+        {/* Badge */}
+        <div
+          style={{
+            display: "inline-flex", alignItems: "center", gap: "8px",
+            background: "rgba(59, 130, 246, 0.15)",
+            border: "1px solid rgba(96, 165, 250, 0.35)",
+            borderRadius: "100px", padding: "6px 16px",
+            marginBottom: "28px",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <span style={{
+            width: "6px", height: "6px", borderRadius: "50%",
+            background: "#60a5fa",
+            boxShadow: "0 0 8px rgba(96,165,250,0.8)",
+            display: "inline-block",
+            animation: "glowPulse 2s ease-in-out infinite",
+          }} />
+          <span style={{ color: "#60a5fa", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.08em" }}>
+            THE MS-EVENTSPHERE EXPERIENCE OS
+          </span>
+        </div>
+
+        {/* Headline */}
+        <h1
+          style={{
+            fontSize: "clamp(2.5rem, 6vw, 5rem)",
+            fontWeight: 800,
+            textAlign: "center",
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+            maxWidth: "900px",
+            marginBottom: "24px",
+          }}
+        >
+          <span style={{ color: "#f1f5f9" }}>Unlimited events for</span>
+          <br />
+          <span style={{
+            background: "linear-gradient(135deg, #60a5fa, #06b6d4, #8b5cf6)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}>
+            limitless professionals
+          </span>
+        </h1>
+
+        {/* Subheading */}
+        <p style={{
+          color: "#94a3b8", fontSize: "clamp(1rem, 2vw, 1.25rem)",
+          textAlign: "center", maxWidth: "600px",
+          lineHeight: 1.7, marginBottom: "40px",
+        }}>
+          Raise the bar with software that is easy to customize and built to
+          boost event ROI year-round. One platform for all of your B2B events.
+        </p>
+
+        {/* CTA row */}
+        <div className="w-full flex flex-col sm:flex-row justify-center gap-3" style={{ maxWidth: "540px" }}>
+          <input
+            type="email"
+            value={loginedUserEmail}
+            disabled
+            placeholder="Enter Your Email..."
+            className="input-glow rounded-xl px-5 py-3 flex-1 text-sm"
+          />
+          <button
+            onClick={sendMail}
+            className="btn-gradient text-white font-semibold px-7 py-3 rounded-xl text-sm tracking-wide whitespace-nowrap"
+            style={{ border: "none", cursor: "pointer" }}
+          >
+            Click for Demo
+          </button>
+        </div>
+
+        {/* Stats row */}
+        <div className="flex flex-wrap justify-center gap-8 mt-16">
+          {[
+            { value: "10K+", label: "Events Managed" },
+            { value: "98%", label: "Customer Satisfaction" },
+            { value: "150+", label: "Countries Reached" },
+          ].map((stat) => (
+            <div key={stat.label} style={{ textAlign: "center" }}>
+              <p style={{
+                fontSize: "2rem", fontWeight: 800,
+                background: "linear-gradient(135deg, #60a5fa, #06b6d4)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              }}>
+                {stat.value}
+              </p>
+              <p style={{ color: "#94a3b8", fontSize: "0.8rem", letterSpacing: "0.05em" }}>{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        </div>{/* end content wrapper */}
+      </section>
+
+      {/* ── SPONSORS SECTION ── */}
+      <section style={{
+        background: "rgba(15, 23, 42, 0.6)",
+        borderTop: "1px solid rgba(96,165,250,0.08)",
+        borderBottom: "1px solid rgba(96,165,250,0.08)",
+        padding: "40px 0",
+        overflow: "hidden",
+      }}>
+        <p style={{
+          textAlign: "center", color: "#94a3b8",
+          fontSize: "0.75rem", fontWeight: 600,
+          letterSpacing: "0.15em", textTransform: "uppercase",
+          marginBottom: "28px",
+        }}>
+          Trusted by industry leaders
+        </p>
+
+        {/* Fade masks on edges */}
+        <div style={{ position: "relative" }}>
+          <div style={{
+            position: "absolute", left: 0, top: 0, bottom: 0, width: "120px", zIndex: 2,
+            background: "linear-gradient(to right, rgba(15,23,42,0.95), transparent)",
+            pointerEvents: "none",
+          }} />
+          <div style={{
+            position: "absolute", right: 0, top: 0, bottom: 0, width: "120px", zIndex: 2,
+            background: "linear-gradient(to left, rgba(15,23,42,0.95), transparent)",
+            pointerEvents: "none",
+          }} />
+
+          {/* Marquee track — items duplicated for seamless loop */}
+          <div className="marquee-track" style={{ gap: "64px", alignItems: "center" }}>
+            {[
+              { label: "Amazon", style: { fontSize: "1.35rem", fontFamily: "Arial, sans-serif", letterSpacing: "-0.01em" } },
+              { label: "Forbes", style: { fontSize: "1.4rem", fontFamily: "Georgia, serif", fontStyle: "italic" } },
+              { label: "HubSpot", style: { fontSize: "1.2rem", fontFamily: "Arial, sans-serif", fontWeight: 900 } },
+              { label: "Snowflake", style: { fontSize: "1.1rem", fontFamily: "Arial, sans-serif", letterSpacing: "0.04em" } },
+              { label: "TIME", style: { fontSize: "1.6rem", fontFamily: "Georgia, serif", fontWeight: 900, letterSpacing: "0.12em" } },
+              { label: "WSJ", style: { fontSize: "1.3rem", fontFamily: "Georgia, serif", letterSpacing: "0.1em" } },
+              { label: "Salesforce", style: { fontSize: "1.2rem", fontFamily: "Arial, sans-serif" } },
+              { label: "Microsoft", style: { fontSize: "1.25rem", fontFamily: "Arial, sans-serif", letterSpacing: "-0.01em" } },
+              // Duplicate set for seamless infinite loop
+              { label: "Amazon", style: { fontSize: "1.35rem", fontFamily: "Arial, sans-serif", letterSpacing: "-0.01em" } },
+              { label: "Forbes", style: { fontSize: "1.4rem", fontFamily: "Georgia, serif", fontStyle: "italic" } },
+              { label: "HubSpot", style: { fontSize: "1.2rem", fontFamily: "Arial, sans-serif", fontWeight: 900 } },
+              { label: "Snowflake", style: { fontSize: "1.1rem", fontFamily: "Arial, sans-serif", letterSpacing: "0.04em" } },
+              { label: "TIME", style: { fontSize: "1.6rem", fontFamily: "Georgia, serif", fontWeight: 900, letterSpacing: "0.12em" } },
+              { label: "WSJ", style: { fontSize: "1.3rem", fontFamily: "Georgia, serif", letterSpacing: "0.1em" } },
+              { label: "Salesforce", style: { fontSize: "1.2rem", fontFamily: "Arial, sans-serif" } },
+              { label: "Microsoft", style: { fontSize: "1.25rem", fontFamily: "Arial, sans-serif", letterSpacing: "-0.01em" } },
+            ].map((brand, i) => (
+              <div
+                key={i}
+                style={{
+                  flexShrink: 0,
+                  opacity: 0.38,
+                  transition: "opacity 0.3s",
+                  color: "#f1f5f9",
+                  fontWeight: 800,
+                  userSelect: "none",
+                  whiteSpace: "nowrap",
+                  ...brand.style,
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.75")}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.38")}
+              >
+                {brand.label}
+              </div>
+            ))}
           </div>
         </div>
-        <div className="w-full flex justify-center">
-          <div className="w-full lg:w-[55%] flex flex-col sm:flex-row sm:justify-center gap-3 px-7">
-            <input
-              type="email"
-              value={loginedUserEmail}
-              disabled
-              placeholder="Enter Your Email..."
-              className="w-full sm:w-[60%] rounded-xl px-5 py-3 border border-black"
-              required
-            />
+      </section>
 
+      {/* ── FEATURE SECTION 1: Powerful Tech ── */}
+      <section style={{
+        padding: "100px 24px",
+        background: "linear-gradient(180deg, #030712 0%, #0f172a 100%)",
+        borderTop: "1px solid rgba(96,165,250,0.06)",
+      }}>
+        <div
+          className="flex flex-col lg:flex-row items-center gap-16"
+          style={{ maxWidth: "1200px", margin: "0 auto" }}
+        >
+          {/* Text side */}
+          <div style={{ flex: 1 }}>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              background: "rgba(96,165,250,0.08)",
+              border: "1px solid rgba(96,165,250,0.2)",
+              borderRadius: "100px", padding: "4px 14px",
+              marginBottom: "20px",
+            }}>
+              <span style={{ color: "#60a5fa", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em" }}>
+                PLATFORM
+              </span>
+            </div>
+            <h2 style={{
+              fontSize: "clamp(1.8rem, 3vw, 2.8rem)", fontWeight: 700,
+              color: "#f1f5f9", lineHeight: 1.2, marginBottom: "20px",
+            }}>
+              Powerful tech that&apos;s easy to use
+            </h2>
+            <p style={{ color: "#94a3b8", fontSize: "1rem", lineHeight: 1.8, marginBottom: "28px" }}>
+              Streamline your most complex events with a full-scale, full-spectrum platform
+              built to plan, promote, and produce.
+            </p>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "16px" }}>
+              {[
+                "Personalize attendee journeys with dynamic registration and multi-track agendas.",
+                "Leverage a built-in event marketing suite, code-free templates, and integrations.",
+                "Monitor event success indicators, engagement insights, and business outcomes.",
+              ].map((item, i) => (
+                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                  <span style={{
+                    width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0, marginTop: "2px",
+                    background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "0.65rem", color: "white", fontWeight: 800,
+                  }}>✓</span>
+                  <span style={{ color: "#cbd5e1", fontSize: "0.95rem", lineHeight: 1.7 }}>{item}</span>
+                </li>
+              ))}
+            </ul>
             <button
-              onClick={sendMail}
-              className="w-[45%] sm:w-[30%] md:w-[18%] bg-black text-sm sm:text-md text-white tracking-wide font-semibold px-6 py-3 sm:py-1 rounded-2xl hover:scale-95 whitespace-nowrap flex items-center justify-center"
+              className="btn-gradient text-white font-semibold px-8 py-3 rounded-xl"
+              style={{ border: "none", cursor: "pointer", width: "fit-content", marginTop: "36px", fontSize: "0.9rem" }}
             >
-              Click for Demo
+              Learn More
             </button>
           </div>
-        </div>
-        <div>
-          <h1 className="text-center text-3xl sm:text-4xl font-semibold mb-10">
-            Sponsores:
-          </h1>
-        </div>
-        <div className="w-full flex justify-center pb-10">
-          <div className="w-[90%] sm:w-[90%] lg:w-[60%] bg-gray-100 rounded-lg">
-            <div className="flex justify-center gap-10 sm:gap-16">
+          {/* Image side — contained with glow border */}
+          <div style={{ flex: 1, position: "relative" }}>
+            <div style={{
+              borderRadius: "20px",
+              overflow: "hidden",
+              border: "1px solid rgba(96,165,250,0.15)",
+              boxShadow: "0 24px 80px rgba(59,130,246,0.15), 0 8px 32px rgba(0,0,0,0.5)",
+              position: "relative",
+              aspectRatio: "16/10",
+            }}>
               <Image
-                src="/Icons/amazon.png"
-                width={90}
-                height={30}
-                alt="Logo img 1"
-                className="w-[70px] h-[70px] sm:w-[130px] sm:h-[80px]"
-              ></Image>
-              <Image
-                src="/Icons/forbes.png"
-                width={90}
-                height={30}
-                alt="Logo img 2"
-                className="w-[70px] h-[70px] sm:w-[130px] sm:h-[80px]"
-              ></Image>
-              <Image
-                src="/Icons/hubspot.png"
-                width={90}
-                height={30}
-                alt="Logo img 3"
-                className="w-[70px] h-[70px] sm:w-[130px] sm:h-[80px]"
-              ></Image>
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80"
+                fill
+                alt="Event technology conference"
+                style={{ objectFit: "cover" }}
+              />
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(135deg, rgba(3,7,18,0.25) 0%, transparent 70%)",
+              }} />
             </div>
-            <div className="flex justify-center gap-10 sm:gap-16 mt-5">
-              <Image
-                src="/Icons/snowflake.png"
-                width={90}
-                height={30}
-                alt="Logo img 4"
-                className="w-[70px] h-[70px] sm:w-[130px] sm:h-[80px]"
-              ></Image>
-              <Image
-                src="/Icons/time.png"
-                width={90}
-                height={30}
-                alt="Logo img 5"
-                className="w-[70px] h-[70px] sm:w-[130px] sm:h-[80px]"
-              ></Image>
-              <Image
-                src="/Icons/wsj.png"
-                width={90}
-                height={30}
-                alt="Logo img 6"
-                className="w-[70px] h-[70px] sm:w-[130px] sm:h-[80px]"
-              ></Image>
+            {/* Floating stat badge */}
+            <div style={{
+              position: "absolute", bottom: "-20px", left: "-20px",
+              background: "linear-gradient(135deg, #0f172a, #1e293b)",
+              border: "1px solid rgba(96,165,250,0.2)",
+              borderRadius: "14px", padding: "16px 20px",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+            }}>
+              <p style={{ color: "#60a5fa", fontWeight: 800, fontSize: "1.4rem", lineHeight: 1 }}>150+</p>
+              <p style={{ color: "#94a3b8", fontSize: "0.75rem", marginTop: "4px" }}>Countries reached</p>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="bg-white w-full flex flex-col lg:flex-row gap-5 py-10 px-1 md:py-16 md:px-16">
-        <div className="w-full lg:w-[50%] px-10">
-          <h1 className="text-3xl md:text-4xl font-bold mt-3 md:mt-5">
-            Powerful tech that’s easy to use
-          </h1>
-          <p className="text-gray-600 text-md md:text-lg mt-3 md:mt-7">
-            Streamline your most complex events with a full-scale, full-spectrum
-            platform built to plan, promote, and produce.
-          </p>
-          <ul>
-            <li className="text-gray-600 text-md md:text-lg mt-3 md:mt-5">
-              Personalize attendee journeys with dynamic registration and
-              multi-track agendas.
-            </li>
-            <li className="text-gray-600 text-md md:text-lg mt-3 md:mt-5">
-              Leverage a built-in event marketing suite, code-free templates,
-              and integrations to fully customize the experience.
-            </li>
-            <li className="text-gray-600 text-md md:text-lg mt-3 md:mt-5">
-              Monitor event success indicators, engagement insights, and
-              business outcomes.
-            </li>
-          </ul>
-          <div className="mt-7">
-            <button className=" bg-black sm:text-md text-white font-semibold px-7 py-2 rounded-2xl hover:scale-95">
+      {/* ── FEATURE SECTION 2: Sales Pipeline ── */}
+      <section style={{
+        padding: "100px 24px",
+        background: "linear-gradient(180deg, #0f172a 0%, #1a0a2e 100%)",
+        borderTop: "1px solid rgba(96,165,250,0.06)",
+      }}>
+        <div
+          className="flex flex-col-reverse lg:flex-row items-center gap-16"
+          style={{ maxWidth: "1200px", margin: "0 auto" }}
+        >
+          {/* Image side — contained with purple glow */}
+          <div style={{ flex: 1, position: "relative" }}>
+            <div style={{
+              borderRadius: "20px",
+              overflow: "hidden",
+              border: "1px solid rgba(139,92,246,0.2)",
+              boxShadow: "0 24px 80px rgba(139,92,246,0.12), 0 8px 32px rgba(0,0,0,0.5)",
+              position: "relative",
+              aspectRatio: "16/10",
+            }}>
+              <Image
+                src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=900&q=80"
+                fill
+                alt="Business meeting and sales"
+                style={{ objectFit: "cover" }}
+              />
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(to right, transparent 40%, rgba(26,10,46,0.3) 100%)",
+              }} />
+            </div>
+            {/* Floating stat badge */}
+            <div style={{
+              position: "absolute", bottom: "-20px", right: "-20px",
+              background: "linear-gradient(135deg, #0f172a, #1e293b)",
+              border: "1px solid rgba(139,92,246,0.25)",
+              borderRadius: "14px", padding: "16px 20px",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+            }}>
+              <p style={{ color: "#8b5cf6", fontWeight: 800, fontSize: "1.4rem", lineHeight: 1 }}>98%</p>
+              <p style={{ color: "#94a3b8", fontSize: "0.75rem", marginTop: "4px" }}>Customer satisfaction</p>
+            </div>
+          </div>
+          {/* Text side */}
+          <div style={{ flex: 1 }}>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              background: "rgba(139,92,246,0.1)",
+              border: "1px solid rgba(139,92,246,0.25)",
+              borderRadius: "100px", padding: "4px 14px",
+              marginBottom: "20px",
+            }}>
+              <span style={{ color: "#8b5cf6", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em" }}>
+                ROI &amp; REVENUE
+              </span>
+            </div>
+            <h2 style={{
+              fontSize: "clamp(1.8rem, 3vw, 2.8rem)", fontWeight: 700,
+              color: "#f1f5f9", lineHeight: 1.2, marginBottom: "20px",
+            }}>
+              Build sales pipeline and prove event ROI
+            </h2>
+            <p style={{ color: "#94a3b8", fontSize: "1rem", lineHeight: 1.8, marginBottom: "28px" }}>
+              Convert your events into revenue-generating opportunities and improve
+              time-to-value for sponsors and sales teams alike.
+            </p>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "16px" }}>
+              {[
+                "Connect events to your CRM so data can flow in real-time.",
+                "Supply go-to-market teams with actionable intent data.",
+                "Arm your exhibitors with smart lead capture tools.",
+              ].map((item, i) => (
+                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                  <span style={{
+                    width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0, marginTop: "2px",
+                    background: "linear-gradient(135deg, #8b5cf6, #06b6d4)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "0.65rem", color: "white", fontWeight: 800,
+                  }}>✓</span>
+                  <span style={{ color: "#cbd5e1", fontSize: "0.95rem", lineHeight: 1.7 }}>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="btn-gradient text-white font-semibold px-8 py-3 rounded-xl"
+              style={{ border: "none", cursor: "pointer", width: "fit-content", marginTop: "36px", fontSize: "0.9rem" }}
+            >
               Learn More
             </button>
           </div>
         </div>
-        <div className="w-full flex justify-center mt-5 lg:w-[50%] lg:mt-0">
-          <Image
-            src="/Images/PowerfulTechImg.png"
-            width={300}
-            height={300}
-            alt="Powerful Tech Image"
-            className="w-full sm:w-[650px]"
-          ></Image>
-        </div>
-      </div>
+      </section>
 
-      <div className="bg-[#fff000] w-full flex flex-col-reverse lg:flex-row gap-5 py-10 px-1 md:py-16 md:px-10">
-        <div className="w-full flex justify-center mt-5 lg:w-[50%] lg:mt-0">
-          <Image
-            src="/Images/SalesPipelineImg.png"
-            width={300}
-            height={300}
-            alt="Powerful Tech Image"
-            className="w-full sm:w-[550px] sm:h-[480px]"
-          ></Image>
+      {/* ── TESTIMONIAL SECTION ── */}
+      <section style={{
+        padding: "100px 24px",
+        background: "linear-gradient(180deg, #030712 0%, #0f172a 100%)",
+        textAlign: "center",
+      }}>
+        {/* Quote icon */}
+        <div style={{
+          width: "56px", height: "56px", borderRadius: "14px",
+          background: "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(6,182,212,0.15))",
+          border: "1px solid rgba(96,165,250,0.2)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          margin: "0 auto 32px",
+        }}>
+          <span style={{
+            fontSize: "2rem", lineHeight: 1,
+            background: "linear-gradient(135deg, #60a5fa, #06b6d4)",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+          }}>&ldquo;</span>
         </div>
-        <div className="w-full lg:w-[50%] px-10">
-          <h1 className="text-3xl md:text-4xl font-bold mt-3 md:mt-5">
-            Build sales pipeline and prove event ROI
-          </h1>
-          <p className="text-black text-md md:text-lg mt-3 md:mt-7">
-            Convert your events into revenue-generating opportunities and
-            improve time-to-value for sponsors and sales teams alike.
+
+        <blockquote style={{
+          maxWidth: "760px", margin: "0 auto 40px",
+          fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)",
+          color: "#f1f5f9", lineHeight: 1.6, fontStyle: "italic", fontWeight: 500,
+        }}>
+          MS-EventSphere has everything we need all in one platform. We needed a partner to help us scale
+          and grow as a company, and MS-EventSphere checks those boxes.
+        </blockquote>
+
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "16px" }}>
+          <div style={{
+            width: "56px", height: "56px", borderRadius: "50%",
+            overflow: "hidden", position: "relative",
+            border: "2px solid rgba(96,165,250,0.3)",
+          }}>
+            <Image
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80"
+              fill
+              alt="Alexis Fillon"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+          <div style={{ textAlign: "left" }}>
+            <p style={{ color: "#f1f5f9", fontWeight: 600, fontSize: "1rem" }}>Alexis Fillon</p>
+            <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Senior Growth Marketing Manager</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── AWARDS SECTION ── */}
+      <section style={{
+        padding: "80px 24px",
+        background: "rgba(15, 23, 42, 0.5)",
+        borderTop: "1px solid rgba(96,165,250,0.08)",
+      }}>
+        <div style={{ textAlign: "center", marginBottom: "56px" }}>
+          <p style={{
+            color: "#94a3b8", fontSize: "0.75rem", fontWeight: 600,
+            letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "12px",
+          }}>
+            RECOGNITION
           </p>
-          <ul>
-            <li className="text-black text-md md:text-lg mt-3 md:mt-5">
-              Connect events to your CRM so data can flow in real-time.
-            </li>
-            <li className="text-black text-md md:text-lg mt-3 md:mt-5">
-              Supply go-to-market teams with actionable intent data.
-            </li>
-            <li className="text-black text-md md:text-lg mt-3 md:mt-5">
-              Arm your exhibitors with smart lead capture tools.
-            </li>
-          </ul>
-          <div className="mt-7">
-            <button className=" bg-black sm:text-md text-white font-semibold px-7 py-2 rounded-2xl hover:scale-95">
-              Learn More
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white w-full py-10 px-1 md:py-16 md:px-10">
-        <div className="flex justify-center">
-          <Image
-            src="/Icons/CommaIcon.svg"
-            width={50}
-            height={50}
-            alt="Comma Icon"
-            className="w-[30px] h-[30px] sm:w-[50px] sm:h-[50px]"
-          ></Image>
+          <h2 style={{
+            fontSize: "clamp(1.8rem, 3vw, 2.5rem)", fontWeight: 700,
+            background: "linear-gradient(135deg, #f1f5f9, #94a3b8)",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+          }}>
+            The No.1-Rated Event Software
+          </h2>
         </div>
 
-        <div className="flex justify-center mt-5">
-          <div className="w-full md:w-[70%] lg:w-[60%] px-10 md:px-2">
-            <h1 className="text-xl sm:text-2xl md:text-3xl text-black">
-              MS-EventSphere has everything we need all in one platform. We
-              needed a partner to help us scale and grow as a company, and
-              MS-EventSphere checks those boxes.
-            </h1>
-          </div>
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          style={{ maxWidth: "900px", margin: "0 auto" }}
+        >
+          {[
+            { Icon: EmojiEventsIcon, color: "#f59e0b", glow: "rgba(245,158,11,0.15)", title: "Forrester Wave Leader", sub: "B2B Event Management Technology, 2023" },
+            { Icon: StarIcon, color: "#60a5fa", glow: "rgba(96,165,250,0.15)", title: "Inc. 5000 Honoree", sub: "Top 25% Fastest-growing Private Companies, 2022" },
+            { Icon: EmojiEventsIcon, color: "#8b5cf6", glow: "rgba(139,92,246,0.15)", title: "G2 Leader — Enterprise", sub: "Event Management Software Category, 2024" },
+            { Icon: StarIcon, color: "#06b6d4", glow: "rgba(6,182,212,0.15)", title: "Gartner Peer Insights", sub: "Customers' Choice for Event Technology, 2023" },
+          ].map((award, i) => (
+            <div
+              key={i}
+              className="card-glow"
+              style={{
+                display: "flex", alignItems: "center", gap: "20px",
+                background: "rgba(15, 23, 42, 0.8)",
+                border: "1px solid rgba(96, 165, 250, 0.12)",
+                borderRadius: "16px",
+                padding: "24px",
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              <div style={{
+                flexShrink: 0,
+                width: "72px", height: "72px",
+                borderRadius: "16px",
+                background: award.glow,
+                border: `1px solid ${award.color}40`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <award.Icon sx={{ fontSize: "2rem", color: award.color }} />
+              </div>
+              <div>
+                <h3 style={{ color: "#f1f5f9", fontWeight: 600, fontSize: "1rem", marginBottom: "6px" }}>
+                  {award.title}
+                </h3>
+                <p style={{ color: "#94a3b8", fontSize: "0.85rem", lineHeight: 1.5 }}>{award.sub}</p>
+              </div>
+            </div>
+          ))}
         </div>
+      </section>
 
-        <div className="flex justify-center">
-          <div className="w-full md:w-[60%] px-10 md:px-2 mt-8">
-            <div className="flex justify-center items-center gap-4">
-              <div>
-                <Image
-                  src="/Images/ManagerImg.png"
-                  width={50}
-                  height={50}
-                  alt="Manager Image"
-                  className="w-[50px] h-[50px] sm:w-[70px] sm:h-[70px]"
-                ></Image>
-              </div>
-              <div>
-                <h1 className="text-lg md:text-xl font-semibold tracking-wide">
-                  Alexis Fillon
-                </h1>
-                <p className="text-sm md:text-lg text-gray-500">
-                  Senior Growth Marketing Manager
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-[#fff000] w-full py-10 px-1 md:py-12 md:px-10">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-center mt-7">
-            The No.1-Rated event software
-          </h1>
-        </div>
-        <div className="w-full flex justify-center">
-          <div className="w-full lg:w-[80%] grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
-            <div className="flex justify-center md:items-center gap-4 shadow-2xl py-7 px-5 md:py-6 md:px-6 rounded-xl">
-              <div className="flex">
-                <Image
-                  src="/Images/TopEventImg1.png"
-                  width={50}
-                  height={50}
-                  alt="Manager Image"
-                  className="w-[100px] h-[90px] sm:w-[110px] sm:h-[110px] md:w-[110px] md:h-[130px]"
-                ></Image>
-              </div>
-              <div>
-                <h1 className="text-lg lg:text-xl font-semibold tracking-wide">
-                  Forrester Wave Leader
-                </h1>
-                <p className="text-sm md:text-md text-gray-600">
-                  B2B Event Management Technology, 2023
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-center md:items-center gap-4 shadow-2xl py-7 px-5 md:py-6 md:px-6 rounded-xl">
-              <div className="flex">
-                <Image
-                  src="/Images/TopEventImg2.png"
-                  width={50}
-                  height={50}
-                  alt="Manager Image"
-                  className="w-[100px] h-[90px] sm:w-[110px] sm:h-[110px] md:w-[110px] md:h-[130px]"
-                ></Image>
-              </div>
-              <div>
-                <h1 className="text-lg lg:text-xl font-semibold tracking-wide">
-                  Inc. 5000 Honoree
-                </h1>
-                <p className="text-sm md:text-md text-gray-600">
-                  Top 25% Fastest-growing Private Companies, 2022
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-center md:items-center gap-4 shadow-2xl py-7 px-5 md:py-6 md:px-6 rounded-xl">
-              <div className="flex">
-                <Image
-                  src="/Images/TopEventImg2.png"
-                  width={50}
-                  height={50}
-                  alt="Manager Image"
-                  className="w-[100px] h-[90px] sm:w-[110px] sm:h-[110px] md:w-[110px] md:h-[130px]"
-                ></Image>
-              </div>
-              <div>
-                <h1 className="text-lg lg:text-xl font-semibold tracking-wide">
-                  Forrester Wave Leader
-                </h1>
-                <p className="text-sm md:text-md text-gray-600">
-                  B2B Event Management Technology, 2023
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-center md:items-center gap-4 shadow-2xl py-7 px-5 md:py-6 md:px-6 rounded-xl">
-              <div className="flex">
-                <Image
-                  src="/Images/TopEventImg1.png"
-                  width={50}
-                  height={50}
-                  alt="Manager Image"
-                  className="w-[100px] h-[90px] sm:w-[110px] sm:h-[110px] md:w-[110px] md:h-[130px]"
-                ></Image>
-              </div>
-              <div>
-                <h1 className="text-lg lg:text-xl font-semibold tracking-wide">
-                  Inc. 5000 Honoree
-                </h1>
-                <p className="text-sm md:text-md text-gray-600">
-                  Top 25% Fastest-growing Private Companies, 2022
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

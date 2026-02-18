@@ -1,7 +1,8 @@
 
 import User from "@/app/Models/userLogin";
 import { connectDB } from "@/app/lib/MongoConfig";
-import bcrypt from "bcryptjs"; 
+import bcrypt from "bcryptjs";
+import { Mail } from "@/app/lib/send-mail";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -34,6 +35,18 @@ export async function POST(req) {
       role: "user",
     });
     await newUser.save();
+
+    // Send welcome email (non-blocking — don't fail registration if email fails)
+    Mail({
+      to: email,
+      subject: `Welcome to EventSphere, ${name}!`,
+      message: `<p>Dear ${name},</p>
+      <p>Thank you for joining EventSphere! We're thrilled to have you as a part of our community.</p>
+      <p>With EventSphere, you can explore, create, and share amazing events tailored to your interests.</p>
+      <p>Best regards,</p>
+      <p><strong>The EventSphere Team</strong></p>`,
+    }).catch((err) => console.error("Welcome email failed:", err));
+
     return NextResponse.json(
       { message: "User registered successfully!", role: "user" },
       { status: 201 }

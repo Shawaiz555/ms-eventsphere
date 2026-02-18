@@ -11,13 +11,14 @@ export default function DashboardLayout({ children }) {
   const closeSidebar = () => setIsSidebarVisible(false);
 
   return (
-    <div className="w-full flex overflow-hidden">
+    <div className="w-full flex overflow-hidden" style={{ background: "var(--color-bg)" }}>
       <div className="w-full flex overflow-hidden min-h-screen">
         {/* Sidebar */}
         <div
-          className={`fixed w-[70%] sm:w-[50%] bg-gray-50 z-20 transform ${
+          className={`fixed w-[78%] sm:w-[60%] md:w-[40%] z-20 transform ${
             isSidebarVisible ? "translate-x-0" : "-translate-x-full"
-          } transition-transform lg:static lg:translate-x-0 lg:w-[16%] h-full`}
+          } transition-transform duration-300 lg:static lg:translate-x-0 lg:w-[220px] lg:flex-shrink-0 h-full`}
+          style={{ background: "#030712", borderRight: "1px solid rgba(96,165,250,0.1)" }}
         >
           <SideBar closeSidebar={closeSidebar} />
         </div>
@@ -26,10 +27,10 @@ export default function DashboardLayout({ children }) {
         <div
           className={`flex-1 w-full ${
             isSidebarVisible ? "overflow-hidden" : ""
-          } lg:w-[84%] h-full`}
+          } h-full min-w-0`}
         >
           <Header toggleSidebar={toggleSidebar} />
-          <main className="h-full bg-white">{children}</main>
+          <main className="h-full" style={{ background: "var(--color-bg)" }}>{children}</main>
         </div>
       </div>
 

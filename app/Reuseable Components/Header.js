@@ -51,10 +51,10 @@ export default function Header({ toggleSidebar }) {
             borderRadius: "8px",
             cursor: "pointer",
             color: "#60a5fa",
-            display: "flex", alignItems: "center", justifyContent: "center",
+            alignItems: "center", justifyContent: "center",
             flexShrink: 0,
           }}
-          className="lg:hidden"
+          className="flex lg:hidden"
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
             <rect x="1" y="3" width="16" height="2" rx="1" fill="currentColor"/>
@@ -92,8 +92,8 @@ export default function Header({ toggleSidebar }) {
         </div>
       </div>
 
-      {/* Right: User info */}
-      <div>
+      {/* Right: User info — hidden on mobile (shown in sidebar instead) */}
+      <div className="hidden lg:flex" style={{ alignItems: "center" }}>
         {signedInUser ? (
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{

@@ -1,10 +1,13 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import HomeIcon from "@mui/icons-material/Home";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const navItems = [
   { href: "/Dashboard", label: "Dashboard", Icon: DashboardIcon },
@@ -13,6 +16,20 @@ const navItems = [
 
 export default function SideBar({ closeSidebar }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [signedInUser, setSignedInUser] = useState(null);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("signedInUser"));
+    if (user) setSignedInUser(user);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("signedInUser");
+    setSignedInUser(null);
+    closeSidebar();
+    router.push("/");
+  };
 
   return (
     <div
@@ -166,7 +183,7 @@ export default function SideBar({ closeSidebar }) {
       />
 
       {/* ── Bottom: Back to site ── */}
-      <div style={{ padding: "12px 12px 20px" }}>
+      <div style={{ padding: "12px 12px 0" }}>
         <Link
           href="/Home"
           onClick={closeSidebar}
@@ -194,6 +211,59 @@ export default function SideBar({ closeSidebar }) {
           <HomeIcon sx={{ fontSize: "1.1rem", color: "inherit", flexShrink: 0 }} />
           <span>Back to Site</span>
         </Link>
+      </div>
+
+      {/* ── Mobile-only: User info + Logout ── */}
+      <div
+        className="lg:hidden"
+        style={{ padding: "12px 12px 20px", borderTop: "1px solid rgba(96,165,250,0.08)", marginTop: "8px" }}
+      >
+        {signedInUser ? (
+          <>
+            {/* Email pill */}
+            <div style={{
+              display: "flex", alignItems: "center", gap: "8px",
+              background: "rgba(96,165,250,0.06)",
+              border: "1px solid rgba(96,165,250,0.12)",
+              borderRadius: "10px", padding: "10px 14px",
+              marginBottom: "8px",
+            }}>
+              <PersonOutlineIcon sx={{ color: "#60a5fa", fontSize: "1rem", flexShrink: 0 }} />
+              <span style={{
+                color: "#94a3b8", fontSize: "0.78rem",
+                overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+              }}>
+                {signedInUser.email || "Admin"}
+              </span>
+            </div>
+            {/* Logout button */}
+            <button
+              onClick={handleLogout}
+              style={{
+                width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+                border: "none", borderRadius: "10px", padding: "11px",
+                color: "#fff", fontSize: "0.85rem", fontWeight: 600,
+                cursor: "pointer", transition: "opacity 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              <LogoutIcon sx={{ fontSize: "1rem" }} />
+              Sign Out
+            </button>
+          </>
+        ) : (
+          <div style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            background: "rgba(96,165,250,0.04)",
+            border: "1px solid rgba(96,165,250,0.1)",
+            borderRadius: "10px", padding: "10px 14px",
+          }}>
+            <PersonOutlineIcon sx={{ color: "#64748b", fontSize: "1rem" }} />
+            <span style={{ color: "#64748b", fontSize: "0.78rem" }}>No Admin Signed In</span>
+          </div>
+        )}
       </div>
     </div>
   );

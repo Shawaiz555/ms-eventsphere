@@ -87,100 +87,100 @@ export default function Home() {
         {/* ── Content wrapper — sits above all overlays ── */}
         <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
 
-        {/* Badge */}
-        <div
-          style={{
-            display: "inline-flex", alignItems: "center", gap: "8px",
-            background: "rgba(59, 130, 246, 0.15)",
-            border: "1px solid rgba(96, 165, 250, 0.35)",
-            borderRadius: "100px", padding: "6px 16px",
-            marginBottom: "28px",
-            backdropFilter: "blur(8px)",
-          }}
-        >
-          <span style={{
-            width: "6px", height: "6px", borderRadius: "50%",
-            background: "#60a5fa",
-            boxShadow: "0 0 8px rgba(96,165,250,0.8)",
-            display: "inline-block",
-            animation: "glowPulse 2s ease-in-out infinite",
-          }} />
-          <span style={{ color: "#60a5fa", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.08em" }}>
-            THE MS-EVENTSPHERE EXPERIENCE OS
-          </span>
-        </div>
-
-        {/* Headline */}
-        <h1
-          style={{
-            fontSize: "clamp(2.5rem, 6vw, 5rem)",
-            fontWeight: 800,
-            textAlign: "center",
-            lineHeight: 1.1,
-            letterSpacing: "-0.02em",
-            maxWidth: "900px",
-            marginBottom: "24px",
-          }}
-        >
-          <span style={{ color: "#f1f5f9" }}>Unlimited events for</span>
-          <br />
-          <span style={{
-            background: "linear-gradient(135deg, #60a5fa, #06b6d4, #8b5cf6)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}>
-            limitless professionals
-          </span>
-        </h1>
-
-        {/* Subheading */}
-        <p style={{
-          color: "#94a3b8", fontSize: "clamp(1rem, 2vw, 1.25rem)",
-          textAlign: "center", maxWidth: "600px",
-          lineHeight: 1.7, marginBottom: "40px",
-        }}>
-          Raise the bar with software that is easy to customize and built to
-          boost event ROI year-round. One platform for all of your B2B events.
-        </p>
-
-        {/* CTA row */}
-        <div className="w-full flex flex-col sm:flex-row justify-center gap-3" style={{ maxWidth: "540px" }}>
-          <input
-            type="email"
-            value={loginedUserEmail}
-            disabled
-            placeholder="Enter Your Email..."
-            className="input-glow rounded-xl px-5 py-3 flex-1 text-sm"
-          />
-          <button
-            onClick={sendMail}
-            className="btn-gradient text-white font-semibold px-7 py-3 rounded-xl text-sm tracking-wide whitespace-nowrap"
-            style={{ border: "none", cursor: "pointer" }}
+          {/* Badge */}
+          <div
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              background: "rgba(59, 130, 246, 0.15)",
+              border: "1px solid rgba(96, 165, 250, 0.35)",
+              borderRadius: "100px", padding: "6px 16px",
+              marginBottom: "28px",
+              backdropFilter: "blur(8px)",
+            }}
           >
-            Click for Demo
-          </button>
-        </div>
+            <span style={{
+              width: "6px", height: "6px", borderRadius: "50%",
+              background: "#60a5fa",
+              boxShadow: "0 0 8px rgba(96,165,250,0.8)",
+              display: "inline-block",
+              animation: "glowPulse 2s ease-in-out infinite",
+            }} />
+            <span style={{ color: "#60a5fa", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.08em" }}>
+              THE MS-EVENTSPHERE EXPERIENCE OS
+            </span>
+          </div>
 
-        {/* Stats row */}
-        <div className="flex flex-wrap justify-center gap-8 mt-16">
-          {[
-            { value: "10K+", label: "Events Managed" },
-            { value: "98%", label: "Customer Satisfaction" },
-            { value: "150+", label: "Countries Reached" },
-          ].map((stat) => (
-            <div key={stat.label} style={{ textAlign: "center" }}>
-              <p style={{
-                fontSize: "2rem", fontWeight: 800,
-                background: "linear-gradient(135deg, #60a5fa, #06b6d4)",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-              }}>
-                {stat.value}
-              </p>
-              <p style={{ color: "#94a3b8", fontSize: "0.8rem", letterSpacing: "0.05em" }}>{stat.label}</p>
-            </div>
-          ))}
-        </div>
+          {/* Headline */}
+          <h1
+            style={{
+              fontSize: "clamp(2rem, 6vw, 5rem)",
+              fontWeight: 800,
+              textAlign: "center",
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+              maxWidth: "900px",
+              marginBottom: "24px",
+            }}
+          >
+            <span style={{ color: "#f1f5f9" }}>Unlimited events for</span>
+            <br />
+            <span style={{
+              background: "linear-gradient(135deg, #60a5fa, #06b6d4, #8b5cf6)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}>
+              limitless professionals
+            </span>
+          </h1>
+
+          {/* Subheading */}
+          <p style={{
+            color: "#94a3b8", fontSize: "clamp(1rem, 2vw, 1.25rem)",
+            textAlign: "center", maxWidth: "600px",
+            lineHeight: 1.7, marginBottom: "40px",
+          }}>
+            Raise the bar with software that is easy to customize and built to
+            boost event ROI year-round. One platform for all of your B2B events.
+          </p>
+
+          {/* CTA row */}
+          <div className="w-full flex flex-col sm:flex-row justify-center gap-3" style={{ maxWidth: "540px" }}>
+            <input
+              type="email"
+              value={loginedUserEmail}
+              disabled
+              placeholder="Enter Your Email..."
+              className="input-glow rounded-xl px-5 py-3 flex-1 text-sm"
+            />
+            <button
+              onClick={sendMail}
+              className="btn-gradient text-white font-semibold px-7 py-3 rounded-xl text-sm tracking-wide whitespace-nowrap"
+              style={{ border: "none", cursor: "pointer" }}
+            >
+              Click for Demo
+            </button>
+          </div>
+
+          {/* Stats row */}
+          <div className="flex flex-wrap justify-center gap-8 mt-16">
+            {[
+              { value: "10K+", label: "Events Managed" },
+              { value: "98%", label: "Customer Satisfaction" },
+              { value: "150+", label: "Countries Reached" },
+            ].map((stat) => (
+              <div key={stat.label} style={{ textAlign: "center" }}>
+                <p style={{
+                  fontSize: "2rem", fontWeight: 800,
+                  background: "linear-gradient(135deg, #60a5fa, #06b6d4)",
+                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                }}>
+                  {stat.value}
+                </p>
+                <p style={{ color: "#94a3b8", fontSize: "0.8rem", letterSpacing: "0.05em" }}>{stat.label}</p>
+              </div>
+            ))}
+          </div>
 
         </div>{/* end content wrapper */}
       </section>

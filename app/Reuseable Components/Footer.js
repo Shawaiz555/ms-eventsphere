@@ -145,7 +145,7 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="mt-7">
             <h3
               style={{
                 color: "#f1f5f9",
@@ -206,7 +206,7 @@ export default function Footer() {
           </div>
 
           {/* Services */}
-          <div>
+          <div className="mt-7">
             <h3
               style={{
                 color: "#f1f5f9",
@@ -251,7 +251,7 @@ export default function Footer() {
           </div>
 
           {/* Newsletter */}
-          <div>
+          <div className="mt-7">
             <h3
               style={{
                 color: "#f1f5f9",

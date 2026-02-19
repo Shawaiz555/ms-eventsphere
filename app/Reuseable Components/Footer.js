@@ -50,7 +50,7 @@ export default function Footer() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 pt-14 pb-8">
+      <div className="max-w-8xl mx-auto px-6 lg:px-14 pt-14 pb-8">
         {/* Main footer grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-10">
           {/* Brand Column */}
@@ -62,7 +62,7 @@ export default function Footer() {
                   width={160}
                   height={64}
                   alt="MS-EventSphere Logo"
-                  className="w-24 h-24"
+                  className="w-24 h-24 lg:w-32 lg:h-32"
                 />
               </div>
             </div>

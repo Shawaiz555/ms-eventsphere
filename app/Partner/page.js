@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Mail } from "../lib/send-mail";
 import { toast } from "react-toastify";
+import Loader from "../Reuseable Components/Loader";
 
 const benefits = [
   {
@@ -77,6 +78,7 @@ export default function Page() {
   const [isChecked, setIsChecked] = useState(false);
 
   const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
@@ -86,17 +88,18 @@ export default function Page() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const partnerData = {
-      firstName,
-      lastName,
-      email: loginedUserEmail,
-      phoneNo,
-      jobTitle,
-      partnershipType,
-      detail,
-    };
-
+    setIsSubmitting(true);
     try {
+      const partnerData = {
+        firstName,
+        lastName,
+        email: loginedUserEmail,
+        phoneNo,
+        jobTitle,
+        partnershipType,
+        detail,
+      };
+
       const response = await fetch("/Api/Partners", {
         method: "POST",
         headers: {
@@ -136,6 +139,8 @@ export default function Page() {
       }
     } catch (error) {
       toast.error("An error occurred. Please check your network.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -476,10 +481,19 @@ export default function Page() {
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="btn-gradient text-white font-semibold px-10 py-3 rounded-xl tracking-wide"
-                  style={{ border: "none", cursor: "pointer", fontSize: "0.95rem" }}
+                  style={{
+                    border: "none",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    fontSize: "0.95rem",
+                    opacity: isSubmitting ? 0.7 : 1,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
                 >
-                  Become a Partner
+                  {isSubmitting ? <Loader variant="dots" size="sm" /> : "Become a Partner"}
                 </button>
               </div>
             </form>

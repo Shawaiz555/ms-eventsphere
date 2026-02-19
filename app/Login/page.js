@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Loader from "../Reuseable Components/Loader";
 
 export default function Page() {
   const [signUpUser, setSignUpUser] = useState({
@@ -19,6 +20,7 @@ export default function Page() {
   const [emailError, setEmailError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(null);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const route = useRouter();
 
@@ -44,6 +46,7 @@ export default function Page() {
     // Check if email is valid
     if (emailError === "Email is valid") {
       if (signInUser.email && signInUser.password) {
+        setIsLoading(true);
         try {
           const response = await fetch(
             `/Api/Auth/SignIn?email=${signInUser.email}&password=${signInUser.password}`,
@@ -76,6 +79,8 @@ export default function Page() {
         } catch (error) {
           console.error("Error during Sign In:", error);
           toast.error("An error occurred during Sign In");
+        } finally {
+          setIsLoading(false);
         }
       } else {
         toast.error("Please fill in all fields.");
@@ -93,6 +98,7 @@ export default function Page() {
         signUpUser.confirmPassword
       ) {
         if (signUpUser.password === signUpUser.confirmPassword) {
+          setIsLoading(true);
           try {
             const response = await fetch("/Api/Auth/SignUp", {
               method: "POST",
@@ -115,6 +121,8 @@ export default function Page() {
           } catch (error) {
             console.error("Error during Sign Up:", error);
             toast.error("An error occurred during Sign Up");
+          } finally {
+            setIsLoading(false);
           }
         }
       } else {
@@ -440,10 +448,21 @@ export default function Page() {
               </div>
               <button
                 type="submit"
+                disabled={isLoading}
                 className="btn-gradient w-full text-white font-semibold py-3 rounded-xl tracking-wide"
-                style={{ border: "none", cursor: "pointer", marginTop: "8px", fontSize: "0.95rem" }}
+                style={{
+                  border: "none",
+                  cursor: isLoading ? "not-allowed" : "pointer",
+                  marginTop: "8px",
+                  fontSize: "0.95rem",
+                  opacity: isLoading ? 0.7 : 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                }}
               >
-                Sign In
+                {isLoading ? <Loader variant="dots" size="sm" /> : "Sign In"}
               </button>
             </form>
           ) : (
@@ -562,10 +581,21 @@ export default function Page() {
               </div>
               <button
                 type="submit"
+                disabled={isLoading}
                 className="btn-gradient w-full text-white font-semibold py-3 rounded-xl tracking-wide"
-                style={{ border: "none", cursor: "pointer", marginTop: "8px", fontSize: "0.95rem" }}
+                style={{
+                  border: "none",
+                  cursor: isLoading ? "not-allowed" : "pointer",
+                  marginTop: "8px",
+                  fontSize: "0.95rem",
+                  opacity: isLoading ? 0.7 : 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                }}
               >
-                Create Account
+                {isLoading ? <Loader variant="dots" size="sm" /> : "Create Account"}
               </button>
             </form>
           )}

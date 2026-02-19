@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import StarIcon from "@mui/icons-material/Star";
+import Loader from "../Reuseable Components/Loader";
 
 export default function Home() {
   const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
 
   useEffect(() => {
     const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
@@ -17,21 +19,29 @@ export default function Home() {
   const sendMail = async (e) => {
     e.preventDefault();
 
-    toast.success("Email sent Successfully!!!");
-    await Mail({
-      to: loginedUserEmail,
-      subject: `Thank You for visiting our site`,
-      message: `<p>Dear </p>
-        <p>I hope you are well</p>
-        <h4>Thank you </h4>
-        <p>Best regards, <br>
-           <strong>Zain Imran</strong><br>
-           <strong>CTO</strong><br>
-           <strong>EventSphere</strong><br>
-           <strong>We will provide a demo to you as soon as possible</strong><br>
-           <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
-        </p>`,
-    });
+    setIsSendingEmail(true);
+    try {
+      toast.success("Email sent Successfully!!!");
+      await Mail({
+        to: loginedUserEmail,
+        subject: `Thank You for visiting our site`,
+        message: `<p>Dear </p>
+          <p>I hope you are well</p>
+          <h4>Thank you </h4>
+          <p>Best regards, <br>
+             <strong>Zain Imran</strong><br>
+             <strong>CTO</strong><br>
+             <strong>EventSphere</strong><br>
+             <strong>We will provide a demo to you as soon as possible</strong><br>
+             <strong><a href="mailto:zanmirza3334@gmail.com">zanmirza3334@gmail.com</a></strong>
+          </p>`,
+      });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast.error("Failed to send email");
+    } finally {
+      setIsSendingEmail(false);
+    }
   };
 
   return (
@@ -155,10 +165,18 @@ export default function Home() {
             />
             <button
               onClick={sendMail}
+              disabled={isSendingEmail}
               className="btn-gradient text-white font-semibold px-7 py-3 rounded-xl text-sm tracking-wide whitespace-nowrap"
-              style={{ border: "none", cursor: "pointer" }}
+              style={{
+                border: "none",
+                cursor: isSendingEmail ? "not-allowed" : "pointer",
+                opacity: isSendingEmail ? 0.7 : 1,
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
             >
-              Click for Demo
+              {isSendingEmail ? <Loader variant="dots" size="sm" /> : "Click for Demo"}
             </button>
           </div>
 

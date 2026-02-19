@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SearchIcon from "@mui/icons-material/Search";
+import { toast } from "react-toastify";
 
 export default function Header({ toggleSidebar }) {
   const [signedInUser, setSignedInUser] = useState(null);
@@ -12,6 +13,7 @@ export default function Header({ toggleSidebar }) {
   const handleLogout = () => {
     localStorage.removeItem("signedInUser");
     setSignedInUser(null);
+    toast.success("Admin logged out successfully!");
     route.push("/");
   };
 

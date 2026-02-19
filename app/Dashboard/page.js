@@ -6,6 +6,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Cards from "@/app/Reuseable Components/Cards";
 import EventCards from "../Reuseable Components/EventCards";
 import withAuth from "../Reuseable Components/WithAuth";
+import Loader from "../Reuseable Components/Loader";
 
 const columns = [
   { field: "id", headerName: "Id", width: 90 },
@@ -32,20 +33,28 @@ const columns = [
 function Dashboard() {
   const [users, setUsers] = useState([]);
   const [analyticsData, setAnalyticsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch all users from API
   const getAllUsers = async () => {
-    const resp = await fetch("/Api/UserLogin", { method: "GET" });
-    const userData = await resp.json();
-    const allUsers = userData["data"].map((user) => ({
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      createdAt: user.createdAt, // Assuming `createdAt` exists in API data
-    }));
-    setUsers(allUsers);
-    generateAnalytics(allUsers);
+    setIsLoading(true);
+    try {
+      const resp = await fetch("/Api/UserLogin", { method: "GET" });
+      const userData = await resp.json();
+      const allUsers = userData["data"].map((user) => ({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt, // Assuming `createdAt` exists in API data
+      }));
+      setUsers(allUsers);
+      generateAnalytics(allUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Generate analytics for the current month
@@ -86,6 +95,31 @@ function Dashboard() {
   useEffect(() => {
     getAllUsers();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div style={{ background: "var(--color-bg)", minHeight: "100vh", padding: "24px" }}>
+        {/* Stats skeleton */}
+        <div style={{ padding: "28px 24px 20px" }}>
+          <Loader variant="skeleton" size="sm" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" style={{ padding: "0 24px 24px" }}>
+          {[1, 2, 3, 4].map((i) => (
+            <Loader key={i} variant="skeleton" size="md" />
+          ))}
+        </div>
+        {/* Chart & table skeleton */}
+        <div className="flex flex-col lg:flex-row gap-6" style={{ padding: "0 24px" }}>
+          <div className="w-full lg:flex-1">
+            <Loader variant="skeleton" size="lg" />
+          </div>
+          <div className="w-full lg:w-[400px]">
+            <Loader variant="skeleton" size="lg" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: "var(--color-bg)", minHeight: "100vh" }}>

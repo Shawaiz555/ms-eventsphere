@@ -12,6 +12,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PublishIcon from "@mui/icons-material/Publish";
 import UnpublishedIcon from "@mui/icons-material/Unpublished";
+import Loader from "./Loader";
 
 const inputSx = {
   mb: 2,
@@ -38,15 +39,23 @@ const statusConfig = {
 
 export default function EventCards({ dashboard }) {
   const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null); // For editing
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [editedEvent, setEditedEvent] = useState({}); // Edited event details
 
   // Fetch events from the API
   const getEvents = async () => {
-    const resp = await fetch("/Api/Events", { method: "GET" });
-    const data = await resp.json();
-    setEvents(data["data"]);
+    setIsLoading(true);
+    try {
+      const resp = await fetch("/Api/Events", { method: "GET" });
+      const data = await resp.json();
+      setEvents(data["data"]);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -130,6 +139,17 @@ export default function EventCards({ dashboard }) {
     dashboard ? true : event.status === "Published"
   );
 
+  // Show loader while fetching
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <Loader key={i} variant="skeleton" size="lg" />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Cards Grid */}
@@ -159,7 +179,7 @@ export default function EventCards({ dashboard }) {
               }} />
 
               {/* Event Image */}
-              <div style={{ position: "relative", height: "200px", overflow: "hidden" }}>
+              <div style={{ position: "relative", height: "330px", overflow: "hidden" }}>
                 {event.image ? (
                   <img
                     src={event.image}

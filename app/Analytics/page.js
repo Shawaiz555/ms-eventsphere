@@ -3,6 +3,7 @@ import { ScatterChart } from '@mui/x-charts/ScatterChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import Cards from "@/app/Reuseable Components/Cards";
 import { useEffect, useState } from 'react';
+import Loader from "../Reuseable Components/Loader";
 
 const chartSetting = {
     yAxis: [
@@ -26,13 +27,21 @@ const chartSetting = {
 
 export default function page() {
     const [analyticsData, setAnalyticsData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     // Function to fetch events data
     const getAllEvents = async () => {
-        const resp = await fetch("/Api/Events", { method: "GET" });
-        const eventsData = await resp.json();
-        const allEvents = eventsData["data"];
-        generateAnalytics(allEvents);
+        setIsLoading(true);
+        try {
+            const resp = await fetch("/Api/Events", { method: "GET" });
+            const eventsData = await resp.json();
+            const allEvents = eventsData["data"];
+            generateAnalytics(allEvents);
+        } catch (error) {
+            console.error("Error fetching analytics:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // Generate chart data based on events
@@ -101,6 +110,26 @@ export default function page() {
 
         return () => clearInterval(intervalId); // Clean up polling on component unmount
     }, []);
+
+    if (isLoading) {
+        return (
+            <div style={{ background: "var(--color-bg)", minHeight: "100vh", padding: "24px" }}>
+                {/* Stats skeleton */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" style={{ marginBottom: "32px" }}>
+                    {[1, 2, 3, 4].map((i) => (
+                        <Loader key={i} variant="skeleton" size="md" />
+                    ))}
+                </div>
+                {/* Chart skeleton */}
+                <div style={{ marginTop: "32px" }}>
+                    <Loader variant="skeleton" size="sm" />
+                    <div style={{ marginTop: "16px" }}>
+                        <Loader variant="skeleton" size="lg" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div style={{ background: "var(--color-bg)", minHeight: "100vh" }}>

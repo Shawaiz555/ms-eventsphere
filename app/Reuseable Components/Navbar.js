@@ -18,6 +18,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { toast } from "react-toastify";
 import GroupsIcon from "@mui/icons-material/Groups";
 
 const pages = [
@@ -47,6 +48,7 @@ function ResponsiveAppBar() {
   const handleLogout = () => {
     localStorage.removeItem("signedInUser");
     setSignedInUser(null);
+    toast.success("Logged out successfully!");
     router.push("/");
   };
 
@@ -91,7 +93,7 @@ function ResponsiveAppBar() {
                 width={140}
                 height={56}
                 alt="MS-EventSphere Logo"
-                className="w-24 h-24"
+                className="w-24 h-24 lg:w-28 lg:h-28"
               />
             </Box>
 
@@ -101,7 +103,8 @@ function ResponsiveAppBar() {
                 flexGrow: 1,
                 display: { xs: "none", md: "flex" },
                 justifyContent: "center",
-                gap: "4px",
+                alignContent: "center",
+                gap: "8px",
               }}
             >
               {pages.map((page) => {
@@ -112,7 +115,7 @@ function ResponsiveAppBar() {
                     onClick={() => router.push(page.path)}
                     sx={{
                       color: isActive ? "#60a5fa" : "#94a3b8",
-                      fontSize: "0.8rem",
+                      fontSize: "13px",
                       letterSpacing: "0.04em",
                       fontWeight: isActive ? 600 : 500,
                       px: 1.5,
@@ -153,7 +156,7 @@ function ResponsiveAppBar() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               {/* User info (desktop) */}
               {signedInUser ? (
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <Box
                     sx={{
                       display: { xs: "none", sm: "flex" },
@@ -301,7 +304,7 @@ function ResponsiveAppBar() {
               width={130}
               height={52}
               alt="MS-EventSphere Logo"
-              className="w-24 h-24"
+              className="w-32 h-32"
             />
           </Box>
           <IconButton

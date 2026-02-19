@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import ImageUpload from "../Reuseable Components/ImageUpload";
 import { Mail } from "../lib/send-mail";
 import { toast } from "react-toastify";
+import Loader from "../Reuseable Components/Loader";
 
 const inputSx = {
   "& .MuiOutlinedInput-root": {
@@ -38,6 +39,7 @@ export default function Page() {
   });
   const [imageFile, setImageFile] = useState([]);
   const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageUpload = (file) => {
     setImageFile(file);
@@ -61,6 +63,7 @@ export default function Page() {
       event.Location &&
       event.Description
     ) {
+      setIsSubmitting(true);
       try {
         const formData = new FormData();
         formData.append("name", event.Name);
@@ -125,6 +128,8 @@ export default function Page() {
       } catch (error) {
         console.error("Error submitting event:", error);
         toast.error("An error occurred while creating the event");
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -386,10 +391,19 @@ export default function Page() {
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="btn-gradient text-white font-semibold px-10 py-3 rounded-xl tracking-wide"
-                  style={{ border: "none", cursor: "pointer", fontSize: "0.95rem" }}
+                  style={{
+                    border: "none",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    fontSize: "0.95rem",
+                    opacity: isSubmitting ? 0.7 : 1,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
                 >
-                  Submit Event
+                  {isSubmitting ? <Loader variant="dots" size="sm" /> : "Submit Event"}
                 </button>
               </div>
             </form>

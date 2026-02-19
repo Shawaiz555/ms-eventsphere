@@ -8,6 +8,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import HomeIcon from "@mui/icons-material/Home";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { toast } from "react-toastify";
 
 const navItems = [
   { href: "/Dashboard", label: "Dashboard", Icon: DashboardIcon },
@@ -27,6 +28,7 @@ export default function SideBar({ closeSidebar }) {
   const handleLogout = () => {
     localStorage.removeItem("signedInUser");
     setSignedInUser(null);
+    toast.success("Admin logged out successfully!");
     closeSidebar();
     router.push("/");
   };
@@ -57,7 +59,7 @@ export default function SideBar({ closeSidebar }) {
           width={160}
           height={64}
           alt="MS-EventSphere Logo"
-          className="w-24 h-24"
+          className="w-34 h-34"
         />
         <p
           style={{

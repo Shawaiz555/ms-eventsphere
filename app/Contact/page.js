@@ -5,11 +5,13 @@ import { toast } from "react-toastify";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Loader from "../Reuseable Components/Loader";
 
 export default function Page() {
   const [fullName, setFullName] = useState("");
   const [message, setMessege] = useState("");
   const [loginedUserEmail, setLoginedUserEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const signedInUser = JSON.parse(localStorage.getItem("signedInUser"));
@@ -19,13 +21,15 @@ export default function Page() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const ContactData = {
-      fullName,
-      email: loginedUserEmail,
-      message,
-    };
-    console.log(ContactData.loginedUserEmail);
-    const response = await fetch("/Api/Contact", {
+    setIsSubmitting(true);
+    try {
+      const ContactData = {
+        fullName,
+        email: loginedUserEmail,
+        message,
+      };
+      console.log(ContactData.loginedUserEmail);
+      const response = await fetch("/Api/Contact", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,6 +57,12 @@ export default function Page() {
       });
     } else {
       toast.error(result.message);
+    }
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+      toast.error("Failed to submit form");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -293,10 +303,19 @@ export default function Page() {
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
                       type="submit"
+                      disabled={isSubmitting}
                       className="btn-gradient text-white font-semibold px-10 py-3 rounded-xl tracking-wide"
-                      style={{ border: "none", cursor: "pointer", fontSize: "0.9rem" }}
+                      style={{
+                        border: "none",
+                        cursor: isSubmitting ? "not-allowed" : "pointer",
+                        fontSize: "0.9rem",
+                        opacity: isSubmitting ? 0.7 : 1,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
                     >
-                      Send Message
+                      {isSubmitting ? <Loader variant="dots" size="sm" /> : "Send Message"}
                     </button>
                   </div>
                 </form>
